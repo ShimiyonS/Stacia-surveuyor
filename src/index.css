@@ -1,0 +1,30 @@
+@font-face {
+  font-family: "EuclidRegular";
+  src: url(../fonts/Euclid\ Circular\ A\ Regular.ttf);
+}
+@font-face {
+  font-family: "EuclidBold";
+  src: url(../fonts/Euclid\ Circular\ A\ Bold.ttf);
+}
+
+@font-face {
+  font-family: "EuclidLight";
+  src: url(../fonts/Euclid\ Circular\ A\ Light.ttf);
+}
+@font-face {
+  font-family: "EuclidMedium";
+  src: url(../fonts/Euclid\ Circular\ A\ Medium.ttf);
+}
+@font-face {
+  font-family: "EuclidSemiBold";
+  src: url(../fonts/Euclid\ Circular\ A\ SemiBold.ttf);
+}
+
+body{
+  font-family: Euclid;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}

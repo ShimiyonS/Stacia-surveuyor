@@ -1,0 +1,89 @@
+/* :root {
+    --fs-xl: 5rem;
+    --fs-600: 1.5rem;
+    --fs-400: 0.9rem;
+} */
+
+/* @media (min-width: 40em) {
+    :root{
+        --fs-xl: 6rem;
+        --fs-600: 3rem;
+        --fs-400: 1rem;
+    }
+} */
+
+
+
+
+.taskpage-topbar {
+    width: 97%;
+    height: 3rem;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* background-color: #1B51BB; */
+}
+
+.task-tabs {
+    display: flex;
+    column-gap: 1.5rem;
+}
+
+.task-tab {
+    font-size: 1rem;
+    font-style: normal;
+    font-family: EuclidMedium;
+    line-height: normal;
+    letter-spacing: -0.32px;
+    cursor: pointer;
+}
+
+.taskCTA {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.create-task {
+    border-radius: 4px;
+    border: 1.2px solid #1B51BB;
+    background: #1B51BB;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+}
+
+.filter-task {
+    border-radius: 4px;
+    border: 1.2px solid rgba(27, 81, 187, 0.5);
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    cursor: pointer;
+    
+}
+
+
+.btn-text,
+.filter-text {
+    margin-left: 0.8rem;
+    color: #fff;
+    font-size: 0.9rem;
+    text-align: center;
+    font-family: EuclidRegular;
+}
+
+.filter-text {
+    color: rgba(27, 81, 187, 0.5);
+}
+
+.filter-modal {
+    width: 30rem;
+    height: 800px;
+    position: absolute;
+    top: 12%;
+    left: 66%;
+    background-color: blueviolet;
+    z-index: 99;
+}

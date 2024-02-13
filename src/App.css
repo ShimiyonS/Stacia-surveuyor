@@ -1,0 +1,172 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.scroll-tasks::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  font-size: var(--fs-400);
+}
+
+.react-dropdown-tree-select {
+  /* width: 400px; */
+  /* background-color: green; */
+  width: 100%;
+}
+
+
+
+/* .rbc-month-row {
+  display: inline-table !important;
+  flex: 0 0 0 !important;
+  min-height: 120px !important;
+} */
+
+.rbc-timeslot-group {
+  min-height: 120px !important;
+}
+
+
+.rbc-label {
+  color: #1B2436;
+  font-family: EuclidSemibold;
+}
+
+.rbc-time-view .rbc-row {
+  /* min-height: 0px !important; */
+}
+
+.rbc-header {
+  /* border-bottom: none !important; */
+  font-size: 1.1rem !important;
+}
+
+/* .rbc-header{
+  background-color: aquamarine;
+  display: flex;
+} */
+
+.rbc-today {
+  background-color: rgba(249, 250, 255, 1) !important;
+}
+
+.select-cal-view {
+  border: none;
+  outline: none;
+  color: rgba(132, 147, 178, 1);
+  border: 1px solid rgba(132, 147, 178, 1);
+  padding: 0.4rem;
+  font-size: 0.9rem;
+  border-radius: 0.3rem;
+}
+
+.select-cal-view option {
+  color: rgba(132, 147, 178, 1);
+}
+
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+}
+
+.react-calendar {
+  border: none !important;
+  width: 25.125rem !important;
+}
+
+.today-activity {
+  background-color: #fff;
+  padding: 1rem 0.6rem;
+  width: 25.125rem;
+  height: 31rem;
+  overflow-y: scroll;
+}
+
+.today-activity::-webkit-scrollbar {
+  display: none;
+}
+
+.activity-text {
+  color: #1B2436;
+  font-size: 1.2rem;
+  font-family: EuclidSemibold;
+  line-height: normal;
+}
+
+.activity-name {
+  color: #1B2436;
+  font-size: 1.2rem;
+  font-family: EuclidMedium;
+  line-height: normal;
+}
+
+.activity-desc {
+  color: #585858;
+  font-size: 0.8rem;
+  font-family: EuclidMedium;
+}
+
+.today-activity-card {
+  padding: 0.5rem 1rem;
+  background-color: rgba(3, 155, 230, 0.1);
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5rem;
+  border-left: 0.4rem solid rgba(3, 155, 230, 1);
+  border-top-right-radius: 0.4rem;
+  border-bottom-right-radius: 0.4rem;
+}
+
+.activity-due {
+  color: #039BE6;
+  font-family: Inter;
+  font-size: 0.7rem;
+  font-family: EuclidSemibold;
+  line-height: normal;
+}
+
+abbr[title] {
+  text-decoration: none;
+  color: rgba(132, 147, 178, 1);
+}
+
+.react-calendar__tile {
+  padding: 1.1rem !important;
+  color: rgba(27, 36, 54, 1);
+}
+
+.react-calendar__tile--now {
+  background-color: rgba(27, 81, 187, 1) !important;
+  border-radius: 50% 50%;
+  color: #fff;
+}
+
+.react-calendar__month-view__days__day--weekend {
+  color: rgba(27, 36, 54, 1) !important;
+}
+
+.rbc-date-cell {
+  text-align: left !important;
+  color: rgba(27, 36, 54, 1);
+  padding: 0.4rem;
+}
+
+.rbc-button-link  {
+  font-size: 1rem;
+  font-family: EuclidSemibold;
+  /* background: rgba(27, 81, 187, 1) !important; */
+}
+
+.rbc-button-link span{
+  display: flex;
+}
+
+.rbc-month-view{
+  font-family: EuclidMedium;
+}

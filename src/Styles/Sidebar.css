@@ -1,0 +1,32 @@
+.i-smart-logo{
+    margin-left: 0.2rem;
+}
+
+.side-bar-bottom-logo {
+    width: 1.7rem;
+    height: 1.7rem;
+    /* background-color: aquamarine; */
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    column-gap: 1.5rem;
+    color: #8493B2;
+    font-family: EuclidRegular;
+}
+
+.side-bar-bottom-logo>img {
+    width: 100%; 
+    height: 100%;
+}
+
+.nav-link-active {
+    display: flex;
+    align-items: center;
+    column-gap: 1.5rem;
+}
+
+.nav-text{
+    color: #8493B2;
+    font-family: EuclidRegular;
+}
+

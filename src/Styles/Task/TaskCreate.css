@@ -1,0 +1,503 @@
+/* .task-create {
+    width: calc(100% - 4.2rem);
+    min-height: calc(100vh - 4rem);
+    margin-left: 4.2rem;
+    background-color: #EFF2F4;
+}
+
+.task-create-inner-box {
+    background: #fff;
+    width: 97%;
+    margin: 0 auto;
+    height: 90vh;
+    border-radius: 0.5rem;
+}
+
+.task-creation-form {
+    background-color: aquamarine;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+}
+
+.task-input {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    background-color: #F7F9FB;
+}
+
+::-webkit-input-placeholder {
+    color: #D3DCE5;
+    font-weight: 500;
+}
+
+.task-input:focus {
+    outline: none;
+}
+
+.file-upload-btns {
+    width: 100%;
+    display: flex;
+    background-color: pink; 
+    column-gap: 2rem;
+}
+
+.files {
+    width: 50%;
+}
+
+.file-input {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    background-color: #EEF1FF;
+    background-image: url('../../Assets/AddFiles.svg');
+    background-repeat: no-repeat;
+    background-position: 1rem 0.8rem;
+    background-size: 1.5rem;
+}
+
+.label-name {
+    color: #1B2436;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 150%;
+    letter-spacing: -0.198px;
+    margin-bottom: 0.3rem;
+}
+
+.assigned-to-btns {
+    width: 100%;
+    background-color: red;
+    display: flex;
+    column-gap: 2rem;
+}
+
+.assigned {
+    width: 50%;
+    background-color: pink;
+}
+
+#surveyors {
+    background-color: #EEF1FF;
+    overflow-y: auto;
+    border: none;
+    width: 100%;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    position: relative;
+}
+
+option {
+    overflow-y: scroll;
+}
+
+input[type=file] {
+    color: rgba(0, 0, 0, 0);
+}
+
+input[type=file]::-webkit-file-upload-button {
+    display: none;
+}
+
+.download-file {
+    display: flex;
+    align-items: center;
+    column-gap: 0.4rem;
+}
+
+.download-text {
+    color: #8493B2;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 150%;
+    letter-spacing: -0.22px;
+} */
+
+.task-create {
+    width: calc(100% - 4.2rem);
+    min-height: calc(100vh - 4rem);
+    height: 100%;
+    margin-left: 4.2rem;
+    background-color: rgba(239, 242, 244, 1);
+    padding: 0.5rem 0rem;
+}
+
+.task-create-inner-layer {
+    width: 97%;
+    /* background-color: #8493B2; */
+    background-color: #fff;
+    max-height: calc(90vh - 0.5rem);
+    /* min-height: calc(100vh - 10rem); */
+    border-radius: 1rem;
+    margin: 0 auto;
+    /* padding: 2rem; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.ant-select-tree .ant-tree-checkbox {
+    display: none;
+}
+
+.task-inputs {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.9rem;
+}
+
+.attach-file-logo {
+    background-color: #F7F9FB;
+    border-radius: 0.3rem;
+    padding: 0.1rem;
+}
+
+.task-input {
+    background-color: rgba(247, 249, 251, 1);
+    outline: none;
+    border: none;
+    border-radius: 0.8rem;
+    font-size: 1rem;
+    margin-top: 0.9rem;
+    font-family: EuclidMedium;
+}
+
+::-webkit-input-placeholder {
+    color: #D3DCE5;
+    font-weight: 500;
+}
+
+.task-label {
+    color: #1B2436;
+    font-size: 1rem;
+    line-height: 1.2rem;
+    font-family: EuclidMedium;
+}
+
+/* .attachforms, */
+.attachforms1 {
+    border: 1.2px solid #F7F9FB;
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.5rem;
+    margin-top: 0.9rem;
+    background-color: rgba(247, 249, 251, 1);
+    width: 30%;
+    display: flex;
+    /* justify-content: space-between; */
+    align-items: center;
+}
+
+/* input[type=file] { */
+    /* color: transparent; */
+/* } */
+
+::-webkit-file-upload-button {
+    display: none;
+}
+
+.upload-csv {
+    display: flex;
+    background-color: red;
+    align-items: center;
+}
+
+.attachforms1::after {
+    content: 'Upload .csv file';
+    font-family: EuclidMedium;
+    font-size: 1rem;
+    margin-left: 0.3rem;
+}
+
+.broadcast-task {
+    border: 1px solid rgba(132, 147, 178, 1);
+    margin-top: 0.9rem;
+    padding: 0.7rem 1.1rem;
+    border-radius: 2rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    font-family: EuclidMedium;
+    font-size: 1.1rem;
+    color: rgba(132, 147, 178, 1);
+}
+
+.download-format-sample {
+    color: #8493B2;
+    font-size: 1.1rem;
+    font-family: EuclidMedium;
+    line-height: normal;
+    display: flex;
+    column-gap: 0.3rem;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.select-surveyors {
+    width: 100%;
+    margin-top: 0.9rem;
+    font-family: EuclidMedium;
+    color: rgba(132, 147, 178, 1) !important;
+}
+
+.css-13cymwt-control {
+    border-color: transparent !important;
+    background-color: #F7F9FB !important;
+    min-height: 0px !important;
+    padding: 0.5rem;
+}
+
+/* ScrollableDatePicker.css */
+
+.scrollable-date-picker {
+    display: inline-block;
+    position: relative;
+}
+
+.react-datepicker {
+    display: flex;
+    flex-direction: column;
+    max-height: 300px;
+    /* Adjust the max height as needed */
+    overflow-y: auto;
+}
+
+.datepicker {
+    margin-left: 12%;
+    margin-bottom: 3.5%;
+    font-family: EuclidRegular !important;
+    width: 30% !important;
+    -webkit-box-shadow: 1px 5px 42px -30px #000000;
+    box-shadow: 1px 5px 42px -30px #000000;
+    background-color: rgba(255, 255, 255, 1) !important;
+}
+
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}
+
+.date-picker-box {
+    background-color: rgba(247, 249, 251, 1);
+    /* background-color: pink; */
+    outline: none;
+    border: none;
+    border-radius: 0.8rem;
+    font-size: 1rem;
+    margin-top: 0.9rem;
+    font-family: EuclidMedium;
+    width: 45%;
+    padding: 1rem 1.1rem;
+    text-transform: uppercase;
+    color: rgba(211, 220, 229, 1);
+}
+
+
+
+.datepicker.ios .datepicker-navbar {
+    position: relative !important;
+}
+
+.datepicker.ios .datepicker-caption-item {
+    font-size: 1rem !important;
+    font-family: EuclidSemibold !important;
+}
+
+.datepicker .datepicker-scroll>li {
+    line-height: 2rem !important;
+    font-family: EuclidSemibold !important;
+    font-size: 1.5rem !important;
+    color: rgba(27, 36, 54, 0.894) !important;
+}
+
+.datepicker .datepicker-scroll {
+    background-color: #fff;
+}
+
+.datepicker.ios .datepicker-scroll li {
+    background-color: #fff !important;
+}
+
+.send-updates {
+    display: flex;
+    align-items: center;
+    column-gap: 0.3rem;
+    color: #8493B2;
+    font-family: EuclidMedium;
+    font-size: 1.1rem;
+    margin-top: 0.9rem;
+}
+
+.share-options {
+    background-color: #fff;
+    margin-top: 1rem;
+    width: 15%;
+    padding: 2rem;
+    margin-left: 8%;
+    border-radius: 1rem;
+    box-shadow: 0px 10px 32px -3px rgba(0, 0, 0, 0.1);
+}
+
+.share-option {
+    display: flex;
+    align-items: center;
+    column-gap: 0.5rem;
+}
+
+.share-option-txt {
+    font-family: EuclidMedium;
+    font-size: 1.2rem;
+    color: #8493B2;
+}
+
+.form-box::-webkit-scrollbar {
+    display: none;
+}
+
+.range-boxes {
+    display: flex;
+    justify-content: space-between;
+    width: 70%;
+    margin-top: 1rem;
+    /* background-color: #1B2436;s */
+}
+
+.range-box {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+}
+
+.start-date {
+    background-color: rgba(247, 249, 251, 1);
+    /* background-color: pink; */
+    outline: none;
+    border: none;
+    border-radius: 0.8rem;
+    font-size: 1rem;
+    margin-top: 0.9rem;
+    font-family: EuclidMedium;
+    /* width: 45%; */
+    padding: 1rem 1.1rem;
+    text-transform: uppercase;
+    color: rgba(211, 220, 229, 1);
+}
+
+.survey-limit-txt {
+    font-size: 1.1rem;
+    color: #8493B2;
+    font-family: EuclidMedium;
+    margin-top: 0.7rem;
+}
+
+/* advanced options */
+
+.advanced-options {
+    background-color: #fff;
+    height: 6rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 2.5rem;
+    justify-content: space-between;
+    border-bottom-left-radius: 2rem;
+    border-bottom-right-radius: 2rem;
+    box-shadow: 0px -4px 5px 0px rgba(0, 0, 0, 0.1);
+}
+
+.advanced-options-left,
+.advanced-options-right {
+    display: flex;
+    column-gap: 0.5rem;
+}
+
+.advanced-options-right {
+    column-gap: 1.8rem;
+}
+
+.advanced-cancel-btn {
+    padding: 0.8rem 1.9rem;
+    font-size: 1.1rem;
+    font-family: EuclidMedium;
+    color: #1B51BB;
+    border: 1px solid #1B51BB;
+    border-radius: 0.9rem;
+}
+
+.advanced-next-btn {
+    padding: 0.8rem 2.5rem;
+    color: #fff;
+    font-family: EuclidMedium;
+    background-color: #1B51BB;
+    border-radius: 0.9rem;
+}
+
+/* csv file upload modal */
+
+.csv-file-upload-modal{
+    display: flex;
+    flex-direction: column;
+    row-gap: 1.5rem;
+}
+
+.csv-file-upload-txt{
+    font-family: EuclidSemibold;
+    font-size: 1.5rem;
+}
+
+.csv-click-drag-box{
+    height: 12rem;
+    width: 100%;
+    border-radius: 1rem;
+    border: 2px dotted #1B51BB;
+    padding: 1rem;
+}
+
+.format-accept-csv{
+    font-family: EuclidMedium;
+    font-size: 1.2rem;
+    color: #8493B2;
+}
+
+.csv-file-display-box{
+    height: 7rem;
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid #CACACA;
+}
+
+.cancel-csv-upload-btn,
+.continue-csv-upload-btn{
+    border: 1.3px solid #1B51BB;
+    background-color: #fff;
+    color: #1B51BB;
+    font-size: 1.2rem;
+    padding: 0.8rem;
+    font-family: EuclidMedium;
+    border-radius: 0.8rem;
+    width: 8rem;
+    cursor: pointer;
+}
+
+.continue-csv-upload-btn{
+    color: #fff;
+    background-color: #1B51BB;
+}
+
+.actual-drop-box{
+    height: 100%;
+    width: 100%;
+    border: transparent;
+}
+
+.csv-filename{
+    color: #1B2436;
+    font-size: 0.9rem;
+    font-family: EuclidMedium;
+}

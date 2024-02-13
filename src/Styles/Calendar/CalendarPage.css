@@ -1,0 +1,23 @@
+.calendar-page{
+    width: calc(100% - 4.2rem);
+    min-height: calc(100vh - 4rem);
+    margin-left: 4.2rem;
+    background-color: #EFF2F4;
+    padding: 0 1.5rem;
+    display: flex;
+}
+
+.mini-calendar{
+    
+}
+
+.react-calendar__navigation {
+    /* .react-calendar__navigation__arrow {
+        display: none;
+    } */ 
+
+    .react-calendar__navigation__label {
+        font-size: 1rem;
+        color: #8B8D97;
+    }
+}

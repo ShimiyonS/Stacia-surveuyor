@@ -1,0 +1,184 @@
+.sign-in-page {
+    width: 100%;
+    min-height: 100vh;
+    height: 100vh;
+    display: flex;
+    /* overflow: hidden; */
+}
+
+.sign-in-left {
+    width: 45%;
+    /* background-color: tomato; */
+    height: 100%;
+    /* min-height: 100vh; */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sign-in-left>img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.sign-in-overlay {
+    width: 70%;
+    height: 80%;
+    position: absolute;
+    border-radius: 30px;
+    background: rgba(0, 0, 0, 0.18);
+    backdrop-filter: blur(7px);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 40px 20px;
+}
+
+
+.sign-in-right {
+    width: 55%;
+    height: 100%;
+    /* background-color: palegoldenrod; */
+}
+
+.good-network-box {
+    width: 40%;
+    border-radius: 10px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.26);
+}
+
+.good-network-text {
+    text-transform: uppercase;
+    color: #FFF;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 700;
+    /* line-height: normal; */
+    letter-spacing: 0.6px;
+}
+
+.line {
+    height: 2px;
+    width: 40px;
+    background-color: #4A758F;
+    margin-top: 20px;
+}
+
+.we-text {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.invite-text {
+    font-size: 22px;
+}
+
+.desc {
+    font-size: 14px;
+}
+
+.lorem-text {
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.lorem-text1 {
+    font-size: 18px;
+}
+
+
+.sign-up-text {
+    color: #323232;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.welcome-text {
+    color: #797979;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.email {
+    color: #797979;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+input[type="email"] {
+    border: none;
+    outline: none;
+    width: 100%;
+}
+
+input[type="password"],
+input[type="number"] {
+    border: none;
+    outline: none;
+    width: 100%;
+}
+
+
+.email-input {
+    border-bottom: 1px solid #797979;
+    padding-bottom: 10px;
+    margin-top: 15px;
+}
+
+.sign-in-right2 {
+    /* background-color: pink; */
+    width: 70%;
+    margin: 15% auto;
+    row-gap: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+::-webkit-input-placeholder {
+    color: #D3D3D3;
+}
+
+.next-btn {
+    width: 100%;
+    background-color: #1B51BB;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    color: #fff;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.sign-with-mobile {
+    text-align: center;
+    margin-top: 15px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.sign-with-mobile>a {
+    color: #323232;
+}
+
+.forgot {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.forgot>a {
+    text-decoration: none;
+    color: #323232;
+}

@@ -1,0 +1,79 @@
+.board-view-task-card {
+    width: 98%;
+    background-color: tomato;
+    margin: 1rem auto;
+    display: flex;
+    align-items: center;
+    border-radius: 0.4rem;
+    padding: 0.5rem;
+    column-gap: 0.8rem;
+}
+
+.task-card-img-div {
+    width: 4rem;
+    height: 2.8rem;
+    border-radius: 4rem;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.task-card-img-div img {
+    width: 90%;
+    height: 90%;
+    border-radius: 100%;
+}
+
+.board-view-task-name {
+    font-size: 0.9rem;
+    font-family: EuclidSemibold;
+}
+
+.board-view-section::-webkit-scrollbar {
+    display: none;
+}
+
+.board-view-section {
+    border: 2px solid #D5E8FF;
+}
+
+.board-view-task-section-title {
+    color: #1B2436;
+    font-size: 1rem;
+    font-family: EuclidSemibold;
+    line-height: normal;
+}
+
+.board-view-task-due {
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    column-gap: 0.5rem;
+    font-family: EuclidSemibold;
+}
+
+.scroll-boards::-webkit-scrollbar {
+    width: 5px;
+    height: 10px;
+    background-color: #fff;
+}
+
+.scroll-boards::-webkit-scrollbar-thumb {
+    background-color: rgba(27, 36, 54, 0.4);
+    border-radius: 1rem;
+}
+
+/* add new board */
+
+.add-board {
+    margin-top: 1rem;
+    border: 2px solid #D5E8FF;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.6rem;
+    text-align: center;
+    font-family: EuclidMedium;
+}
