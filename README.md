@@ -1,1 +1,0 @@
-# surveyor-manager-client
