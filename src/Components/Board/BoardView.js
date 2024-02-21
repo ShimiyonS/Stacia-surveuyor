@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import TaskCard from "./TaskCard";
@@ -84,7 +84,6 @@ const Card = ({ id, text, index, moveCard, tasks }) => {
               ))}
             </div>
           </div>
-          <AddBoard />
         </>
       ) : (
         <div
@@ -138,7 +137,7 @@ const Card = ({ id, text, index, moveCard, tasks }) => {
 };
 
 const DragDropContainer = () => {
-  const initialCards = [
+  const [initialCards, setInitialCards] = useState([
     {
       id: 1,
       dueDate: "Recently assigned",
@@ -310,9 +309,9 @@ const DragDropContainer = () => {
         },
       ],
     },
-  ];
-  const memorizeCards = useMemo(() => initialCards, []);
-  const [cards, setCards] = useState(memorizeCards);
+  ]);
+  // const memorizeCards = useMemo(() => initialCards, []);
+  const [cards, setCards] = useState(initialCards);
 
   const moveCard = (fromIndex, toIndex) => {
     const updatedCards = [...cards];
@@ -320,6 +319,36 @@ const DragDropContainer = () => {
     updatedCards.splice(toIndex, 0, movedCard);
     setCards(updatedCards);
   };
+
+  useEffect(() => {
+    const jsonData = JSON.stringify(cards);
+    localStorage.setItem("testArray", jsonData);
+  }, [cards]);
+
+  const handleAddBoard = (newBoardData) => {
+    setCards((prevArray) => [...prevArray, newBoardData]);
+  };
+
+  useEffect(() => {
+    const storedData = localStorage.getItem("testArr");
+
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+      setCards(parsedData);
+    }
+  }, []);
+
+  // const boardDetails = {
+  //   id: 8,
+  //   dueDate: "new box",
+  //   tasks: [],
+  // };
+
+  // useEffect(() => {
+  //   const boardData = JSON.stringify(cards);
+  //   localStorage.setItem("boardData", boardData);
+  //   console.log("boardData", boardData);
+  // }, []);
 
   return (
     <div
@@ -334,6 +363,16 @@ const DragDropContainer = () => {
         columnGap: "1rem",
       }}
     >
+      {/* <div
+        style={{
+          border: "1px solid red",
+          padding: "1rem",
+          cursor: "pointer",
+        }}
+        // onClick={() => handleAddBoard(boardDetails)}
+      >
+        add new board
+      </div> */}
       {/* <RecentlyAssigned /> */}
       {cards.map((card, index) => (
         <Card
@@ -345,6 +384,7 @@ const DragDropContainer = () => {
           moveCard={moveCard}
         />
       ))}
+      <AddBoard handleAddBoard={handleAddBoard} />
     </div>
   );
 };

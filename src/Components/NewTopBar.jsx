@@ -41,6 +41,7 @@ export default function NewTopBar() {
                 )}
                 {location.pathname === "/profile" && 'Profile'}
                 {location.pathname === "/create-task" && 'Create Task'}
+                {location.pathname === "/create-task/excel-view" && 'Create Task'}
 
             </div>
             <div className="search-box-container">

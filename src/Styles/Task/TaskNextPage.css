@@ -1,0 +1,63 @@
+.show-profile-info {
+    background-color: #fff;
+    position: absolute;
+    /* margin-top: 28rem; */
+    /* z-index: 999; */
+    width: 25rem !important;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 1rem;
+    border-radius: 0.5rem;
+    /* height: 50%; */
+    -webkit-box-shadow: 4px 0 32px 0 #dddddd;
+    -moz-box-shadow: 4px 0 32px 0 #dddddd;
+    box-shadow: 4px 0 32px 0 #dddddd;
+}
+
+
+.show-profile-img-box {
+    height: 6rem;
+    width: 6rem;
+    border-radius: 50%;
+    padding: 0.2rem;
+    border: 2px solid rgba(132, 147, 178, 1);
+}
+
+.show-profile-img-box>img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.show-profile-task {
+    background-color: rgba(27, 81, 187, 1);
+    color: #fff;
+    padding: 0.4rem;
+    border-radius: 0.3rem;
+}
+
+.show-profile-name {
+    font-family: EuclidMedium;
+    font-size: 1.2rem;
+}
+
+.show-profile-ph {
+    color: rgba(132, 147, 178, 1);
+}
+
+.task-view-profile {
+    color: rgba(27, 36, 54, 1);
+    text-transform: uppercase;
+}
+
+.excel-view-err-banner {
+    background-color: #FF004D;
+    padding: 1.3rem;
+    font-family: EuclidMedium;
+    font-size: 1rem;
+    color: #fff;
+    border-radius: 0.5rem;
+}

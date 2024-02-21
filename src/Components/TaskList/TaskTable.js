@@ -97,10 +97,12 @@ import { useNavigate } from "react-router-dom";
 import { PageContext } from "../../Context/PageContext";
 import SpecificTaskMore from "./SpecificTaskMore";
 import TablerowMoreOptions from "./TablerowMoreOptions";
+import { MdStar } from "react-icons/md";
+
 const TaskTable = ({ columns, data, setData }) => {
   const navigate = useNavigate();
-
   const { setPageName } = useContext(PageContext);
+  const [bookmark, setBookmark] = useState("");
 
   const {
     getTableProps,
@@ -149,9 +151,19 @@ const TaskTable = ({ columns, data, setData }) => {
 
   const startItem = pageIndex * pageSize + 1;
   const endItem = Math.min((pageIndex + 1) * pageSize, data.length);
+
+  // delete row
+
   const handleDeleteRow = (row) => {
     const updatedData = data.filter((rowData) => rowData !== row.original);
     setData(updatedData);
+  };
+
+  // bookmark item
+
+  const handleBookmark = (row) => {
+    setBookmark(row.cells[1].value);
+    console.log(row.cells[1].value);
   };
 
   // const handleRowClick = (row) => {
@@ -210,10 +222,17 @@ const TaskTable = ({ columns, data, setData }) => {
                     }
                   >
                     {cell.column.id === "optionsColumn" && (
-                      <span>
+                      <span
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
                         {/* <SlOptionsVertical /> */}
+                        {bookmark === row.original.id && <MdStar />}
                         <TablerowMoreOptions
                           handleDeleteRow={() => handleDeleteRow(row)}
+                          handleBookmark={() => handleBookmark(row)}
                         />
                       </span>
                     )}

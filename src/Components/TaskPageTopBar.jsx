@@ -13,6 +13,9 @@ import CalendarView from './CalendarView';
 import DrafAndDrop from './DrafAndDrop';
 import BoardView from './Board/BoardView';
 import Modal from 'react-modal'
+import TablerowMoreOptions from './TaskList/TablerowMoreOptions';
+import DateRangeFilter from './TaskList/DateRangeFilter';
+import NewTable from './TaskList/NewTable';
 
 export default function TaskPageTopBar() {
 
@@ -21,6 +24,7 @@ export default function TaskPageTopBar() {
   const [CalendarTabActive, setCalendarTabActive] = useState(false);
 
   const [openFilterModal, setOpenFilterModal] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -87,6 +91,31 @@ export default function TaskPageTopBar() {
   text-align: center;
 `
 
+  const customStyles = {
+    content: {
+      top: "13%",
+      left: "60%",
+      // marginRight: "-50%",
+      width: "25%",
+      height: "30%",
+      borderRadius: "16px",
+      // transform: "translate(-50%, -50%)",
+    },
+    overlay: {
+      background: "rgba(0, 0, 0, 0)",
+      // marginBottom: '4rem',
+      zIndex: "999",
+    },
+  };
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
   return (
     <>
       <div className='taskpage-topbar'>
@@ -115,10 +144,14 @@ export default function TaskPageTopBar() {
         </div>
 
         <div className='taskCTA'>
-          {/* <div className='filter-task'>
+          <div className='date-range'
+            onClick={openModal}
+          >
             <img src={Sort} alt="" />
             <div className='filter-text'>Date range</div>
-          </div> */}
+          </div>
+
+          {/* <DateRangeFilter /> */}
 
           <div className='filter-task' onClick={() => setOpenFilterModal(!openFilterModal)}>
             <img src={Filter} alt="" />
@@ -132,6 +165,32 @@ export default function TaskPageTopBar() {
 
         </div>
       </div>
+
+      <Modal
+        isOpen={modalOpen}
+        onAfterOpen={openModal}
+        onAfterClose={closeModal}
+        style={customStyles}
+      >
+        <div className="location-task-data">
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <div className="region-text">Regions</div>
+            {/* <img
+                src={Close}
+                alt=""
+                onClick={closeModal}
+                style={{ cursor: "pointer" }}
+              /> */}
+          </div>
+
+        </div>
+      </Modal>
 
 
       {
@@ -150,6 +209,7 @@ export default function TaskPageTopBar() {
 
       {
         listTabActive && <ListViewInTask />
+        // listTabActive && <NewTable />
       }
     </>
   )

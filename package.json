@@ -10,6 +10,7 @@
     "@floating-ui/react": "^0.26.8",
     "@floating-ui/react-dom": "^2.0.8",
     "@mui/material": "^5.15.9",
+    "@mui/x-data-grid": "^6.19.4",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -18,7 +19,9 @@
     "chart.js": "^4.4.1",
     "formik": "^2.4.5",
     "jszip": "^3.10.1",
+    "material-react-table": "^2.11.3",
     "moment": "^2.29.4",
+    "papaparse": "^5.4.1",
     "randomcolor": "^0.6.2",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
@@ -36,12 +39,14 @@
     "react-mobile-datepicker": "^4.0.2",
     "react-modal": "^3.16.1",
     "react-otp-input": "^3.1.0",
+    "react-range": "^1.8.14",
     "react-router-dom": "^6.20.1",
     "react-scripts": "5.0.1",
     "react-select": "^5.8.0",
     "react-table": "^7.8.0",
     "styled-components": "^6.1.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -19,10 +19,7 @@ import { PiExportLight } from "react-icons/pi";
 
 import Modal from "react-modal";
 
-export default function TablerowMoreOptions({
-  handleDeleteRow,
-  handleBookmark,
-}) {
+export default function SurveyorShowProfile({ username, phno }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [openModal, setOpenModal] = useState(false);
 
@@ -68,6 +65,8 @@ export default function TablerowMoreOptions({
     },
   };
 
+  console.log(username, phno);
+
   return (
     <React.Fragment>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
@@ -109,7 +108,7 @@ export default function TablerowMoreOptions({
             //   position: "absolute",
             //   top: 0,
             //   right: 14,
-            //   width: 10,
+            //   width: 10,t
             //   height: 10,
             //   bgcolor: "background.paper",
             //   transform: "translateY(-50%) rotate(45deg)",
@@ -117,13 +116,13 @@ export default function TablerowMoreOptions({
             // },
           },
         }}
-        transformOrigin={{ horizontal: "right", vertical: "top" }}
-        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        transformOrigin={{ horizontal: "left", vertical: "top" }}
+        anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
       >
-        <MenuItem onClick={handleClose}>
+        {/* <MenuItem onClick={handleClose}>
           <BiEdit /> Edit
         </MenuItem>
-        <MenuItem onClick={handleBookmark}>
+        <MenuItem>
           <GoStar />
           Bookmark
         </MenuItem>
@@ -154,41 +153,11 @@ export default function TablerowMoreOptions({
           >
             Delete
           </span>
-        </MenuItem>
+        </MenuItem> */}
         {/* <Divider /> */}
+        <MenuItem>{username}</MenuItem>
+        <MenuItem>{phno}</MenuItem>
       </Menu>
-      <Modal
-        isOpen={openModal}
-        ariaHideApp={false}
-        onAfterOpen={handleModalOpen}
-        onAfterClose={handleClose}
-        style={customStyles}
-      >
-        <div className="are-u-sure-text">Are you sure ?</div>
-        <div className="archive">you want to archive this task</div>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            columnGap: "1rem",
-            width: "100%",
-            justifyContent: "flex-end",
-          }}
-        >
-          <div className="cancel-btn" onClick={handleModalClose}>
-            Cancel
-          </div>
-          <div
-            className="confirm-btn"
-            onClick={() => {
-              handleModalClose();
-              handleDeleteRow();
-            }}
-          >
-            Confirm
-          </div>
-        </div>
-      </Modal>
     </React.Fragment>
   );
 }

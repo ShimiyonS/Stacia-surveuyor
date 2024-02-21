@@ -19,12 +19,11 @@ import { PiExportLight } from "react-icons/pi";
 
 import Modal from "react-modal";
 
-export default function TablerowMoreOptions({
-  handleDeleteRow,
-  handleBookmark,
-}) {
+export default function DateRangeFilter({ handleDeleteRow, handleBookmark }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [openModal, setOpenModal] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [time, setTime] = useState("");
 
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -68,11 +67,28 @@ export default function TablerowMoreOptions({
     },
   };
 
+  //   open date range functions
+
+  const handleClick1 = () => {
+    setIsOpen(true);
+  };
+
+  const handleCancel = () => {
+    setIsOpen(false);
+  };
+
+  const handleSelect = (time) => {
+    setTime(time);
+    setIsOpen(false);
+    console.log(time);
+  };
+
   return (
     <React.Fragment>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
         <Tooltip title="Account settings">
-          <IconButton
+          <button onClick={handleClick}>Date range</button>
+          {/* <IconButton
             onClick={handleClick}
             size="small"
             sx={{}}
@@ -81,7 +97,7 @@ export default function TablerowMoreOptions({
             aria-expanded={open ? "true" : undefined}
           >
             <SlOptionsVertical color="rgba(132, 147, 178, 1)" />
-          </IconButton>
+          </IconButton> */}
         </Tooltip>
       </Box>
       <Menu
@@ -120,41 +136,11 @@ export default function TablerowMoreOptions({
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={handleClose}>
-          <BiEdit /> Edit
-        </MenuItem>
-        <MenuItem onClick={handleBookmark}>
-          <GoStar />
-          Bookmark
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <IoShareOutline color="#8493B2" />
-          <span
-            style={{
-              color: "#8493B2",
-            }}
-          >
-            Share
-          </span>
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <IoIosLink />
-          Copy link
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <PiExportLight />
-          Export
-        </MenuItem>
-        <MenuItem onClick={handleModalOpen}>
-          <RiDeleteBin6Line color="#FB2047" />{" "}
-          <span
-            style={{
-              color: "#FB2047",
-            }}
-          >
-            Delete
-          </span>
-        </MenuItem>
+        <div>Date Range</div>
+        <div>
+          <input onClick={handleClick1} />
+          <input />
+        </div>
         {/* <Divider /> */}
       </Menu>
       <Modal

@@ -19,10 +19,16 @@ import { PageContextProvider } from "./Context/PageContext";
 import CalendarPage from "./Pages/CalendarPage";
 import SpecificTask from "./Components/TaskList/SpecificTask";
 import CreateTask from "./Components/TaskList/CreateTask";
+import TaskNextPage from "./Components/TaskList/TaskNextPage";
 
 function App() {
   const [isAuthenticated, setAuthenticated] = useState(true);
+  const [selectedFile, setSelectedFile] = useState(null);
 
+  const handleFileChange = (file) => {
+    setSelectedFile(file);
+  };
+  
   return (
     <PageContextProvider>
       <div className="App">
@@ -52,9 +58,19 @@ function App() {
               path="/create-task"
               element={
                 isAuthenticated ? (
-                  <CreateTask />
+                  <CreateTask onFileChange={handleFileChange} />
                 ) : (
                   <Navigate to="/create-task" />
+                )
+              }
+            />
+            <Route
+              path="/create-task/excel-view"
+              element={
+                isAuthenticated ? (
+                  <TaskNextPage selectedFile={selectedFile} />
+                ) : (
+                  <Navigate to="/create-task/excel-view" />
                 )
               }
             />

@@ -51,17 +51,17 @@
     background: #1B51BB;
     display: flex;
     align-items: center;
-    padding: 0.5rem;
+    padding: 0.6rem;
 }
 
-.filter-task {
+.filter-task,
+.date-range {
     border-radius: 4px;
     border: 1.2px solid rgba(27, 81, 187, 0.5);
     display: flex;
     align-items: center;
-    padding: 0.5rem;
+    padding: 0.6rem;
     cursor: pointer;
-    
 }
 
 
@@ -87,3 +87,9 @@
     background-color: blueviolet;
     z-index: 99;
 }
+
+/* .date-range-modal {
+    background-color: #1B51BB;
+    height: 600px;
+    width: 25%;
+} */
