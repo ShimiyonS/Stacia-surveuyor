@@ -16,6 +16,7 @@ import Modal from 'react-modal'
 import TablerowMoreOptions from './TaskList/TablerowMoreOptions';
 import DateRangeFilter from './TaskList/DateRangeFilter';
 import NewTable from './TaskList/NewTable';
+import BoardFilter from './Board/BoardFilter';
 
 export default function TaskPageTopBar() {
 
@@ -153,9 +154,19 @@ export default function TaskPageTopBar() {
 
           {/* <DateRangeFilter /> */}
 
-          <div className='filter-task' onClick={() => setOpenFilterModal(!openFilterModal)}>
-            <img src={Filter} alt="" />
-            <div className='filter-text'>Filter</div>
+          <div className="create-board-based-time">
+            <div className='date-range' onClick={() => setOpenFilterModal(!openFilterModal)}>
+              <img src={Filter} />
+              <div className="filter-text">
+                Filter
+              </div>
+            </div>
+            {openFilterModal && (
+              <div className="board-filter-box">
+                <BoardFilter />
+              </div>
+            )}
+
           </div>
 
           <div className='create-task' onClick={() => navigate('/create-task')} >
@@ -166,38 +177,6 @@ export default function TaskPageTopBar() {
         </div>
       </div>
 
-      <Modal
-        isOpen={modalOpen}
-        onAfterOpen={openModal}
-        onAfterClose={closeModal}
-        style={customStyles}
-      >
-        <div className="location-task-data">
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <div className="region-text">Regions</div>
-            {/* <img
-                src={Close}
-                alt=""
-                onClick={closeModal}
-                style={{ cursor: "pointer" }}
-              /> */}
-          </div>
-
-        </div>
-      </Modal>
-
-
-      {
-        openFilterModal && <div className="filter-modal">
-
-        </div>
-      }
 
       {
         boardTabActive && <BoardView />

@@ -74,6 +74,7 @@
     margin-top: 1rem;
     border: 2px solid #D5E8FF;
     padding: 0.6rem;
+    width: 5rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -128,7 +129,7 @@
     position: absolute;
     top: 100%;
     width: 100%;
-    height: 16rem;
+    height: 14rem;
     background-color: #fff;
     padding: 1rem 1.5rem;
     z-index: 99;
@@ -217,7 +218,7 @@
     top: 100%;
     width: 100%;
     height: 16rem;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
     background-color: #fff;
     padding: 1rem;
     z-index: 2;
@@ -225,11 +226,20 @@
     display: flex;
     flex-direction: column;
     row-gap: 0.5rem;
-    /* overflow-y: scroll; */
     border-radius: 0.5rem;
     -webkit-box-shadow: 4px 0 32px 0 rgba(61, 70, 112, 0.14);
     -moz-box-shadow: 4px 0 32px 0 rgba(61, 70, 112, 0.14);
     box-shadow: 4px 0 32px 0 rgba(61, 70, 112, 0.14);
+}
+
+.forms-container,
+.tags-container {
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.forms-container::-webkit-scrollbar {
+    display: none;
 }
 
 
@@ -314,4 +324,56 @@
 #status-pending {
     color: rgba(221, 54, 31, 1);
     background-color: rgba(255, 159, 159, 0.3);
+}
+
+/* create board based on tags */
+
+.tags-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* create board based on surveyor */
+
+.select-surveyor-pop-below {
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    height: 25rem;
+    /* overflow-y: scroll; */
+    background-color: #fff;
+    padding: 1rem;
+    z-index: 2;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+    border-radius: 0.5rem;
+    -webkit-box-shadow: 4px 0 32px 0 rgba(61, 70, 112, 0.14);
+    -moz-box-shadow: 4px 0 32px 0 rgba(61, 70, 112, 0.14);
+    box-shadow: 4px 0 32px 0 rgba(61, 70, 112, 0.14);
+}
+
+.selected-surveyor-template,
+.selected-tag-template {
+    border: 1px solid rgba(211, 220, 229, 1);
+    padding: 0.6rem;
+    border-radius: 0.5rem;
+    margin-top: 0.8rem;
+}
+
+.selected-surveyor-img-box {
+    width: 1.8rem;
+    height: 1.8rem;
+}
+
+.selected-surveyor-name {
+    color: rgba(27, 36, 54, 1);
+    font-size: 0.9rem;
+    font-family: EuclidMedium;
+}
+
+.selected-surveyor-tasks {
+    color: rgba(132, 147, 178, 1);
+    font-size: 0.8rem;
+    font-family: EuclidMedium;
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../Styles/Task/TaskCreate.css";
 import { TreeSelect } from "antd";
 import DropdownTreeSelect from "react-dropdown-tree-select";
@@ -22,7 +22,7 @@ import Modal from "react-modal";
 import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
 import * as xlsx from "xlsx";
-import { Range } from 'react-range';
+import { Range } from "react-range";
 
 const { SHOW_PARENT } = TreeSelect;
 const treeData = [
@@ -129,6 +129,27 @@ export default function CreateTask({ onFileChange }) {
   ];
 
   const data = [
+    {
+      label: "ariyalur",
+      labelId: 1,
+      value: "a",
+      regionImg:
+        "https://upload.wikimedia.org/wikipedia/commons/3/32/Chennai_Central.jpg",
+      children: [
+        {
+          label: "Ponbaskar",
+          value: "ponbaskar",
+          imgSrc:
+            "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
+        },
+        {
+          label: "Ramasamy",
+          value: "ramasamy",
+          imgSrc:
+            "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
+        },
+      ],
+    },
     {
       label: "chennai",
       labelId: 1,
@@ -634,6 +655,10 @@ export default function CreateTask({ onFileChange }) {
   for (let i = 97; i <= 122; i++) {
     azArr.push(String.fromCharCode(i));
   }
+
+  useEffect(() => {
+    handleSort("a");
+  }, []);
 
   return (
     <div className="task-create">
@@ -1346,7 +1371,7 @@ export default function CreateTask({ onFileChange }) {
                           <div className="radius-range">30 km</div>
                           <div className="radius-range">40 km</div>
                           <div className="radius-range">Custom radius</div>
-                          <input type="range" min="0" max="10"  />
+                          <input type="range" min="0" max="10" />
                         </div>
                       )}
                     </div>

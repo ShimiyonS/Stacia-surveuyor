@@ -40,6 +40,7 @@ const Card = ({ id, text, index, moveCard, tasks }) => {
             className="board-view-section"
             style={{
               minWidth: "19.8rem",
+              width: "19.8rem",
               maxHeight: "calc(85vh - 4rem)",
               overflowY: "scroll",
               height: "100%",
@@ -91,6 +92,7 @@ const Card = ({ id, text, index, moveCard, tasks }) => {
           className="board-view-section"
           style={{
             minWidth: "19.8rem",
+            width: "19.8rem",
             maxHeight: "calc(85vh - 4rem)",
             overflowY: "scroll",
             height: "100%",
@@ -137,7 +139,7 @@ const Card = ({ id, text, index, moveCard, tasks }) => {
 };
 
 const DragDropContainer = () => {
-  const [initialCards, setInitialCards] = useState([
+  const initialCards = [
     {
       id: 1,
       dueDate: "Recently assigned",
@@ -277,39 +279,39 @@ const DragDropContainer = () => {
         },
       ],
     },
-    {
-      id: 5,
-      dueDate: "Due next month",
-      tasks: [
-        {
-          tid: 500,
-          tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-          tdude: "26/11/2023",
-        },
-        {
-          tid: 501,
-          tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-          tdude: "26/11/2023",
-        },
-        {
-          tid: 502,
-          tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-          tdude: "26/11/2023",
-        },
-      ],
-    },
-    {
-      id: 6,
-      dueDate: "Due",
-      tasks: [
-        {
-          tid: 600,
-          tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-          tdude: "26/11/2023",
-        },
-      ],
-    },
-  ]);
+    // {
+    //   id: 5,
+    //   dueDate: "Due next month",
+    //   tasks: [
+    //     {
+    //       tid: 500,
+    //       tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
+    //       tdude: "26/11/2023",
+    //     },
+    //     {
+    //       tid: 501,
+    //       tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
+    //       tdude: "26/11/2023",
+    //     },
+    //     {
+    //       tid: 502,
+    //       tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
+    //       tdude: "26/11/2023",
+    //     },
+    //   ],
+    // },
+    // {
+    //   id: 6,
+    //   dueDate: "Due",
+    //   tasks: [
+    //     {
+    //       tid: 600,
+    //       tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
+    //       tdude: "26/11/2023",
+    //     },
+    //   ],
+    // },
+  ];
   // const memorizeCards = useMemo(() => initialCards, []);
   const [cards, setCards] = useState(initialCards);
 
@@ -323,15 +325,14 @@ const DragDropContainer = () => {
   useEffect(() => {
     const jsonData = JSON.stringify(cards);
     localStorage.setItem("testArray", jsonData);
-  }, [cards]);
+  }, []);
 
   const handleAddBoard = (newBoardData) => {
     setCards((prevArray) => [...prevArray, newBoardData]);
   };
 
   useEffect(() => {
-    const storedData = localStorage.getItem("testArr");
-
+    const storedData = localStorage.getItem("testArray");
     if (storedData) {
       const parsedData = JSON.parse(storedData);
       setCards(parsedData);
@@ -374,16 +375,17 @@ const DragDropContainer = () => {
         add new board
       </div> */}
       {/* <RecentlyAssigned /> */}
-      {cards.map((card, index) => (
-        <Card
-          key={card.id}
-          id={card.id}
-          text={card.dueDate}
-          tasks={card.tasks}
-          index={index}
-          moveCard={moveCard}
-        />
-      ))}
+      {cards != null &&
+        cards.map((card, index) => (
+          <Card
+            key={index}
+            id={card.id}
+            text={card.dueDate}
+            tasks={card.tasks}
+            index={index}
+            moveCard={moveCard}
+          />
+        ))}
       <AddBoard handleAddBoard={handleAddBoard} />
     </div>
   );

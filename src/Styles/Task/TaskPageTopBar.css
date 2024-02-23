@@ -78,18 +78,113 @@
     color: rgba(27, 81, 187, 0.5);
 }
 
-.filter-modal {
-    width: 30rem;
-    height: 800px;
-    position: absolute;
-    top: 12%;
-    left: 66%;
-    background-color: blueviolet;
-    z-index: 99;
-}
 
 /* .date-range-modal {
     background-color: #1B51BB;
     height: 600px;
     width: 25%;
 } */
+
+.board-filter-box {
+    position: absolute;
+    top: 100%;
+    width: 30rem;
+    height: 48rem;
+    right: 5%;
+    /* overflow-y: scroll; */
+    background-color: #fff;
+    padding: 1rem;
+    z-index: 2;
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+    border-radius: 0.8rem;
+    -webkit-box-shadow: 4px 0 32px 0 rgba(61, 70, 112, 0.14);
+    -moz-box-shadow: 4px 0 32px 0 rgba(61, 70, 112, 0.14);
+    box-shadow: 4px 0 32px 0 rgba(61, 70, 112, 0.14);
+}
+
+/* preset and create board btns */
+
+.preset-createboard-btns {
+    border: 1px solid rgba(27, 81, 187, 1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    border-radius: 5.5rem;
+    padding: 0.3rem;
+}
+
+.preset-btn {
+    width: 48%;
+    height: 2.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5rem;
+    font-size: 1.1rem;
+    font-family: EuclidMedium;
+}
+
+/* preset filter styles */
+
+.preset-date-range {
+    margin-top: 1rem;
+}
+
+.preset-filter {
+    position: relative;
+    cursor: pointer;
+}
+
+.preset-filter-select-surveyor {
+    border: 1px solid rgba(213, 232, 255, 1);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-family: EuclidMedium;
+    margin-top: 0.9rem;
+}
+
+.preset-date-range-text {
+    font-family: EuclidMedium;
+    color: rgba(27, 36, 54, 1);
+    font-size: 1rem;
+    margin-top: 1rem;
+}
+
+.preset-date-check-box {
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 1px solid rgba(211, 220, 229, 1);
+    border-radius: 0.3rem;
+}
+
+.preset-date-txt {
+    color: rgba(132, 147, 178, 1);
+    font-family: EuclidMedium;
+    font-size: 1rem;
+}
+
+.preset-clear-btn {
+    border: 1px solid rgba(27, 81, 187, 1);
+    color: rgba(27, 81, 187, 1);
+    font-family: EuclidMedium;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    padding: 0.8rem 1rem;
+}
+
+/* createboard filter styles */
+
+.create-board-filter-expand {
+    margin-top: 1rem;
+    overflow-y: scroll;
+    height: 10rem;
+    background-color: #fff;
+}
+
+.create-board-filter-expand::-webkit-scrollbar {
+    display: none;
+}

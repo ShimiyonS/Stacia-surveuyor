@@ -29,9 +29,20 @@ const formData = [
   },
 ];
 
-const FormTemplate = ({ formName, tags }) => {
+const FormTemplate = ({
+  formName,
+  tags,
+  setSelectedForm,
+  setOpenFormFrameModal,
+}) => {
   return (
-    <div className="board-form-template">
+    <div
+      className="board-form-template"
+      onClick={() => {
+        setOpenFormFrameModal(false);
+        setSelectedForm({ formName: formName, tags: tags });
+      }}
+    >
       <div
         style={{
           display: "flex",
@@ -51,10 +62,13 @@ const FormTemplate = ({ formName, tags }) => {
 
 export default function SelectByForms() {
   const [openFormFrameModal, setOpenFormFrameModal] = useState(false);
+  const [selectedForm, setSelectedForm] = useState();
 
   const handleFormModal = () => {
     setOpenFormFrameModal(!openFormFrameModal);
   };
+
+  console.log("selected form", selectedForm);
 
   return (
     <div className="create-board-based-form">
@@ -81,14 +95,45 @@ export default function SelectByForms() {
             <input type="text" placeholder="Search" />
           </div>
           <div
+            className="forms-container"
             style={{
               marginTop: "1rem",
             }}
           >
             {formData.map(({ formName, tags }) => (
-              <FormTemplate formName={formName} tags={tags} />
+              <FormTemplate
+                formName={formName}
+                tags={tags}
+                setSelectedForm={setSelectedForm}
+                setOpenFormFrameModal={setOpenFormFrameModal}
+              />
             ))}
           </div>
+        </div>
+      )}
+      {selectedForm != null && (
+        <div
+          className="board-form-template"
+          style={{
+            border: "1px solid rgba(211, 220, 229, 1)",
+            padding: "0.5rem",
+            borderRadius: "0.4rem",
+            marginTop: "0.6rem",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              columnGap: "0.5rem",
+            }}
+          >
+            <div className="board-form-icon">
+              <SiGoogleforms color="#fff" />
+            </div>
+            <div className="board-form-txt">{selectedForm.formName}</div>
+          </div>
+          <div className="board-form-tag">{selectedForm.tags}</div>
         </div>
       )}
     </div>

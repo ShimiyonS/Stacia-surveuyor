@@ -4,6 +4,8 @@ import { IoMdAdd } from "react-icons/io";
 import SelectByTimeFrame from "./SelectByTimeFrame";
 import SelectbyForms from "./SelectbyForms";
 import SelectByStatus from "./SelectByStatus";
+import SelectBySurveyor from "./SelectBySurveyor";
+import SelectByTags from "./SelectByTags";
 
 export default function AddBoard({ handleAddBoard }) {
   const [modal, setModal] = useState(false);
@@ -92,12 +94,6 @@ export default function AddBoard({ handleAddBoard }) {
                 </div>
                 <div
                   className="pop-below-txt"
-                  onClick={() => handleBoardfilter("task")}
-                >
-                  Task
-                </div>
-                <div
-                  className="pop-below-txt"
                   onClick={() => handleBoardfilter("surveyor")}
                 >
                   Surveyor
@@ -126,6 +122,8 @@ export default function AddBoard({ handleAddBoard }) {
           {selectedFilter === "timeframe" && <SelectByTimeFrame />}
           {selectedFilter === "forms" && <SelectbyForms />}
           {selectedFilter === "status" && <SelectByStatus />}
+          {selectedFilter === "surveyor" && <SelectBySurveyor />}
+          {selectedFilter === "tags" && <SelectByTags />}
         </div>
 
         {/* cancel create btns */}
@@ -137,10 +135,27 @@ export default function AddBoard({ handleAddBoard }) {
           <div
             className="create-board-btns2"
             onClick={() => {
+              setModal(false);
               handleAddBoard({
                 id: 9,
                 dueDate: title,
-                tasks: [],
+                tasks: [
+                  {
+                    tid: 903,
+                    tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
+                    tdude: "26/11/2023",
+                  },
+                  {
+                    tid: 903,
+                    tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
+                    tdude: "26/11/2023",
+                  },
+                  {
+                    tid: 903,
+                    tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
+                    tdude: "26/11/2023",
+                  },
+                ],
               });
             }}
           >
