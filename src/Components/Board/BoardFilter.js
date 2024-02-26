@@ -5,6 +5,8 @@ import { SiGoogleforms } from "react-icons/si";
 import { MdOutlinePendingActions } from "react-icons/md";
 import { BsTag } from "react-icons/bs";
 import { MdOutlineExpandMore } from "react-icons/md";
+import { MdDone } from "react-icons/md";
+import SurveyorSelectTemplate from "../TaskList/SurveyorSelectTemplate";
 
 const data = [
   {
@@ -17,12 +19,14 @@ const data = [
       {
         label: "Ponbaskar",
         value: "ponbaskar",
+        sid: 11,
         imgSrc:
           "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
       },
       {
         label: "Ramasamy",
         value: "ramasamy",
+        sid: 12,
         imgSrc:
           "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
       },
@@ -30,7 +34,7 @@ const data = [
   },
   {
     label: "chennai",
-    labelId: 1,
+    labelId: 2,
     value: "c",
     regionImg:
       "https://upload.wikimedia.org/wikipedia/commons/3/32/Chennai_Central.jpg",
@@ -38,12 +42,14 @@ const data = [
       {
         label: "Ponbaskar",
         value: "ponbaskar",
+        sid: 21,
         imgSrc:
           "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
       },
       {
         label: "Ramasamy",
         value: "ramasamy",
+        sid: 22,
         imgSrc:
           "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
       },
@@ -53,12 +59,13 @@ const data = [
     label: "madurai",
     regionImg:
       "https://assets-news.housing.com/news/wp-content/uploads/2022/07/28160317/Madurai-feature-compressed.jpg",
-    labelId: 2,
+    labelId: 3,
     value: "m",
     children: [
       {
         label: "baskar",
         value: "baskar",
+        sid: 31,
         imgSrc:
           "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
       },
@@ -68,30 +75,34 @@ const data = [
     label: "chengalpet",
     regionImg:
       "https://www.shutterstock.com/image-photo/mahabalipuram-temple-famous-tamil-nadu-600nw-2154084347.jpg",
-    labelId: 3,
+    labelId: 4,
     value: "c",
     children: [
       {
         label: "Ratheesh",
         value: "ratheesh",
+        sid: 41,
         imgSrc:
           "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
       },
       {
         label: "Rithvik",
         value: "rithvik",
+        sid: 42,
         imgSrc:
           "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
       },
       {
         label: "Seeman",
         value: "seeman",
+        sid: 43,
         imgSrc:
           "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
       },
       {
         label: "Raja",
         value: "raja",
+        sid: 44,
         imgSrc:
           "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
       },
@@ -101,30 +112,34 @@ const data = [
     label: "virudhunagar",
     regionImg:
       "https://1.bp.blogspot.com/-tm0VkMox8FU/XTg89NB1xMI/AAAAAAAAKCc/FSOocD6phP0wC9EWb9urV2W5F3zYK3oDQCLcBGAs/s1600/Virudhunagar_Top_Angle-useful%2Bdirectories.jpg",
-    labelId: 4,
+    labelId: 5,
     value: "v",
     children: [
       {
         label: "Raja",
         value: "raja",
+        sid: 51,
         imgSrc:
           "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
       },
       {
         label: "Ratheesh",
         value: "ratheesh",
+        sid: 52,
         imgSrc:
           "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
       },
       {
         label: "Rithvik",
         value: "rithvik",
+        sid: 53,
         imgSrc:
           "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
       },
       {
         label: "Raja",
         value: "raja",
+        sid: 54,
         imgSrc:
           "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
       },
@@ -195,10 +210,83 @@ const CreateboardTemplate = ({ type, icon }) => {
   );
 };
 
+const SurveyorTemplate = ({
+  img,
+  name,
+  id,
+  handleWithoutAllselect,
+  selectedUsers,
+  // activeUser,
+}) => {
+  // const [selectedUsers, setSelectedUsers] = useState([]);
+
+  console.log("new selected users.......", selectedUsers);
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: "0.4rem",
+        cursor: "pointer",
+        fontFamily: "EuclidMedium",
+        color: "rgba(132, 147, 178, 1)",
+        backgroundColor: selectedUsers.includes(id)
+          ? "rgba(27, 81, 187, 0.1)"
+          : "transparent",
+        borderRadius: "0.2rem",
+      }}
+      onClick={() => {
+        handleWithoutAllselect(id);
+        // setOpenFormFrameModal(false);
+        // handleSelectUser(child);
+      }} // handleSelectSurveyors
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          columnGap: "0.6rem",
+        }}
+      >
+        {selectedUsers.includes(id) ? (
+          <MdDone color="rgba(132, 147, 178, 1)" />
+        ) : (
+          <MdDone color="#fff" />
+        )}
+
+        <div
+          style={{
+            width: "2rem",
+            height: "2rem",
+          }}
+        >
+          <img
+            src={img}
+            style={{
+              width: "100%",
+              height: "100%",
+              borderRadius: "50%",
+              objectFit: "cover",
+            }}
+          />
+        </div>
+        <div>{name}</div>
+      </div>
+      <div>Assigned task(10)</div>
+    </div>
+  );
+};
+
 export default function BoardFilter() {
   const [preset, setPreset] = useState(true);
   const [createboard, setCreateboard] = useState(false);
   const [openSelectSurveyor, setOpenSelectSurveyor] = useState(false);
+  const [selectedAllUsers, setSelectedAllUsers] = useState([]);
+  const [selectedUsers, setSelectedUsers] = useState([]);
+
+  const [activeSelectedSurveyors, setActiveSelectedSurveyors] = useState(false);
 
   const handleCreateboard = () => {
     setPreset(false);
@@ -212,6 +300,10 @@ export default function BoardFilter() {
 
   const [sortArr, setSortArr] = useState([]);
   const [selectSurveyor, setSelectSurveyor] = useState();
+
+  const [testArr2, setTestArr2] = useState([]);
+
+  const testArr = [];
 
   // a-z arr
   const azArr = [];
@@ -236,6 +328,33 @@ export default function BoardFilter() {
   useEffect(() => {
     handleSort("a");
   }, []);
+
+  const handleToggle = (id) => {
+    data.map(({ labelId, children }) => {
+      if (labelId === id) {
+        children.map(({ sid }) => testArr.push(sid));
+      }
+    });
+    setTestArr2([...testArr2, testArr]);
+    console.log("////////////////", testArr2, "///////////////");
+    // if (selectedAllUsers.includes(id)) {
+    //   setSelectedAllUsers(selectedAllUsers.filter((i) => i !== id));
+    // } else {
+    //   setSelectedAllUsers([...selectedAllUsers, id]);
+    // }
+  };
+
+  const handleWithoutAllselect = (id) => {
+    if (selectedUsers.includes(id)) {
+      // setActiveSelectedSurveyors(false);
+      setSelectedUsers(selectedUsers.filter((i) => i !== id));
+    } else {
+      // setActiveSelectedSurveyors(true);
+      setSelectedUsers([...selectedUsers, id]);
+    }
+  };
+
+  const handleAllSelect = () => {};
 
   const dateRange = [
     "Unsigned",
@@ -319,6 +438,9 @@ export default function BoardFilter() {
       icon: <BsTag size={26} color="rgba(132, 147, 178, 1)" />,
     },
   ];
+
+  // console.log("selected users", selectedUsers);
+  console.log("selected all users", selectedAllUsers);
 
   return (
     <div>
@@ -406,6 +528,9 @@ export default function BoardFilter() {
                           style={{
                             marginRight: "0.6rem",
                           }}
+                          onClick={() => {
+                            handleToggle(data.labelId);
+                          }}
                         >
                           <input type="checkbox" />
                         </span>
@@ -420,48 +545,20 @@ export default function BoardFilter() {
                         }}
                       ></div>
                       {data.children.map((child) => (
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            padding: "0.4rem",
-                            cursor: "pointer",
-                            fontFamily: "EuclidMedium",
-                            color: "rgba(132, 147, 178, 1)",
-                          }}
-                          onClick={() => {
-                            // setOpenFormFrameModal(false);
-                            // handleSelectUser(child);
-                          }} // handleSelectSurveyors
-                        >
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              columnGap: "0.6rem",
-                            }}
-                          >
-                            <div
-                              style={{
-                                width: "2rem",
-                                height: "2rem",
-                              }}
-                            >
-                              <img
-                                src={child.imgSrc}
-                                style={{
-                                  width: "100%",
-                                  height: "100%",
-                                  borderRadius: "50%",
-                                  objectFit: "cover",
-                                }}
-                              />
-                            </div>
-                            <div>{child.label}</div>
-                          </div>
-                          <div>Assigned task(10)</div>
-                        </div>
+                        <SurveyorTemplate
+                          name={child.label}
+                          img={child.imgSrc}
+                          id={child.sid}
+                          handleWithoutAllselect={handleWithoutAllselect}
+                          selectedUsers={selectedUsers}
+                        />
+                        // <SurveyorSelectTemplate
+                        //   surveyor_img={child.label}
+                        //   surveyor_name={child.label}
+                        //   surveyor_id={child.id}
+                        //   selectedUsers={selectedUsers}
+                        //   handleWithoutAllselect={handleWithoutAllselect}
+                        // />
                       ))}
                     </div>
                   ))}

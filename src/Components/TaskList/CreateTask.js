@@ -1251,18 +1251,29 @@ export default function CreateTask({ onFileChange }) {
                         Start task on
                       </label>
                       {isOpenStartDate && (
-                        <DatePicker
-                          value={startDate}
-                          onSelect={handleTaskStartDate}
-                          onCancel={handleCancel}
-                          isPopup={false}
-                          theme={"ios"}
-                          showHeader={false}
-                          showCaption={true}
-                          dateConfig={dateConfig}
-                          confirmText="OK"
-                          cancelText="Cancel"
-                        />
+                        <div
+                          style={{
+                            position: "relative",
+                            width: "400px",
+                            backgroundColor: "red",
+                          }}
+                        >
+                          <DatePicker
+                            value={startDate}
+                            onSelect={handleTaskStartDate}
+                            onCancel={handleCancel}
+                            isPopup={false}
+                            theme={"ios"}
+                            showHeader={false}
+                            showCaption={true}
+                            dateConfig={dateConfig}
+                            confirmText="OK"
+                            cancelText="Cancel"
+                            style={{
+                              width: "100%",
+                            }}
+                          />
+                        </div>
                       )}
                       <input
                         type="text"
@@ -1272,7 +1283,7 @@ export default function CreateTask({ onFileChange }) {
                         value={startDate.toLocaleDateString("en-GB")}
                       />
                     </div>
-                    <div className="range-box">
+                    {/* <div className="range-box">
                       <label htmlFor="duration" className="task-label">
                         Duration
                       </label>
@@ -1286,7 +1297,7 @@ export default function CreateTask({ onFileChange }) {
                         onBlur={formik.handleBlur}
                         value={formik.values.duration}
                       />
-                    </div>
+                    </div> */}
                     <div className="range-box">
                       <label htmlFor="taskname" className="task-label">
                         Finish
@@ -1299,18 +1310,24 @@ export default function CreateTask({ onFileChange }) {
                         value={endDate.toLocaleDateString("en-GB")}
                       />
                       {isOpenFinishDate && (
-                        <DatePicker
-                          value={endDate}
-                          onSelect={handleTaskFinishDate}
-                          onCancel={handleCancel}
-                          isPopup={false}
-                          theme={"ios"}
-                          showHeader={false}
-                          showCaption={true}
-                          dateConfig={dateConfig}
-                          confirmText="OK"
-                          cancelText="Cancel"
-                        />
+                        <div
+                          style={{
+                            position: "relative",
+                          }}
+                        >
+                          <DatePicker
+                            value={endDate}
+                            onSelect={handleTaskFinishDate}
+                            onCancel={handleCancel}
+                            isPopup={false}
+                            theme={"ios"}
+                            showHeader={false}
+                            showCaption={true}
+                            dateConfig={dateConfig}
+                            confirmText="OK"
+                            cancelText="Cancel"
+                          />
+                        </div>
                       )}
                     </div>
                   </div>
