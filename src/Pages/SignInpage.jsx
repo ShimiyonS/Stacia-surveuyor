@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import "../Styles/SignInPage.css"
-import SignInImg from "../Assets/SignUpImg.svg"
-import VerifyImg from "../Assets/VerifyImg.svg"
+import SignInImg from "../Assets/SignUpImg.png"
+import VerifyImg from "../Assets/VerifyImg.png"
 import MobileVerify from "../Assets/MobileVerify.svg"
 import Logo from "../Assets/IsmartLogo.svg"
 import axios from 'axios'
@@ -51,7 +51,7 @@ export default function SignInpage() {
     await axios.post('http://192.168.29.138:8000/manager/otp-signin', {
       mobileNo: mobile
     }).then((res) => alert(res.data.otp))
-      .catch((err) => alert("number thappu da bunda"))
+      .catch((err) => alert("number thappu"))
   }
 
   return (

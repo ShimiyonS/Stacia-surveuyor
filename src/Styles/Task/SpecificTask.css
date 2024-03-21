@@ -1,8 +1,10 @@
 .task-specific {
     width: calc(100% - 4.2rem);
-    min-height: calc(100vh - 4rem);
-    height: 100%;
+    max-height: calc(100vh - 4rem);
+    height: calc(100vh - 4rem);
+    /* overflow-y: scroll; */
     margin-left: 4.2rem;
+    /* background-color: #FB2047; */
     background-color: rgba(239, 242, 244, 1);
 }
 
@@ -19,21 +21,34 @@
 .task-specific-inner-layer {
     width: 97%;
     background-color: #fff;
-    /* min-height: calc(100vh - 10rem); */
+    /* max-height: calc(100vh - 10rem); */
+    /* height: calc(100vh - 10rem); */
     margin: 1.2rem auto;
     display: flex;
 }
 
 .task-specific-left {
     width: 75%;
-    min-height: calc(100vh - 10rem);
-    height: 100%;
+    max-height: calc(100vh - 10rem);
+    height: calc(100vh - 10rem);
+    overflow-y: scroll;
+}
+
+.task-specific-left::-webkit-scrollbar{
+    display: none;
 }
 
 .task-specific-right {
     width: 25%;
-    min-height: calc(100vh - 10rem);
+    max-height: calc(100vh - 10rem);
+    height: calc(100vh - 10rem);
     border: 1px solid rgba(213, 232, 255, 1);
+    padding: 1.5rem;
+    overflow-y: scroll
+}
+
+.task-specific-right::-webkit-scrollbar {
+    display: none;
 }
 
 .task-specific-top {
@@ -87,7 +102,7 @@
 
 .specific-task-desc {
     color: #8493B2;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-family: EuclidRegular;
     line-height: normal;
     margin-top: 1.5rem;
@@ -234,4 +249,54 @@
     font-style: normal;
     font-weight: 400;
     cursor: pointer;
+}
+
+/* task specific right */
+
+.task-specific-topbar {
+    display: flex;
+    align-items: center;
+    column-gap: 2rem;
+}
+
+.responses {
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+/* response template */
+
+.response-template {
+    display: flex;
+    align-items: center;
+    column-gap: 0.6rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 0.3rem;
+}
+
+.response-template:hover {
+    background-color: rgba(27, 81, 187, 0.1);
+}
+
+.response-img-box {
+    width: 3rem;
+    height: 3rem;
+}
+
+.response-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.response-name {
+    color: rgba(27, 36, 54, 1);
+    font-family: EuclidMedium;
+}
+
+.res-farmer {
+    font-size: 0.9rem;
+    color: rgba(132, 147, 178, 1);
+    font-family: EuclidMedium;
 }

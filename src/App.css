@@ -82,8 +82,9 @@ body {
 .today-activity {
   background-color: #fff;
   padding: 1rem 0.6rem;
-  width: 25.125rem;
-  height: 31rem;
+  width: 100%;
+  height: 55%;
+  /* height: 31rem; */
   overflow-y: scroll;
 }
 
@@ -157,16 +158,50 @@ abbr[title] {
   padding: 0.4rem;
 }
 
-.rbc-button-link  {
+.rbc-button-link {
   font-size: 1rem;
   font-family: EuclidSemibold;
   /* background: rgba(27, 81, 187, 1) !important; */
 }
 
-.rbc-button-link span{
+.rbc-button-link span {
   display: flex;
 }
 
-.rbc-month-view{
+.rbc-month-view {
   font-family: EuclidMedium;
+}
+
+
+/* mui calendar customization */
+
+.css-1q04gal-MuiDateCalendar-root {
+  width: 100% !important;
+  background-color: #fff;
+  height: 45% !important;
+  max-height: 45% !important;
+}
+
+.css-dplwbx-MuiPickersCalendarHeader-label {
+  font-family: EuclidMedium;
+  margin-right: 0 !important;
+}
+
+.css-rhmlg1-MuiTypography-root-MuiDayCalendar-weekDayLabel {
+  font-family: EuclidMedium !important;
+  width: 100% !important;
+}
+
+.css-flbe84-MuiDayCalendar-weekContainer {
+  justify-content: space-evenly !important;
+}
+
+.css-jgls56-MuiButtonBase-root-MuiPickersDay-root:not(.Mui-selected) {
+  border: none !important;
+  background-color: rgba(27, 81, 187, 1);
+  color: #fff;
+}
+
+.css-1u23akw-MuiButtonBase-root-MuiPickersDay-root {
+  font-family: EuclidMedium !important;
 }

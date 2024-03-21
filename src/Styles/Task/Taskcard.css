@@ -57,6 +57,11 @@
     font-family: EuclidSemibold;
 }
 
+/* .scroll-boards{
+    max-height: calc(100vh - 4rem);
+    height: calc(100vh - 4rem);
+} */
+
 .scroll-boards::-webkit-scrollbar {
     width: 5px;
     height: 10px;
@@ -83,6 +88,8 @@
     font-family: EuclidMedium;
     cursor: pointer;
     color: rgba(132, 147, 178, 1);
+    max-height: calc(85vh - 4rem);
+    height: calc(85vh - 4rem);
 }
 
 .create-board-text {

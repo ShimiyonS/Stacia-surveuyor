@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "../../Styles/Task/TaskCreate.css";
 import { TreeSelect } from "antd";
 import DropdownTreeSelect from "react-dropdown-tree-select";
@@ -23,6 +23,10 @@ import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
 import * as xlsx from "xlsx";
 import { Range } from "react-range";
+import { PageContext } from "../../Context/PageContext";
+import SurveyorSelectTemplate from "./SurveyorSelectTemplate";
+import SurveyorTemplate from "./SurveyorTemplate";
+import { surveyorData } from "../../data/SurveyorData";
 
 const { SHOW_PARENT } = TreeSelect;
 const treeData = [
@@ -84,6 +88,8 @@ export default function CreateTask({ onFileChange }) {
   const [removeDuplicateArr, setRemoveDuplicateArr] = useState([]);
   const [sortArr, setSortArr] = useState([]);
 
+  const { taskDuedate, setTaskDuedate, setTaskname } = useContext(PageContext);
+
   // send excel file to excel view page
   const [sendFiles, setSendFiles] = useState([]);
 
@@ -128,137 +134,30 @@ export default function CreateTask({ onFileChange }) {
     },
   ];
 
-  const data = [
-    {
-      label: "ariyalur",
-      labelId: 1,
-      value: "a",
-      regionImg:
-        "https://upload.wikimedia.org/wikipedia/commons/3/32/Chennai_Central.jpg",
-      children: [
-        {
-          label: "Ponbaskar",
-          value: "ponbaskar",
-          imgSrc:
-            "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
-        },
-        {
-          label: "Ramasamy",
-          value: "ramasamy",
-          imgSrc:
-            "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
-        },
-      ],
-    },
-    {
-      label: "chennai",
-      labelId: 1,
-      value: "c",
-      regionImg:
-        "https://upload.wikimedia.org/wikipedia/commons/3/32/Chennai_Central.jpg",
-      children: [
-        {
-          label: "Ponbaskar",
-          value: "ponbaskar",
-          imgSrc:
-            "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
-        },
-        {
-          label: "Ramasamy",
-          value: "ramasamy",
-          imgSrc:
-            "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
-        },
-      ],
-    },
-    {
-      label: "madurai",
-      regionImg:
-        "https://assets-news.housing.com/news/wp-content/uploads/2022/07/28160317/Madurai-feature-compressed.jpg",
-      labelId: 2,
-      value: "m",
-      children: [
-        {
-          label: "baskar",
-          value: "baskar",
-          imgSrc:
-            "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
-        },
-      ],
-    },
-    {
-      label: "chengalpet",
-      regionImg:
-        "https://www.shutterstock.com/image-photo/mahabalipuram-temple-famous-tamil-nadu-600nw-2154084347.jpg",
-      labelId: 3,
-      value: "c",
-      children: [
-        {
-          label: "Ratheesh",
-          value: "ratheesh",
-          imgSrc:
-            "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
-        },
-        {
-          label: "Rithvik",
-          value: "rithvik",
-          imgSrc:
-            "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
-        },
-        {
-          label: "Seeman",
-          value: "seeman",
-          imgSrc:
-            "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
-        },
-        {
-          label: "Raja",
-          value: "raja",
-          imgSrc:
-            "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
-        },
-      ],
-    },
-    {
-      label: "virudhunagar",
-      regionImg:
-        "https://1.bp.blogspot.com/-tm0VkMox8FU/XTg89NB1xMI/AAAAAAAAKCc/FSOocD6phP0wC9EWb9urV2W5F3zYK3oDQCLcBGAs/s1600/Virudhunagar_Top_Angle-useful%2Bdirectories.jpg",
-      labelId: 4,
-      value: "v",
-      children: [
-        {
-          label: "Raja",
-          value: "raja",
-          imgSrc:
-            "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
-        },
-        {
-          label: "Ratheesh",
-          value: "ratheesh",
-          imgSrc:
-            "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
-        },
-        {
-          label: "Rithvik",
-          value: "rithvik",
-          imgSrc:
-            "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
-        },
-        {
-          label: "Raja",
-          value: "raja",
-          imgSrc:
-            "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
-        },
-      ],
-    },
-  ];
+  ////////////////////////////////////////
 
-  const handleSelectAllUsers = (surveyors) => {
-    setSelectAllSurveyors([...selectAllSurveyors, surveyors]);
+  const handleToggle = (id) => {
+    surveyorData.map(({ labelId, children }) => {
+      if (labelId === id) {
+        children.map(({ sid }) => testArr.push(sid));
+      }
+    });
+    setTestArr2([...testArr2, testArr]);
+    console.log("////////////////", testArr2, "///////////////");
+    // if (selectedAllUsers.includes(id)) {
+    //   setSelectedAllUsers(selectedAllUsers.filter((i) => i !== id));
+    // } else {
+    //   setSelectedAllUsers([...selectedAllUsers, id]);
+    // }
   };
 
-  console.log(selectAllSurveyors);
+  ////////////////////////////////////////
+
+  // const handleSelectAllUsers = (surveyors) => {
+  //   setSelectAllSurveyors([...selectAllSurveyors, surveyors]);
+  // };
+
+  // console.log(selectAllSurveyors);
 
   const removeDuplicates = () => {
     let strArr = selectAllSurveyors.map(JSON.stringify);
@@ -271,7 +170,7 @@ export default function CreateTask({ onFileChange }) {
 
   const handleSort = (letter) => {
     setSelectedLetter(letter);
-    const sortedData = data.filter(({ value }) => {
+    const sortedData = surveyorData.filter(({ value }) => {
       return value === letter;
     });
     setSortArr(sortedData);
@@ -302,6 +201,10 @@ export default function CreateTask({ onFileChange }) {
   const [regionMenuOpen, setRegionMenuOpen] = useState(false);
   const [isPopoverVisible, setPopoverVisible] = useState(false);
   const [isPopoverVisible1, setPopoverVisible1] = useState(false);
+
+  const [testArr2, setTestArr2] = useState([]);
+
+  const testArr = [];
 
   // a-z arr
   const azArr = [];
@@ -388,6 +291,7 @@ export default function CreateTask({ onFileChange }) {
   };
 
   const handleSelect = (time) => {
+    setTaskDuedate(time);
     setTime(time);
     setIsOpen(false);
     console.log(time);
@@ -417,22 +321,22 @@ export default function CreateTask({ onFileChange }) {
     console.log("start date", startDate);
   };
 
-  const formatOptions = (options) => {
-    return options.map((option) => {
-      if (option.children) {
-        return {
-          label: option.label,
-          options: formatOptions(option.children),
-        };
-      } else {
-        return {
-          label: option.label,
-          value: option.value,
-          imgSrc: option.imgSrc,
-        };
-      }
-    });
-  };
+  // const formatOptions = (options) => {
+  //   return options.map((option) => {
+  //     if (option.children) {
+  //       return {
+  //         label: option.label,
+  //         options: formatOptions(option.children),
+  //       };
+  //     } else {
+  //       return {
+  //         label: option.label,
+  //         value: option.value,
+  //         imgSrc: option.imgSrc,
+  //       };
+  //     }
+  //   });
+  // };
 
   // handlFileSelect
 
@@ -659,6 +563,30 @@ export default function CreateTask({ onFileChange }) {
   useEffect(() => {
     handleSort("a");
   }, []);
+
+
+
+  // handle form values
+
+  const handleSubmit = () => {
+    const { taskname, description, attachforms } = formik.values;
+    setTaskname(taskname);
+    navigate("calendar");
+    console.log(taskname, description, attachforms, time, selectedUsers);
+  };
+
+  // handle surveyor select
+
+  const handleWithoutAllselect = (id) => {
+    console.log("id...", id);
+    if (selectedUsers.includes(id)) {
+      // setActiveSelectedSurveyors(false);
+      setSelectedUsers(selectedUsers.filter((i) => i !== id));
+    } else {
+      // setActiveSelectedSurveyors(true);
+      setSelectedUsers([...selectedUsers, id]);
+    }
+  };
 
   return (
     <div className="task-create">
@@ -1024,11 +952,11 @@ export default function CreateTask({ onFileChange }) {
                             >
                               <div className="surveyor-region-txt">
                                 <span
-                                  onClick={() =>
-                                    handleSelectAllUsers(data.children)
-                                  }
                                   style={{
                                     marginRight: "0.6rem",
+                                  }}
+                                  onClick={() => {
+                                    handleToggle(data.labelId);
                                   }}
                                 >
                                   <input type="checkbox" />
@@ -1044,45 +972,22 @@ export default function CreateTask({ onFileChange }) {
                                 }}
                               ></div>
                               {data.children.map((child) => (
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    alignItems: "center",
-                                    padding: "0.4rem",
-                                    cursor: "pointer",
-                                    fontFamily: "EuclidMedium",
-                                    color: "rgba(132, 147, 178, 1)",
-                                  }}
-                                  onClick={() => handleSelectAllUsers(child)} // handleSelectSurveyors
-                                >
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      alignItems: "center",
-                                      columnGap: "0.6rem",
-                                    }}
-                                  >
-                                    <div
-                                      style={{
-                                        width: "2rem",
-                                        height: "2rem",
-                                      }}
-                                    >
-                                      <img
-                                        src={child.imgSrc}
-                                        style={{
-                                          width: "100%",
-                                          height: "100%",
-                                          borderRadius: "50%",
-                                          objectFit: "cover",
-                                        }}
-                                      />
-                                    </div>
-                                    <div>{child.label}</div>
-                                  </div>
-                                  <div>Assigned task(10)</div>
-                                </div>
+                                <SurveyorTemplate
+                                  name={child.label}
+                                  img={child.imgSrc}
+                                  id={child.sid}
+                                  handleWithoutAllselect={
+                                    handleWithoutAllselect
+                                  }
+                                  selectedUsers={selectedUsers}
+                                />
+                                // <SurveyorSelectTemplate
+                                //   surveyor_img={child.label}
+                                //   surveyor_name={child.label}
+                                //   surveyor_id={child.id}
+                                //   selectedUsers={selectedUsers}
+                                //   handleWithoutAllselect={handleWithoutAllselect}
+                                // />
                               ))}
                             </div>
                           ))}
@@ -1118,8 +1023,9 @@ export default function CreateTask({ onFileChange }) {
                                     letter === selectedLetter
                                       ? "#fff"
                                       : "rgba(132, 147, 178, 1)",
-                                  padding: "0.1rem",
+                                  // padding: "2px",
                                   borderRadius: "0.2rem",
+                                  fontFamily: "EuclidRegular",
                                 }}
                               >
                                 {letter}
@@ -1127,7 +1033,7 @@ export default function CreateTask({ onFileChange }) {
                             ))}
                           </div>
                           <div className="img-sort">
-                            {data.map(({ label, regionImg, value }) => (
+                            {surveyorData.map(({ label, regionImg, value }) => (
                               <div
                                 className="popover-img-box"
                                 onClick={() => handleSort(value)}
@@ -1152,6 +1058,7 @@ export default function CreateTask({ onFileChange }) {
                                   style={{
                                     color: "rgba(132, 147, 178, 1)",
                                     fontSize: "0.8rem",
+                                    fontFamily: "EuclidRegular",
                                   }}
                                 >
                                   {label}
@@ -1228,18 +1135,28 @@ export default function CreateTask({ onFileChange }) {
                     />
 
                     {isOpen && (
-                      <DatePicker
-                        value={time}
-                        onSelect={handleSelect}
-                        onCancel={handleCancel}
-                        isPopup={false}
-                        theme={"ios"}
-                        showHeader={false}
-                        showCaption={true}
-                        dateConfig={dateConfig}
-                        confirmText="OK"
-                        cancelText="Cancel"
-                      />
+                      <div
+                        style={{
+                          position: "relative",
+                          width: "25rem",
+                        }}
+                      >
+                        <DatePicker
+                          value={time}
+                          onSelect={handleSelect}
+                          onCancel={handleCancel}
+                          isPopup={false}
+                          theme={"ios"}
+                          showHeader={false}
+                          showCaption={true}
+                          dateConfig={dateConfig}
+                          confirmText="OK"
+                          cancelText="Cancel"
+                          style={{
+                            width: "100%",
+                          }}
+                        />
+                      </div>
                     )}
                   </div>
                 </>
@@ -1254,8 +1171,7 @@ export default function CreateTask({ onFileChange }) {
                         <div
                           style={{
                             position: "relative",
-                            width: "400px",
-                            backgroundColor: "red",
+                            width: "25rem",
                           }}
                         >
                           <DatePicker
@@ -1313,6 +1229,7 @@ export default function CreateTask({ onFileChange }) {
                         <div
                           style={{
                             position: "relative",
+                            width: "25rem",
                           }}
                         >
                           <DatePicker
@@ -1326,6 +1243,9 @@ export default function CreateTask({ onFileChange }) {
                             dateConfig={dateConfig}
                             confirmText="OK"
                             cancelText="Cancel"
+                            style={{
+                              width: "100%",
+                            }}
                           />
                         </div>
                       )}
@@ -1452,9 +1372,10 @@ export default function CreateTask({ onFileChange }) {
             <div className="advanced-cancel-btn">Cancel</div>
             <div
               className="advanced-next-btn"
-              onClick={() => navigate("/create-task/excel-view")}
+              // onClick={() => navigate("/create-task/excel-view")}
+              onClick={handleSubmit}
             >
-              Next
+              Create Task
             </div>
           </div>
         </div>

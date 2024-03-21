@@ -20,11 +20,12 @@ import CalendarPage from "./Pages/CalendarPage";
 import SpecificTask from "./Components/TaskList/SpecificTask";
 import CreateTask from "./Components/TaskList/CreateTask";
 import TaskNextPage from "./Components/TaskList/TaskNextPage";
+import Notifications from "./Components/Notification/Notifications";
 
 function App() {
   const [isAuthenticated, setAuthenticated] = useState(true);
   const [selectedFile, setSelectedFile] = useState(null);
-
+  const [pageName, setPageName] = useState("Dashboard");
   const handleFileChange = (file) => {
     setSelectedFile(file);
   };
@@ -45,7 +46,9 @@ function App() {
             <Route
               path="/"
               element={
-                isAuthenticated ? <OverviewPage /> : <Navigate to="/signin" />
+                isAuthenticated ? <OverviewPage 
+                  pageName={pageName}
+                /> : <Navigate to="/signin" />
               }
             />
             <Route
@@ -81,9 +84,21 @@ function App() {
               }
             />
             <Route
+              path="/create-task/calendar"
+              element={
+                isAuthenticated ? <CalendarPage /> : <Navigate to="/signin" />
+              }
+            />
+            <Route
               path="/calendar"
               element={
                 isAuthenticated ? <CalendarPage /> : <Navigate to="/signin" />
+              }
+            />
+            <Route 
+              path="/notifications"
+              element={
+                isAuthenticated ? <Notifications /> : <Navigate to="/signin" />
               }
             />
             <Route path="/signin" element={<SignInpage />} />

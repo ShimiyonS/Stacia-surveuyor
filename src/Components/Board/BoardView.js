@@ -221,64 +221,64 @@ const DragDropContainer = () => {
         },
       ],
     },
-    {
-      id: 2,
-      dueDate: "Do next week",
-      tasks: [
-        {
-          tid: 200,
-          tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-          tdude: "26/11/2023",
-        },
-        {
-          tid: 201,
-          tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-          tdude: "26/11/2023",
-        },
-      ],
-    },
-    {
-      id: 3,
-      dueDate: "Due tomorrow",
-      tasks: [
-        {
-          tid: 300,
-          tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-          tdude: "26/11/2023",
-        },
-        {
-          tid: 301,
-          tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-          tdude: "26/11/2023",
-        },
-        {
-          tid: 302,
-          tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-          tdude: "26/11/2023",
-        },
-      ],
-    },
-    {
-      id: 4,
-      dueDate: "Due today",
-      tasks: [
-        {
-          tid: 400,
-          tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-          tdude: "26/11/2023",
-        },
-        {
-          tid: 401,
-          tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-          tdude: "26/11/2023",
-        },
-        {
-          tid: 402,
-          tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-          tdude: "26/11/2023",
-        },
-      ],
-    },
+    // {
+    //   id: 2,
+    //   dueDate: "Do next week",
+    //   tasks: [
+    //     {
+    //       tid: 200,
+    //       tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
+    //       tdude: "26/11/2023",
+    //     },
+    //     {
+    //       tid: 201,
+    //       tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
+    //       tdude: "26/11/2023",
+    //     },
+    //   ],
+    // },
+    // {
+    //   id: 3,
+    //   dueDate: "Due tomorrow",
+    //   tasks: [
+    //     {
+    //       tid: 300,
+    //       tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
+    //       tdude: "26/11/2023",
+    //     },
+    //     {
+    //       tid: 301,
+    //       tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
+    //       tdude: "26/11/2023",
+    //     },
+    //     {
+    //       tid: 302,
+    //       tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
+    //       tdude: "26/11/2023",
+    //     },
+    //   ],
+    // },
+    // {
+    //   id: 4,
+    //   dueDate: "Due today",
+    //   tasks: [
+    //     {
+    //       tid: 400,
+    //       tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
+    //       tdude: "26/11/2023",
+    //     },
+    //     {
+    //       tid: 401,
+    //       tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
+    //       tdude: "26/11/2023",
+    //     },
+    //     {
+    //       tid: 402,
+    //       tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
+    //       tdude: "26/11/2023",
+    //     },
+    //   ],
+    // },
     // {
     //   id: 5,
     //   dueDate: "Due next month",
@@ -357,11 +357,11 @@ const DragDropContainer = () => {
       style={{
         display: "flex",
         overflowX: "auto",
-        backgroundColor: "#fff",
         width: "97%",
         padding: "0.2rem 1.5rem",
         margin: "1rem auto",
         columnGap: "1rem",
+        backgroundColor: "#fff",
       }}
     >
       {/* <div

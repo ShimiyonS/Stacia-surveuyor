@@ -10,10 +10,10 @@ export default function TodayActivityCard({ data, id }) {
           justifyContent: "space-between",
         }}
       >
-        <div className="activity-name">{data.taskName}{id}</div>
+        <div className="activity-name">{data.taskName}</div>
         <div className="activity-due">Due date: {data.dueDate}</div>
       </div>
-      <div className="today-activity-desc">{data.desc}</div>
+      <div className="activity-desc">{data.desc}</div>
     </div>
   );
 }

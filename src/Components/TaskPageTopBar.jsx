@@ -119,7 +119,11 @@ export default function TaskPageTopBar() {
 
   return (
     <>
-      <div className='taskpage-topbar'>
+      <div className='taskpage-topbar'
+        style={{
+          // display: "none"
+        }}
+      >
         <div className='task-tabs'>
           <div className='task-tab' style={{ borderBottom: listTabActive && '3px solid #1B51BB', color: listTabActive ? '#1B51BB' : '#8493B2', fontWeight: listTabActive ? '600' : '500', }} onClick={() => {
             setBoardTabActive(false);

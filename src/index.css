@@ -6,7 +6,6 @@
   font-family: "EuclidBold";
   src: url(../fonts/Euclid\ Circular\ A\ Bold.ttf);
 }
-
 @font-face {
   font-family: "EuclidLight";
   src: url(../fonts/Euclid\ Circular\ A\ Light.ttf);
@@ -21,7 +20,7 @@
 }
 
 body{
-  font-family: Euclid;
+  font-family: EuclidRegular;
 }
 
 code {

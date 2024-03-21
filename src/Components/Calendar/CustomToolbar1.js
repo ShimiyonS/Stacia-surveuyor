@@ -6,7 +6,8 @@ import { RiExpandRightLine } from "react-icons/ri";
 import { RiExpandLeftLine } from "react-icons/ri";
 import { PageContext } from "../../Context/PageContext";
 
-const CustomToolbar = ({ views, view, label, onView, onNavigate }) => {
+
+const CustomToolbar1 = ({ views, view, label, onView, onNavigate }) => {
   const { calendarExpand, setCalendarExpand } = useContext(PageContext);
   return (
     <div
@@ -116,4 +117,4 @@ const CustomToolbar = ({ views, view, label, onView, onNavigate }) => {
     </div>
   );
 };
-export default CustomToolbar;
+export default CustomToolbar1;

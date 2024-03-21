@@ -99,7 +99,7 @@ import SpecificTaskMore from "./SpecificTaskMore";
 import TablerowMoreOptions from "./TablerowMoreOptions";
 import { MdStar } from "react-icons/md";
 
-const TaskTable = ({ columns, data, setData }) => {
+export default function TaskTable({ columns, data, setData }) {
   const navigate = useNavigate();
   const { setPageName } = useContext(PageContext);
   const [bookmark, setBookmark] = useState("");
@@ -369,6 +369,4 @@ const TaskTable = ({ columns, data, setData }) => {
       </div>
     </div>
   );
-};
-
-export default TaskTable;
+}

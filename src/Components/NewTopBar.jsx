@@ -7,16 +7,31 @@ import AppLogo from "../Assets/AppLogo.svg"
 import Profile from "../Assets/Profile.svg"
 import styled from 'styled-components'
 import { PageContext } from '../Context/PageContext'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { IoIosArrowBack } from "react-icons/io";
 
 
-export default function NewTopBar() {
+export default function NewTopBar({ pageName }) {
 
-    const { pageName } = useContext(PageContext);
+    // const { pageName } = useContext(PageContext);
     const location = useLocation();
     const logos = [
-        ChatLogo, NotificationLogo, AppLogo, Profile
+        {
+            logo: ChatLogo,
+            path: "",
+        },
+        {
+            logo: NotificationLogo,
+            path: "/notifications",
+        },
+        {
+            logo: AppLogo,
+            path: "",
+        },
+        {
+            logo: Profile,
+            path: "",
+        },
     ];
 
     const ProfileBasedLinks = styled.div`
@@ -42,19 +57,25 @@ export default function NewTopBar() {
                 {location.pathname === "/profile" && 'Profile'}
                 {location.pathname === "/create-task" && 'Create Task'}
                 {location.pathname === "/create-task/excel-view" && 'Create Task'}
-
+                {location.pathname === "/calendar" && 'Calendar'}
+                {location.pathname === "/create-task/calendar" && 'Calendar'}
+                {location.pathname === "/notifications" && 'Notification'}
+                
             </div>
             <div className="search-box-container">
                 <div className="search-box">
                     <img src={SearchBoxIcon} alt="" />
                     <input type="text" placeholder='search...' className='search-box-style' />
                 </div>
+
                 <ProfileBasedLinks>
                     {
-                        logos.map((data, index) => (
-                            <div className='top-bar-logo'>
-                                <img src={data} alt="" />
-                            </div>
+                        logos.map(({ path, logo }, index) => (
+                            <Link className='top-bar-logo'
+                            to={path}
+                            >
+                                <img src={logo} alt="" />
+                            </Link>
                         ))
                     }
                 </ProfileBasedLinks>
