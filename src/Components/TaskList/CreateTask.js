@@ -27,6 +27,9 @@ import { PageContext } from "../../Context/PageContext";
 import SurveyorSelectTemplate from "./SurveyorSelectTemplate";
 import SurveyorTemplate from "./SurveyorTemplate";
 import { surveyorData } from "../../data/SurveyorData";
+import axios from "axios";
+import moment from "moment";
+import CreateSurveyorTemplate from "./CreateSurveyorTemplate";
 
 const { SHOW_PARENT } = TreeSelect;
 const treeData = [
@@ -88,12 +91,43 @@ export default function CreateTask({ onFileChange }) {
   const [removeDuplicateArr, setRemoveDuplicateArr] = useState([]);
   const [sortArr, setSortArr] = useState([]);
 
-  const { taskDuedate, setTaskDuedate, setTaskname } = useContext(PageContext);
+  const {
+    taskDuedate,
+    setTaskDuedate,
+    setTaskname,
+    taskName,
+    setTaskName,
+    desc,
+    setDesc,
+    region,
+    setRegion,
+    taskDue,
+    setTaskDue,
+    dueStart,
+    setDueStart,
+    dueEnd,
+    setDueEnd,
+    surveyLimit,
+    setSurveyLimit,
+    surveyRadius,
+    setSurveyRadius,
+    bulkRes,
+    setBulkRes,
+    selectedSurveyors,
+    selectSurveyorInCreateTask,
+    setSelectedSurveyorInCreateTask,
+    createTaskSuvreyors,
+    setCreateTaskSurveyors,
+  } = useContext(PageContext);
 
   // send excel file to excel view page
   const [sendFiles, setSendFiles] = useState([]);
+  const [excelFile, setExcelFile] = useState(null);
 
   const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(true);
+  const [users, setUsers] = useState(null);
 
   const userProfiles = [
     {
@@ -189,14 +223,17 @@ export default function CreateTask({ onFileChange }) {
   ];
 
   const surveyors = [
-    { value: "10 Surveyors", label: "10 Surveyors" },
-    { value: "20 Surveyors", label: "20 Surveyors" },
-    { value: "30 Surveyors", label: "30 Surveyors" },
-    { value: "40 Surveyors", label: "40 Surveyors" },
+    { value: "10", label: "10 Surveys" },
+    { value: "20", label: "20 Surveys" },
+    { value: "30", label: "30 Surveys" },
+    { value: "40", label: "40 Surveys" },
   ];
 
   const [selectedUsers, setSelectedUsers] = useState([]);
-  const [selectRegions, setSelectRegions] = useState(null);
+  const [selectRegions, setSelectRegions] = useState({
+    label: "",
+    value: "",
+  });
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [regionMenuOpen, setRegionMenuOpen] = useState(false);
   const [isPopoverVisible, setPopoverVisible] = useState(false);
@@ -227,11 +264,24 @@ export default function CreateTask({ onFileChange }) {
 
   const [showShareOptions, setShowShareOptions] = useState(false);
 
+  // radius
+
+  const [radius, setRadius] = useState("10");
+
+  // limit
+
+  const [limit, setLimit] = useState({
+    value: '',
+    label: ''
+  });
+
   // csv upload modal state
   const [openCsvModal, setOpenCsvModal] = useState(false);
   const [csvFiles, setCsvFiles] = useState([]);
   const [csvFiles1, setCsvFiles1] = useState([]);
   // region menu open close
+
+  const [createTaskModal, setCreateTaskModal] = useState(false);
 
   const handleChange = (selectedOption) => {
     const flattenedSelectedOptions = selectedOption.flatMap((option) =>
@@ -291,7 +341,9 @@ export default function CreateTask({ onFileChange }) {
   };
 
   const handleSelect = (time) => {
+    // const due =
     setTaskDuedate(time);
+    setTaskDue(time);
     setTime(time);
     setIsOpen(false);
     console.log(time);
@@ -318,7 +370,7 @@ export default function CreateTask({ onFileChange }) {
   const handleTaskFinishDate = (finishDate) => {
     setEndDate(finishDate);
     setIsOpenFinishDate(false);
-    console.log("start date", startDate);
+    console.log("start date", finishDate);
   };
 
   // const formatOptions = (options) => {
@@ -342,8 +394,9 @@ export default function CreateTask({ onFileChange }) {
 
   const handleFileSelect = (e) => {
     e.preventDefault();
+    setExcelFile(e.target.files[0]);
     setCsvFiles1([...csvFiles1, e.target.files[0]]);
-    // console.log("target file......", e.target.files[0]);
+    console.log("target file......", e.target.files[0]);
     if (e.target.files) {
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -358,6 +411,28 @@ export default function CreateTask({ onFileChange }) {
       };
       reader.readAsArrayBuffer(e.target.files[0]);
     }
+  };
+
+  const customStyles1 = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      width: "30%",
+      height: "25%",
+      borderRadius: "16px",
+      transform: "translate(-50%, -50%)",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      padding: "2rem",
+    },
+    overlay: {
+      background: "rgba(0, 0, 0, 0.25)",
+      zIndex: "999",
+    },
   };
 
   const customStyles = {
@@ -524,6 +599,7 @@ export default function CreateTask({ onFileChange }) {
 
   const handleCsvModalClose = () => {
     setOpenCsvModal(false);
+    // navigate("/create-task/excel-view");
   };
 
   // handle popover
@@ -561,18 +637,128 @@ export default function CreateTask({ onFileChange }) {
   }
 
   useEffect(() => {
+    getUsers("a");
     handleSort("a");
   }, []);
 
-
-
+  setTaskName(formik.values.taskname);
+  setDesc(formik.values.description);
+  setRegion(selectRegions);
   // handle form values
 
-  const handleSubmit = () => {
+  // const handleSubmit = () => {
+  //   const { taskname, description, attachforms } = formik.values;
+  //   setTaskname(taskname);
+  //   console.log("csv files", csvFiles);
+  //   // navigate("calendar");
+  //   console.log(
+  //     taskname,
+  //     description,
+  //     attachforms,
+  //     time,
+  //     selectedUsers,
+  //     csvFiles
+  //   );
+  // };
+
+  console.log("[]][][]", selectRegions);
+
+  // bulk assign task
+
+  const handleCreateTask = async ({ resetForm }) => {
     const { taskname, description, attachforms } = formik.values;
-    setTaskname(taskname);
-    navigate("calendar");
-    console.log(taskname, description, attachforms, time, selectedUsers);
+    // console.log(csvFiles);
+    const formData = new FormData();
+    formData.append("excel", excelFile);
+    formData.append("taskName", taskname);
+    formData.append("description", description);
+    formData.append("radius", radius);
+    formData.append("formId", "660a7fb67d6f596735d72594");
+    formData.append("dueDate", time);
+    formData.append("startDate", startDate);
+    formData.append("endDate", endDate);
+    formData.append("limit", limit);
+
+    console.log("submitted values", formData);
+    // alert("bulk create");
+
+    try {
+      const res = await axios.post(
+        "http://192.168.0.115:8001/task//bulk-assign/660aa4d54a8e525d204aaa77",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      setBulkRes(res.data.tasks);
+      navigate("/create-task/excel-view");
+      console.log(res.data);
+    } catch (err) {
+      console.log("can't assign task", err);
+    }
+  };
+
+  // console.log("limit", limit.value);
+
+  // manual task creation
+
+  console.log(createTaskSuvreyors);
+  // console.log("region", selectRegions.label);
+
+  const handleCreateManual = async () => {
+    const { taskname, description, attachforms } = formik.values;
+    // alert("manual create");
+    if (taskName != "" && description != "" && time != "") {
+      try {
+        if (showAdvanceOptions) {
+          const res = await axios.post(
+            "http://192.168.0.115:8001/task/create/660aa4d54a8e525d204aaa77",
+            {
+              surveyorIds: createTaskSuvreyors,
+              formId: "660a7fb67d6f596735d72594",
+              description: description,
+              taskName: taskname,
+              location: selectRegions.value,
+              startDate: moment(startDate).format("YYYY-MM-DD"),
+              endDate: moment(endDate).format("YYYY-MM-DD"),
+              radius: radius,
+              limit: limit.label,
+            }
+          );
+          console.log(res.data);
+          navigate("/surveyor-tasks");
+        } else {
+          const res = await axios.post(
+            "http://192.168.0.115:8001/task/create/660aa4d54a8e525d204aaa77",
+            {
+              surveyorIds: createTaskSuvreyors,
+              formId: "660a7fb67d6f596735d72594",
+              description: description,
+              taskName: taskname,
+              location: selectRegions.value,
+              dueDate: moment(time).format("YYYY-MM-DD"),
+            }
+          );
+          console.log(res.data);
+          navigate("/surveyor-tasks");
+        }
+        // const data = {
+        //   surveyorIds: selectedUsers,
+        //   formId: "660a7fb67d6f596735d72594",
+        //   description: description,
+        //   dueDate: moment(time).format('YYYY-MM-DD'),
+        //   taskName: taskname,
+        //   location: selectRegions
+        // };
+        // console.log(res.data.data);
+      } catch (err) {
+        console.log(err.message);
+      }
+    } else {
+      alert("all fields must be filled");
+    }
   };
 
   // handle surveyor select
@@ -582,138 +768,157 @@ export default function CreateTask({ onFileChange }) {
     if (selectedUsers.includes(id)) {
       // setActiveSelectedSurveyors(false);
       setSelectedUsers(selectedUsers.filter((i) => i !== id));
+      setSelectedUsers(selectedUsers.filter((i) => i !== id));
+      setCreateTaskSurveyors(createTaskSuvreyors.filter((i) => i !== id));
     } else {
       // setActiveSelectedSurveyors(true);
       setSelectedUsers([...selectedUsers, id]);
+      setSelectedSurveyorInCreateTask([...selectedUsers, id]);
+      setCreateTaskSurveyors([...createTaskSuvreyors, id]);
+    }
+  };
+
+  const getUsers = async (selectedLetter) => {
+    try {
+      const users = await axios.get(
+        `http://192.168.0.115:8000/user/surveyors?query=${selectedLetter}`
+      );
+      setUsers(users.data.data);
+      setLoading(false);
+      setSelectedLetter(selectedLetter);
+      console.log(users.data.data);
+    } catch (err) {
+      console.log(err.message);
     }
   };
 
   return (
-    <div className="task-create">
-      <div className="task-create-inner-layer">
-        {/* <TreeSelect
+    <>
+      <div className="task-create">
+        <div className="task-create-inner-layer">
+          {/* <TreeSelect
           {...tProps}
           className="tree-select"
           treeIcon={false}
           placement="topLeft"
           dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
         /> */}
-        <div
-          className="form-box"
-          style={{
-            height: "100%",
-            overflowY: "scroll",
-            padding: "2rem",
-          }}
-        >
-          <form onSubmit={formik.handleSubmit}>
-            <div className="task-inputs">
-              <label htmlFor="taskname" className="task-label">
-                Task name
-              </label>
-              <input
-                id="taskname"
-                name="taskname"
-                type="text"
-                placeholder="Enter task name"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.taskname}
-                className="task-input"
-                style={{
-                  padding: "1rem 1.1rem",
-                }}
-              />
-            </div>
-            <div className="task-inputs">
-              <label htmlFor="description" className="task-label">
-                Description
-              </label>
-              <input
-                id="description"
-                name="description"
-                type="text"
-                placeholder="Enter description"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.description}
-                className="task-input"
-                style={{
-                  padding: "2.2rem 1.1rem",
-                }}
-              />
-            </div>
+          <div
+            className="form-box"
+            style={{
+              height: "100%",
+              overflowY: "scroll",
+              padding: "2rem",
+            }}
+          >
+            <form onSubmit={formik.handleSubmit}>
+              <div className="task-inputs">
+                <label htmlFor="taskname" className="task-label">
+                  Task name
+                </label>
+                <input
+                  id="taskname"
+                  name="taskname"
+                  type="text"
+                  placeholder="Enter task name"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.taskname}
+                  className="task-input"
+                  style={{
+                    padding: "1rem 1.1rem",
+                  }}
+                />
+              </div>
+              <div className="task-inputs">
+                <label htmlFor="description" className="task-label">
+                  Description
+                </label>
+                <input
+                  id="description"
+                  name="description"
+                  type="text"
+                  placeholder="Enter description"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.description}
+                  className="task-input"
+                  style={{
+                    padding: "2.2rem 1.1rem",
+                  }}
+                />
+              </div>
 
-            {/* attach forms and upload file input */}
+              {/* attach forms and upload file input */}
 
-            <div
-              style={{
-                display: "flex",
-                columnGap: "5rem",
-                width: "100%",
-              }}
-            >
               <div
-                className="task-inputs"
                 style={{
+                  display: "flex",
+                  columnGap: "5rem",
                   width: "100%",
-                  // backgroundColor: "pink",
                 }}
               >
-                <label htmlFor="attachforms" className="task-label">
-                  Attach forms
-                </label>
                 <div
+                  className="task-inputs"
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    border: "1px solid #f7f9fb",
-                    padding: "0.3rem",
-                    marginTop: "0.9rem",
-                    columnGap: "0.5rem",
+                    width: "100%",
+                    // backgroundColor: "pink",
                   }}
                 >
-                  <div className="attach-file-logo">
-                    <img src={AttachFile} />
-                  </div>
-                  <input
-                    id="attachforms"
-                    name="attachforms"
-                    type="file"
-                    onChange={(e) => {
-                      formik.setFieldValue(
-                        "attachforms",
-                        e.currentTarget.files[0]
-                      );
+                  <label htmlFor="attachforms" className="task-label">
+                    Attach forms
+                  </label>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      border: "1px solid #f7f9fb",
+                      padding: "0.3rem",
+                      marginTop: "0.9rem",
+                      columnGap: "0.5rem",
                     }}
-                    onBlur={formik.handleBlur}
-                    className="attachforms"
-                  />
+                  >
+                    <div className="attach-file-logo">
+                      <img src={AttachFile} />
+                    </div>
+                    <input
+                      id="attachforms"
+                      name="attachforms"
+                      type="file"
+                      onChange={(e) => {
+                        formik.setFieldValue(
+                          "attachforms",
+                          e.currentTarget.files[0]
+                        );
+                      }}
+                      onBlur={formik.handleBlur}
+                      className="attachforms"
+                    />
+                  </div>
                 </div>
-              </div>
-              <div
-                className="task-inputs"
-                style={{
-                  width: "100%",
-                }}
-              >
-                <label htmlFor="attachforms1" className="task-label">
-                  Upload File
-                </label>
-                <div className="attachforms1" onClick={handleCsvModalOpen}>
-                  <img
-                    src={Csvfile}
-                    alt="csv file"
-                    style={{ marginLeft: "1rem" }}
-                  />
-                  {/* <div className="attachforms1"
+                <div
+                  className="task-inputs"
+                  style={{
+                    width: "100%",
+                  }}
+                >
+                  <label htmlFor="attachforms1" className="task-label">
+                    Upload File
+                  </label>
+                  <div className="attachforms1" onClick={handleCsvModalOpen}>
+                    <img
+                      src={Csvfile}
+                      alt="csv file"
+                      style={{ marginLeft: "1rem" }}
+                    />
+                    {/* <div className="attachforms1"
                     style={{
                       backgroundColor: 'rgba(247, 249, 251, 1)'
                     }}
                   >
 
                   </div> */}
-                  {/* <input
+                    {/* <input
                     id="attachforms1"
                     name="attachforms1"
                     type="file"
@@ -731,140 +936,140 @@ export default function CreateTask({ onFileChange }) {
                       backgroundColor: "rgba(247, 249, 251, 1)",
                     }}
                   /> */}
-                </div>
-                <Modal isOpen={openCsvModal} style={customCsvModalStyles}>
-                  <div className="csv-file-upload-modal">
-                    <div className="csv-file-upload-txt">File Upload</div>
-                    <div
-                      style={{
-                        height: "1px",
-                        width: "100%",
-                        backgroundColor: "#e3e3e3",
-                      }}
-                    ></div>
-                    <div className="csv-click-drag-box" {...getRootProps()}>
-                      <input
-                        className="actual-drop-box"
-                        type="file"
-                        onChange={handleFileSelect}
-                        {...getInputProps}
-                      />
-                    </div>
-                    <div className="format-accept-csv">
-                      Formats accepted are .csv{" "}
-                    </div>
-                    <div
-                      style={{
-                        height: "1px",
-                        width: "100%",
-                        backgroundColor: "#e3e3e3",
-                      }}
-                    ></div>
-                    <div>
-                      {csvFiles.length > 0 ? (
-                        <>
-                          {csvFiles.map((data, index) => (
-                            <div className="csv-file-display-box">
-                              <div
-                                style={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                  columnGap: "1rem",
-                                }}
-                              >
-                                <IoDocumentTextOutline size={25} />
-                                <div>
-                                  <div className="csv-filename">
-                                    {csvFiles[index][0].path}
-                                  </div>
-                                  <div
-                                    className="csv-filename"
-                                    style={{
-                                      color: "rgba(132, 147, 178, 1)",
-                                    }}
-                                  >
-                                    {formatFileSize(csvFiles[index][0].size)}
-                                  </div>
-                                </div>
-                              </div>
-                              <AiOutlineDelete size={25} />
-                            </div>
-                          ))}
-                        </>
-                      ) : csvFiles1.length > 0 ? (
-                        <>
-                          {csvFiles1.map((data, index) => (
-                            <div className="csv-file-display-box">
-                              <div
-                                style={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                  columnGap: "1rem",
-                                }}
-                              >
-                                <IoDocumentTextOutline size={25} />
-                                <div>
-                                  <div className="csv-filename">
-                                    {csvFiles1[index].name}
-                                  </div>
-                                  <div
-                                    className="csv-filename"
-                                    style={{
-                                      color: "rgba(132, 147, 178, 1)",
-                                    }}
-                                  >
-                                    {formatFileSize(csvFiles1[index].size)}
-                                  </div>
-                                </div>
-                              </div>
-                              <AiOutlineDelete size={25} />
-                            </div>
-                          ))}
-                        </>
-                      ) : (
-                        <div className="csv-sample-format">
-                          <div className="csv-sample-format-txt">
-                            If you do not have a file, you can use the sample
-                            below:
-                          </div>
-                          <div className="sample-format-box">
-                            <FaRegFileAlt color="rgba(8, 184, 57, 1)" />
-                            <div>Download Sample Template</div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                    <div
-                      style={{
-                        height: "1px",
-                        width: "100%",
-                        backgroundColor: "#e3e3e3",
-                      }}
-                    ></div>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "flex-end",
-                        columnGap: "1.5rem",
-                      }}
-                    >
-                      <button
-                        className="cancel-csv-upload-btn"
-                        onClick={handleCsvModalClose}
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        className="continue-csv-upload-btn"
-                        onClick={handleCsvModalClose}
-                      >
-                        Continue
-                      </button>
-                    </div>
                   </div>
-                </Modal>
-                {/* <input
+                  <Modal isOpen={openCsvModal} style={customCsvModalStyles}>
+                    <div className="csv-file-upload-modal">
+                      <div className="csv-file-upload-txt">File Upload</div>
+                      <div
+                        style={{
+                          height: "1px",
+                          width: "100%",
+                          backgroundColor: "#e3e3e3",
+                        }}
+                      ></div>
+                      <div className="csv-click-drag-box" {...getRootProps()}>
+                        <input
+                          className="actual-drop-box"
+                          type="file"
+                          onChange={handleFileSelect}
+                          {...getInputProps}
+                        />
+                      </div>
+                      <div className="format-accept-csv">
+                        Formats accepted are .csv{" "}
+                      </div>
+                      <div
+                        style={{
+                          height: "1px",
+                          width: "100%",
+                          backgroundColor: "#e3e3e3",
+                        }}
+                      ></div>
+                      <div>
+                        {csvFiles.length > 0 ? (
+                          <>
+                            {csvFiles.map((data, index) => (
+                              <div className="csv-file-display-box">
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    columnGap: "1rem",
+                                  }}
+                                >
+                                  <IoDocumentTextOutline size={25} />
+                                  <div>
+                                    <div className="csv-filename">
+                                      {csvFiles[index][0].path}
+                                    </div>
+                                    <div
+                                      className="csv-filename"
+                                      style={{
+                                        color: "rgba(132, 147, 178, 1)",
+                                      }}
+                                    >
+                                      {formatFileSize(csvFiles[index][0].size)}
+                                    </div>
+                                  </div>
+                                </div>
+                                <AiOutlineDelete size={25} />
+                              </div>
+                            ))}
+                          </>
+                        ) : csvFiles1.length > 0 ? (
+                          <>
+                            {csvFiles1.map((data, index) => (
+                              <div className="csv-file-display-box">
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    columnGap: "1rem",
+                                  }}
+                                >
+                                  <IoDocumentTextOutline size={25} />
+                                  <div>
+                                    <div className="csv-filename">
+                                      {csvFiles1[index].name}
+                                    </div>
+                                    <div
+                                      className="csv-filename"
+                                      style={{
+                                        color: "rgba(132, 147, 178, 1)",
+                                      }}
+                                    >
+                                      {formatFileSize(csvFiles1[index].size)}
+                                    </div>
+                                  </div>
+                                </div>
+                                <AiOutlineDelete size={25} />
+                              </div>
+                            ))}
+                          </>
+                        ) : (
+                          <div className="csv-sample-format">
+                            <div className="csv-sample-format-txt">
+                              If you do not have a file, you can use the sample
+                              below:
+                            </div>
+                            <div className="sample-format-box">
+                              <FaRegFileAlt color="rgba(8, 184, 57, 1)" />
+                              <div>Download Sample Template</div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      <div
+                        style={{
+                          height: "1px",
+                          width: "100%",
+                          backgroundColor: "#e3e3e3",
+                        }}
+                      ></div>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "flex-end",
+                          columnGap: "1.5rem",
+                        }}
+                      >
+                        <button
+                          className="cancel-csv-upload-btn"
+                          onClick={handleCsvModalClose}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          className="continue-csv-upload-btn"
+                          onClick={handleCsvModalClose}
+                        >
+                          Continue
+                        </button>
+                      </div>
+                    </div>
+                  </Modal>
+                  {/* <input
                 id="attachforms1"
                 name="attachforms1"
                 type="file"
@@ -877,40 +1082,40 @@ export default function CreateTask({ onFileChange }) {
                   backgroundColor: "rgba(247, 249, 251, 1)",
                 }}
               /> */}
-                {/* <div className="download-format-sample">
+                  {/* <div className="download-format-sample">
                   <CiCircleInfo />
                   Download format sample
                   <IoDownloadOutline />
                 </div> */}
+                </div>
               </div>
-            </div>
 
-            {/* select surveyors and region inputs */}
+              {/* select surveyors and region inputs */}
 
-            <div
-              style={{
-                display: "flex",
-                columnGap: "5rem",
-                width: "100%",
-              }}
-            >
               <div
-                className="task-inputs"
                 style={{
+                  display: "flex",
+                  columnGap: "5rem",
                   width: "100%",
                 }}
               >
-                <label htmlFor="attachforms" className="task-label">
-                  Surveyors
-                </label>
                 <div
+                  className="task-inputs"
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    columnGap: "3rem",
+                    width: "100%",
                   }}
                 >
-                  {/* <Select
+                  <label htmlFor="attachforms" className="task-label">
+                    Surveyors
+                  </label>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      columnGap: "3rem",
+                    }}
+                  >
+                    {/* <Select
                     placeholder="Select Surveyors"
                     className="select-surveyors"
                     options={formatOptions(userProfiles)}
@@ -926,248 +1131,226 @@ export default function CreateTask({ onFileChange }) {
                     // isDisabled={formik.initialValues.taskname === ""}
                   /> */}
 
-                  <div className="select-users">
-                    <div onClick={handlePopoverToggle}>Select Surveyors</div>
-                    {isPopoverVisible && (
-                      <div className="popover-content">
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                          }}
-                        >
-                          <div className="pop-over-surveyor-txt">Surveyor</div>
-                          <input
-                            placeholder="Search"
-                            className="pop-over-surveyor-search"
-                          />
-                        </div>
-                        <div className="surveyor-data-container">
-                          {sortArr.map((data) => (
-                            <div
-                              style={{
-                                marginTop: "1rem",
-                              }}
-                            >
-                              <div className="surveyor-region-txt">
-                                <span
-                                  style={{
-                                    marginRight: "0.6rem",
-                                  }}
-                                  onClick={() => {
-                                    handleToggle(data.labelId);
-                                  }}
-                                >
-                                  <input type="checkbox" />
-                                </span>
-                                {data.label}
-                              </div>
-                              <div
-                                style={{
-                                  width: "100%",
-                                  height: "1px",
-                                  backgroundColor: "rgba(211, 220, 229, 1)",
-                                  marginBottom: "1rem",
-                                }}
-                              ></div>
-                              {data.children.map((child) => (
-                                <SurveyorTemplate
-                                  name={child.label}
-                                  img={child.imgSrc}
-                                  id={child.sid}
-                                  handleWithoutAllselect={
-                                    handleWithoutAllselect
-                                  }
-                                  selectedUsers={selectedUsers}
-                                />
-                                // <SurveyorSelectTemplate
-                                //   surveyor_img={child.label}
-                                //   surveyor_name={child.label}
-                                //   surveyor_id={child.id}
-                                //   selectedUsers={selectedUsers}
-                                //   handleWithoutAllselect={handleWithoutAllselect}
-                                // />
-                              ))}
-                            </div>
-                          ))}
-                        </div>
-                        <div
-                          style={{
-                            width: "100%",
-                            height: "1px",
-                            backgroundColor: "rgba(211, 220, 229, 1)",
-                          }}
-                        ></div>
-                        <div className="surveyor-sort-container">
+                    <div className="select-users">
+                      {console.log("excel file: ", excelFile)}
+                      <div onClick={handlePopoverToggle}>Select Surveyors</div>
+                      {isPopoverVisible && (
+                        <div className="popover-content">
                           <div
                             style={{
                               display: "flex",
-                              height: "40%",
-                              columnGap: "0.3rem",
-                              // backgroundColor: "red",
+                              justifyContent: "space-between",
                               alignItems: "center",
-                              justifyContent: "center",
                             }}
                           >
-                            {azArr.map((letter) => (
-                              <div
-                                className="sorted-letters"
-                                onClick={() => handleSort(letter)}
-                                style={{
-                                  backgroundColor:
-                                    letter === selectedLetter
-                                      ? "rgba(27, 81, 187, 1)"
-                                      : "#fff",
-                                  color:
-                                    letter === selectedLetter
-                                      ? "#fff"
-                                      : "rgba(132, 147, 178, 1)",
-                                  // padding: "2px",
-                                  borderRadius: "0.2rem",
-                                  fontFamily: "EuclidRegular",
-                                }}
-                              >
-                                {letter}
-                              </div>
-                            ))}
+                            <div className="pop-over-surveyor-txt">
+                              Surveyor
+                            </div>
+                            <input
+                              placeholder="Search"
+                              className="pop-over-surveyor-search"
+                            />
                           </div>
-                          <div className="img-sort">
-                            {surveyorData.map(({ label, regionImg, value }) => (
-                              <div
-                                className="popover-img-box"
-                                onClick={() => handleSort(value)}
-                              >
+                          <div className="surveyor-data-container">
+                            {loading ? (
+                              <div>loading...</div>
+                            ) : (
+                              users.map((data) => (
                                 <div
                                   style={{
-                                    width: "7rem",
-                                    height: "3rem",
+                                    marginTop: "1rem",
                                   }}
                                 >
-                                  <img
-                                    src={regionImg}
+                                  <div className="surveyor-region-txt">
+                                    <span
+                                      style={{
+                                        marginRight: "0.6rem",
+                                      }}
+                                      onClick={() => {
+                                        // handleToggle(data.labelId);
+                                      }}
+                                    >
+                                      <input type="checkbox" />
+                                    </span>
+                                    {data.district}
+                                  </div>
+                                  <div
                                     style={{
                                       width: "100%",
-                                      height: "100%",
-                                      objectFit: "cover",
-                                      borderRadius: "0.3rem",
+                                      height: "1px",
+                                      backgroundColor: "rgba(211, 220, 229, 1)",
+                                      marginBottom: "1rem",
                                     }}
-                                  />
+                                  ></div>
+                                  {data.users.map((child) => (
+                                    <CreateSurveyorTemplate
+                                      name={child.fullName}
+                                      img={child.dpFullUrl}
+                                      id={child.id}
+                                      assignedTasks={child.taskCount}
+                                      handleWithoutAllselect={
+                                        handleWithoutAllselect
+                                      }
+                                      selectedUsers={selectedUsers}
+                                      createTaskSuvreyors={createTaskSuvreyors}
+                                    />
+                                    // <SurveyorSelectTemplate
+                                    //   surveyor_img={child.label}
+                                    //   surveyor_name={child.label}
+                                    //   surveyor_id={child.id}
+                                    //   selectedUsers={selectedUsers}
+                                    //   handleWithoutAllselect={handleWithoutAllselect}
+                                    // />
+                                  ))}
                                 </div>
+                              ))
+                            )}
+                          </div>
+                          <div
+                            style={{
+                              width: "100%",
+                              height: "1px",
+                              backgroundColor: "rgba(211, 220, 229, 1)",
+                            }}
+                          ></div>
+                          <div className="surveyor-sort-container">
+                            <div
+                              style={{
+                                display: "flex",
+                                height: "40%",
+                                columnGap: "0.3rem",
+                                // backgroundColor: "red",
+                                alignItems: "center",
+                                justifyContent: "center",
+                              }}
+                            >
+                              {azArr.map((letter) => (
                                 <div
+                                  className="sorted-letters"
+                                  onClick={() => getUsers(letter)}
                                   style={{
-                                    color: "rgba(132, 147, 178, 1)",
-                                    fontSize: "0.8rem",
+                                    backgroundColor:
+                                      letter === selectedLetter
+                                        ? "rgba(27, 81, 187, 1)"
+                                        : "#fff",
+                                    color:
+                                      letter === selectedLetter
+                                        ? "#fff"
+                                        : "rgba(132, 147, 178, 1)",
+                                    // padding: "2px",
+                                    borderRadius: "0.2rem",
                                     fontFamily: "EuclidRegular",
                                   }}
                                 >
-                                  {label}
+                                  {letter}
                                 </div>
-                              </div>
-                            ))}
+                              ))}
+                            </div>
+                            <div className="img-sort">
+                              {surveyorData.map(
+                                ({ label, regionImg, value }) => (
+                                  <div
+                                    className="popover-img-box"
+                                    onClick={() => handleSort(value)}
+                                  >
+                                    <div
+                                      style={{
+                                        width: "7rem",
+                                        height: "3rem",
+                                      }}
+                                    >
+                                      <img
+                                        src={regionImg}
+                                        style={{
+                                          width: "100%",
+                                          height: "100%",
+                                          objectFit: "cover",
+                                          borderRadius: "0.3rem",
+                                        }}
+                                      />
+                                    </div>
+                                    <div
+                                      style={{
+                                        color: "rgba(132, 147, 178, 1)",
+                                        fontSize: "0.8rem",
+                                        fontFamily: "EuclidRegular",
+                                      }}
+                                    >
+                                      {label}
+                                    </div>
+                                  </div>
+                                )
+                              )}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    )}
-                  </div>
+                      )}
+                    </div>
 
-                  <div
-                    style={{
-                      width: "35%",
-                    }}
-                  >
-                    <div className="broadcast-task">
-                      <img
-                        src={BroadcastTask}
-                        alt="BroadcastTask"
-                        style={{
-                          marginRight: "0.5rem",
-                        }}
-                      />
-                      Broadcast Task
+                    <div
+                      style={{
+                        width: "35%",
+                      }}
+                    >
+                      <div className="broadcast-task">
+                        <img
+                          src={BroadcastTask}
+                          alt="BroadcastTask"
+                          style={{
+                            marginRight: "0.5rem",
+                          }}
+                        />
+                        Broadcast Task
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div
-                className="task-inputs"
-                style={{
-                  width: "100%",
-                }}
-              >
-                <label htmlFor="attachforms" className="task-label">
-                  Region
-                </label>
-                <Select
-                  placeholder="Select Region"
-                  className="select-surveyors"
-                  options={regions}
-                  isMulti
-                  onChange={setSelectRegions}
-                  styles={regionSelectCustomStyles}
-                  hideSelectedOptions={false}
-                  // menuIsOpen={regionMenuOpen}
-                  // onMenuClose={handleRegionMenuClose}
-                  // onMenuOpen={handleMenuOpen1}
-                  // onMenuClose={handleMenuClose1}
-                  // menuIsOpen={regionMenuOpen}
-                  menuPlacement="top"
-                />
-              </div>
-            </div>
-
-            {/* task due date */}
-            <div className="task-inputs">
-              {/* show advance task options  */}
-
-              {showAdvanceOptions ? (
-                <>
-                  <label htmlFor="taskname" className="task-label">
-                    Task due date
+                <div
+                  className="task-inputs"
+                  style={{
+                    width: "100%",
+                  }}
+                >
+                  <label htmlFor="attachforms" className="task-label">
+                    Region
                   </label>
-                  <div className="scrollable-date-picker">
-                    <input
-                      type="text"
-                      placeholder="DD/MM/YYYY"
-                      className="date-picker-box"
-                      onClick={handleClick}
-                      value={time.toLocaleDateString("en-GB")}
-                    />
+                  <Select
+                    placeholder="Select Region"
+                    className="select-surveyors"
+                    options={regions}
+                    // isMulti
+                    onChange={setSelectRegions}
+                    styles={regionSelectCustomStyles}
+                    hideSelectedOptions={false}
+                    // menuIsOpen={regionMenuOpen}
+                    // onMenuClose={handleRegionMenuClose}
+                    // onMenuOpen={handleMenuOpen1}
+                    // onMenuClose={handleMenuClose1}
+                    // menuIsOpen={regionMenuOpen}
+                    menuPlacement="top"
+                  />
+                </div>
+              </div>
 
-                    {isOpen && (
-                      <div
-                        style={{
-                          position: "relative",
-                          width: "25rem",
-                        }}
-                      >
-                        <DatePicker
-                          value={time}
-                          onSelect={handleSelect}
-                          onCancel={handleCancel}
-                          isPopup={false}
-                          theme={"ios"}
-                          showHeader={false}
-                          showCaption={true}
-                          dateConfig={dateConfig}
-                          confirmText="OK"
-                          cancelText="Cancel"
-                          style={{
-                            width: "100%",
-                          }}
-                        />
-                      </div>
-                    )}
-                  </div>
-                </>
-              ) : (
-                <div className="show-advance-options">
-                  <div className="range-boxes">
-                    <div className="range-box">
-                      <label htmlFor="taskname" className="task-label">
-                        Start task on
-                      </label>
-                      {isOpenStartDate && (
+              {/* task due date */}
+              <div className="task-inputs">
+                {/* show advance task options  */}
+
+                {showAdvanceOptions ? (
+                  <>
+                    <label htmlFor="taskname" className="task-label">
+                      Task due date
+                    </label>
+                    <div className="scrollable-date-picker">
+                      <input
+                        type="text"
+                        placeholder="DD/MM/YYYY"
+                        className="date-picker-box"
+                        onClick={handleClick}
+                        value={time.toLocaleDateString("en-GB")}
+                      />
+
+                      {isOpen && (
                         <div
                           style={{
                             position: "relative",
@@ -1175,8 +1358,8 @@ export default function CreateTask({ onFileChange }) {
                           }}
                         >
                           <DatePicker
-                            value={startDate}
-                            onSelect={handleTaskStartDate}
+                            value={time}
+                            onSelect={handleSelect}
                             onCancel={handleCancel}
                             isPopup={false}
                             theme={"ios"}
@@ -1191,15 +1374,48 @@ export default function CreateTask({ onFileChange }) {
                           />
                         </div>
                       )}
-                      <input
-                        type="text"
-                        placeholder="DD/MM/YYYY"
-                        className="start-date"
-                        onClick={() => setIsOpenStartDate(!isOpenStartDate)}
-                        value={startDate.toLocaleDateString("en-GB")}
-                      />
                     </div>
-                    {/* <div className="range-box">
+                  </>
+                ) : (
+                  <div className="show-advance-options">
+                    <div className="range-boxes">
+                      <div className="range-box">
+                        <label htmlFor="taskname" className="task-label">
+                          Start task on
+                        </label>
+                        {isOpenStartDate && (
+                          <div
+                            style={{
+                              position: "relative",
+                              width: "25rem",
+                            }}
+                          >
+                            <DatePicker
+                              value={startDate}
+                              onSelect={handleTaskStartDate}
+                              onCancel={handleCancel}
+                              isPopup={false}
+                              theme={"ios"}
+                              showHeader={false}
+                              showCaption={true}
+                              dateConfig={dateConfig}
+                              confirmText="OK"
+                              cancelText="Cancel"
+                              style={{
+                                width: "100%",
+                              }}
+                            />
+                          </div>
+                        )}
+                        <input
+                          type="text"
+                          placeholder="DD/MM/YYYY"
+                          className="start-date"
+                          onClick={() => setIsOpenStartDate(!isOpenStartDate)}
+                          value={startDate.toLocaleDateString("en-GB")}
+                        />
+                      </div>
+                      {/* <div className="range-box">
                       <label htmlFor="duration" className="task-label">
                         Duration
                       </label>
@@ -1214,172 +1430,293 @@ export default function CreateTask({ onFileChange }) {
                         value={formik.values.duration}
                       />
                     </div> */}
-                    <div className="range-box">
-                      <label htmlFor="taskname" className="task-label">
-                        Finish
+                      <div className="range-box">
+                        <label htmlFor="taskname" className="task-label">
+                          Finish
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="DD/MM/YYYY"
+                          className="start-date"
+                          onClick={() => setIsOpenFinishDate(!isOpenFinishDate)}
+                          value={endDate.toLocaleDateString("en-GB")}
+                        />
+                        {isOpenFinishDate && (
+                          <div
+                            style={{
+                              position: "relative",
+                              width: "25rem",
+                            }}
+                          >
+                            <DatePicker
+                              value={endDate}
+                              onSelect={handleTaskFinishDate}
+                              onCancel={handleCancel}
+                              isPopup={false}
+                              theme={"ios"}
+                              showHeader={false}
+                              showCaption={true}
+                              dateConfig={dateConfig}
+                              confirmText="OK"
+                              cancelText="Cancel"
+                              style={{
+                                width: "100%",
+                              }}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* send updates */}
+
+                <div className="send-updates">
+                  <div>Send with updates </div>
+                  <input
+                    type="checkbox"
+                    onClick={() => setShowShareOptions(!showShareOptions)}
+                  />
+                  <div>Send Notification</div>
+                </div>
+                {showShareOptions && (
+                  <div className="share-options">
+                    <div className="share-option">
+                      <input type="checkbox" />
+                      <div className="share-option-txt">Email</div>
+                    </div>
+                    <div className="share-option">
+                      <input type="checkbox" />
+                      <div className="share-option-txt">Send with profile</div>
+                    </div>
+                  </div>
+                )}
+                {/* region range and survey limit */}
+
+                {showAdvanceOptions ? (
+                  ""
+                ) : (
+                  <div
+                    style={{
+                      display: "flex",
+                      columnGap: "5rem",
+                      width: "100%",
+                      marginTop: "2rem",
+                    }}
+                  >
+                    <div
+                      className="task-inputs"
+                      style={{
+                        width: "100%",
+                      }}
+                    >
+                      <label htmlFor="attachforms" className="task-label">
+                        Region range
                       </label>
-                      <input
-                        type="text"
-                        placeholder="DD/MM/YYYY"
-                        className="start-date"
-                        onClick={() => setIsOpenFinishDate(!isOpenFinishDate)}
-                        value={endDate.toLocaleDateString("en-GB")}
-                      />
-                      {isOpenFinishDate && (
+                      <div className="select-users">
                         <div
+                          onClick={handlePopoverToggle1}
                           style={{
-                            position: "relative",
-                            width: "25rem",
+                            cursor: "pointer",
                           }}
                         >
-                          <DatePicker
-                            value={endDate}
-                            onSelect={handleTaskFinishDate}
-                            onCancel={handleCancel}
-                            isPopup={false}
-                            theme={"ios"}
-                            showHeader={false}
-                            showCaption={true}
-                            dateConfig={dateConfig}
-                            confirmText="OK"
-                            cancelText="Cancel"
-                            style={{
-                              width: "100%",
-                            }}
-                          />
+                          {" "}
+                          {radius == "" ? "Select radius" : radius}
                         </div>
-                      )}
+                        {isPopoverVisible1 && (
+                          <div className="radius-popover">
+                            <div className="select-radius-txt">
+                              Select radius
+                            </div>
+                            <div
+                              className="radius-range"
+                              onClick={() => {
+                                setRadius("10");
+                                setPopoverVisible1(false);
+                              }}
+                            >
+                              10 km
+                            </div>
+                            <div
+                              className="radius-range"
+                              onClick={() => {
+                                setRadius("20");
+                                setPopoverVisible1(false);
+                              }}
+                            >
+                              20 km
+                            </div>
+                            <div
+                              className="radius-range"
+                              onClick={() => {
+                                setRadius("30");
+                                setPopoverVisible1(false);
+                              }}
+                            >
+                              30 km
+                            </div>
+                            <div
+                              className="radius-range"
+                              onClick={() => {
+                                setRadius("40");
+                                setPopoverVisible1(false);
+                              }}
+                            >
+                              40 km
+                            </div>
+                            {/* <div className="radius-range">Custom radius</div> */}
+                            {/* <input type="range" min="0" max="10" /> */}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <div
+                      className="task-inputs"
+                      style={{
+                        width: "100%",
+                      }}
+                    >
+                      <label htmlFor="attachforms" className="task-label">
+                        Survey limit
+                      </label>
+                      <Select
+                        placeholder="Select maximum no. of surveys to be assigned to one surveyor"
+                        className="select-surveyors"
+                        options={surveyors}
+                        onChange={setLimit}
+                        styles={customStyles}
+                        hideSelectedOptions={false}
+                        // onMenuOpen={handleMenuOpen1}
+                        // onMenuClose={handleMenuClose1}
+                        // menuIsOpen={regionMenuOpen}
+                        menuPlacement="top"
+                      />
+                      <div className="survey-limit-txt">
+                        Default survey limit 10
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
-
-              {/* send updates */}
-
-              <div className="send-updates">
-                <div>Send with updates </div>
-                <input
-                  type="checkbox"
-                  onClick={() => setShowShareOptions(!showShareOptions)}
-                />
-                <div>Send Notification</div>
+                )}
               </div>
-              {showShareOptions && (
-                <div className="share-options">
-                  <div className="share-option">
-                    <input type="checkbox" />
-                    <div className="share-option-txt">Email</div>
-                  </div>
-                  <div className="share-option">
-                    <input type="checkbox" />
-                    <div className="share-option-txt">Send with profile</div>
-                  </div>
-                </div>
-              )}
-              {/* region range and survey limit */}
-
-              {showAdvanceOptions ? (
-                ""
-              ) : (
-                <div
-                  style={{
-                    display: "flex",
-                    columnGap: "5rem",
-                    width: "100%",
-                    marginTop: "2rem",
-                  }}
-                >
-                  <div
-                    className="task-inputs"
-                    style={{
-                      width: "100%",
-                    }}
-                  >
-                    <label htmlFor="attachforms" className="task-label">
-                      Region range
-                    </label>
-                    <div className="select-users">
-                      <div onClick={handlePopoverToggle1}>Select radius</div>
-                      {isPopoverVisible1 && (
-                        <div className="radius-popover">
-                          <div className="select-radius-txt">Select radius</div>
-                          <div className="radius-range">10 km</div>
-                          <div className="radius-range">20 km</div>
-                          <div className="radius-range">30 km</div>
-                          <div className="radius-range">40 km</div>
-                          <div className="radius-range">Custom radius</div>
-                          <input type="range" min="0" max="10" />
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  <div
-                    className="task-inputs"
-                    style={{
-                      width: "100%",
-                    }}
-                  >
-                    <label htmlFor="attachforms" className="task-label">
-                      Survey limit
-                    </label>
-                    <Select
-                      placeholder="Select maximum no. of surveys to be assigned to one surveyor"
-                      className="select-surveyors"
-                      options={surveyors}
-                      onChange={setSelectRegions}
-                      styles={customStyles}
-                      hideSelectedOptions={false}
-                      // onMenuOpen={handleMenuOpen1}
-                      // onMenuClose={handleMenuClose1}
-                      // menuIsOpen={regionMenuOpen}
-                      menuPlacement="top"
-                    />
-                    <div className="survey-limit-txt">
-                      Default survey limit 10
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </form>
-        </div>
-
-        {/* advanced */}
-
-        <div className="advanced-options">
-          <div className="advanced-options-left">
-            <div
-              style={{
-                color: "#1B2436",
-                fontFamily: "EuclidSemibold",
-                fontSize: "1.2rem",
-              }}
-              onClick={() => setShowAdvanceOptions(!showAdvanceOptions)}
-            >
-              Advanced
-            </div>
-            <div
-              style={{
-                color: "#8493B2",
-                fontFamily: "EuclidSemibold",
-                fontSize: "1.2rem",
-              }}
-            >
-              ( Region range, Survey count )
-            </div>
+            </form>
           </div>
-          <div className="advanced-options-right">
-            <div className="advanced-cancel-btn">Cancel</div>
-            <div
-              className="advanced-next-btn"
-              // onClick={() => navigate("/create-task/excel-view")}
-              onClick={handleSubmit}
-            >
-              Create Task
+
+          {/* advanced */}
+
+          <div className="advanced-options">
+            <div className="advanced-options-left">
+              <div
+                style={{
+                  color: "#1B2436",
+                  fontFamily: "EuclidSemibold",
+                  fontSize: "1.2rem",
+                }}
+                onClick={() => setShowAdvanceOptions(!showAdvanceOptions)}
+              >
+                Advanced
+              </div>
+              <div
+                style={{
+                  color: "#8493B2",
+                  fontFamily: "EuclidSemibold",
+                  fontSize: "1.2rem",
+                }}
+              >
+                ( Region range, Survey count )
+              </div>
+            </div>
+            <div className="advanced-options-right">
+              <div className="advanced-cancel-btn" onClick={() => navigate(-1)}>
+                Cancel
+              </div>
+              <button
+                className="advanced-next-btn"
+                // onClick={() => navigate("/create-task/excel-view")}
+                // onClick={handleSubmit}
+                // onClick={handleCreateTask}
+                style={
+                  {
+                    // cursor: 'not-allowed'
+                  }
+                }
+                onClick={
+                  excelFile == null
+                    ? () => setCreateTaskModal(true)
+                    : handleCreateTask
+                }
+              >
+                {excelFile == null ? "Create task" : "Next"}
+              </button>
             </div>
           </div>
         </div>
       </div>
-    </div>
+      <Modal
+        isOpen={createTaskModal}
+        onAfterOpen={() => setCreateTaskModal(true)}
+        onAfterClose={() => setCreateTaskModal(false)}
+        style={customStyles1}
+      >
+        <h3
+          style={{
+            color: "rgba(27, 36, 54, 1)",
+            fontSize: "1.6rem",
+            fontFamily: "EuclidBold",
+          }}
+        >
+          Are you sure ?
+        </h3>
+        <p
+          style={{
+            color: "rgba(132, 147, 178, 1)",
+            fontSize: "1.1rem",
+            fontFamily: "EuclidRegular",
+            marginTop: "0.5rem",
+          }}
+        >
+          Are you sure you want to proceed
+        </p>
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "flex-end",
+            marginTop: "1.3rem",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              columnGap: "1rem",
+            }}
+          >
+            <button
+              className="create-task-modal"
+              style={{
+                border: "1px solid rgba(27, 81, 187, 1)",
+                color: "rgba(27, 81, 187, 1)",
+                cursor: "pointer",
+              }}
+              onClick={() => setCreateTaskModal(false)}
+            >
+              Continue editing
+            </button>
+            <button
+              className="create-task-modal"
+              style={{
+                color: "#fff",
+                backgroundColor: "rgba(27, 81, 187, 1)",
+                cursor: "pointer",
+              }}
+              onClick={handleCreateManual}
+            >
+              Confirm
+            </button>
+          </div>
+        </div>
+      </Modal>
+    </>
   );
 }

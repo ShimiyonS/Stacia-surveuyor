@@ -114,7 +114,7 @@
     justify-content: space-between;
     width: 100%;
     border-radius: 5.5rem;
-    padding: 0.3rem;
+    /* padding: 0.3rem; */
 }
 
 .preset-btn {
@@ -155,10 +155,11 @@
 }
 
 .preset-date-check-box {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.3rem;
+    height: 1.3rem;
     border: 1px solid rgba(211, 220, 229, 1);
     border-radius: 0.3rem;
+    cursor: pointer;
 }
 
 .preset-date-txt {
@@ -187,4 +188,38 @@
 
 .create-board-filter-expand::-webkit-scrollbar {
     display: none;
+}
+
+
+/* list view filter styles */
+
+.filter-status-box{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.list-filter-status-btn{
+    border: 1px solid rgba(132, 147, 178, 1);
+    border-radius: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    color: rgba(131, 137, 140, 1);
+    cursor: pointer;
+
+}
+
+.task-filter-box{
+    display: flex;
+    align-items: center;
+    column-gap: 0.2rem;
+    margin-top: 1rem;
+}
+
+.filter-text{
+    color: rgba(132, 147, 178, 1);
+    font-family: EuclidMedium;
+    font-size: 1rem;
+
 }

@@ -2,40 +2,40 @@ import React from 'react'
 import styled from 'styled-components'
 import { IoDocumentText } from "react-icons/io5";
 
+const TaskNotification1 = styled.div`
+/* background-color: aquamarine; */
+margin-bottom: 2rem;
+`
+const Task = styled.div`
+    color: rgba(27, 36, 54, 1);
+    font-size: 1.6rem;
+    font-family: EuclidMedium;
+`
+
+const TaskNotificationCard = styled.div`
+    background-color: rgba(245, 249, 255, 1);
+    display: flex;
+    padding: 1rem 1rem 1.5rem 2.5rem;
+    border-radius: 1rem;
+    margin-top: 1rem;
+`
+
+const TaskTitle = styled.div`
+    color: rgba(27, 36, 54, 1);
+    font-size: 1.7rem;
+    font-family: EuclidMedium;
+`
+
+const TaskDesc = styled.p`
+    color: rgba(132, 147, 178, 1);
+    font-family: EuclidMedium;
+    margin-top: 0.8rem;
+`
+
 
 export default function TaskNotification() {
-    const TaskNotification = styled.div`
-    /* background-color: aquamarine; */
-    margin-bottom: 2rem;
-    `
-    const Task = styled.div`
-        color: rgba(27, 36, 54, 1);
-        font-size: 1.6rem;
-        font-family: EuclidMedium;
-    `
-
-    const TaskNotificationCard = styled.div`
-        background-color: rgba(245, 249, 255, 1);
-        display: flex;
-        padding: 1rem 1rem 1.5rem 2.5rem;
-        border-radius: 1rem;
-        margin-top: 1rem;
-    `
-
-    const TaskTitle = styled.div`
-        color: rgba(27, 36, 54, 1);
-        font-size: 1.7rem;
-        font-family: EuclidMedium;
-    `
-
-    const TaskDesc = styled.p`
-        color: rgba(132, 147, 178, 1);
-        font-family: EuclidMedium;
-        margin-top: 0.8rem;
-    `
-
     return (
-        <TaskNotification>
+        <TaskNotification1>
             <div style={{
                 display: "flex",
                 alignItems: "center",
@@ -152,6 +152,6 @@ export default function TaskNotification() {
                 </TaskNotificationCard>
             </div>
 
-        </TaskNotification>
+        </TaskNotification1>
     )
 }

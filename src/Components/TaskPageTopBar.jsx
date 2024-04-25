@@ -17,8 +17,75 @@ import TablerowMoreOptions from './TaskList/TablerowMoreOptions';
 import DateRangeFilter from './TaskList/DateRangeFilter';
 import NewTable from './TaskList/NewTable';
 import BoardFilter from './Board/BoardFilter';
+import TaskFilter from './TaskList/TaskFilter';
 
-export default function TaskPageTopBar() {
+const TaskPageTopBar1 = styled.div`
+width: 95%;
+/* background-color: bisque; */
+height: 3rem;
+margin: 0 auto;
+display: flex;
+align-items: center;
+justify-content: space-between;
+`
+
+const TaskTabs = styled.div`
+display: flex;
+column-gap: 1.5rem;
+`
+const TaskTab = styled.div`
+font-size: 1rem;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
+letter-spacing: -0.32px;
+cursor: pointer;
+`
+
+const TaskCTA = styled.div`
+display: flex;
+gap: 15px;
+align-items: center;
+`
+
+const CreateTask = styled.div`
+border-radius: 4.966px;
+border: 1.241px solid #1B51BB;
+background: #1B51BB;
+display: flex;
+align-items: center;
+padding: 0.5rem;
+`
+
+const FilterTask = styled.div`
+border-radius: 4.966px;
+border: 1.241px solid #9794AB;
+display: flex;
+align-items: center;
+padding: 0.5rem;
+
+`
+
+const ButtonText = styled.div`
+margin-left: 0.8rem;
+color: #fff;
+font-size: 0.8rem;
+font-weight: 400;
+text-align: center;
+`
+
+const FilterText = styled.div`
+margin-left: 0.8rem;
+color: #9794AB;
+font-size: 0.8rem;
+font-weight: 400;
+text-align: center;
+`
+
+
+export default function TaskPageTopBar({ setFilterType, filterType,
+  setSurveyorId, surveyorId
+}) {
 
   const [listTabActive, setListTabActive] = useState(true);
   const [boardTabActive, setBoardTabActive] = useState(false);
@@ -27,70 +94,11 @@ export default function TaskPageTopBar() {
   const [openFilterModal, setOpenFilterModal] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
 
+  const [completedTaskData, setCompletedTaskData] = useState(null);
+
+
   const navigate = useNavigate();
 
-  const TaskPageTopBar = styled.div`
-    width: 95%;
-    /* background-color: bisque; */
-    height: 3rem;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  `
-
-  const TaskTabs = styled.div`
-    display: flex;
-    column-gap: 1.5rem;
-  `
-  const TaskTab = styled.div`
-    font-size: 1rem;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-    letter-spacing: -0.32px;
-    cursor: pointer;
-  `
-
-  const TaskCTA = styled.div`
-    display: flex;
-    gap: 15px;
-    align-items: center;
-  `
-
-  const CreateTask = styled.div`
-    border-radius: 4.966px;
-    border: 1.241px solid #1B51BB;
-    background: #1B51BB;
-    display: flex;
-    align-items: center;
-    padding: 0.5rem;
-  `
-
-  const FilterTask = styled.div`
-    border-radius: 4.966px;
-    border: 1.241px solid #9794AB;
-    display: flex;
-    align-items: center;
-    padding: 0.5rem;
-    
-  `
-
-  const ButtonText = styled.div`
-  margin-left: 0.8rem;
-  color: #fff;
-  font-size: 0.8rem;
-  font-weight: 400;
-  text-align: center;
-`
-
-  const FilterText = styled.div`
-  margin-left: 0.8rem;
-  color: #9794AB;
-  font-size: 0.8rem;
-  font-weight: 400;
-  text-align: center;
-`
 
   const customStyles = {
     content: {
@@ -116,6 +124,8 @@ export default function TaskPageTopBar() {
   const closeModal = () => {
     setModalOpen(false);
   };
+
+  console.log("filter type", filterType);
 
   return (
     <>
@@ -165,9 +175,20 @@ export default function TaskPageTopBar() {
                 Filter
               </div>
             </div>
-            {openFilterModal && (
+            {openFilterModal && boardTabActive && (
               <div className="board-filter-box">
                 <BoardFilter />
+              </div>
+            )}
+
+            {openFilterModal && listTabActive && (
+              <div className="board-filter-box">
+                <TaskFilter
+                  setFilterType={setFilterType}
+                  filterType={filterType}
+                  setSurveyorId={setSurveyorId}
+                  surveyorId={surveyorId}
+                />
               </div>
             )}
 
@@ -191,7 +212,11 @@ export default function TaskPageTopBar() {
       }
 
       {
-        listTabActive && <ListViewInTask />
+        listTabActive && <ListViewInTask
+          filterType={filterType}
+          setSurveyorId={setSurveyorId}
+          surveyorId={surveyorId}
+        />
         // listTabActive && <NewTable />
       }
     </>

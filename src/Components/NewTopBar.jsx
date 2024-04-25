@@ -10,6 +10,10 @@ import { PageContext } from '../Context/PageContext'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { IoIosArrowBack } from "react-icons/io";
 
+const ProfileBasedLinks = styled.div`
+display: flex;
+gap: 25px;
+`
 
 export default function NewTopBar({ pageName }) {
 
@@ -34,10 +38,7 @@ export default function NewTopBar({ pageName }) {
         },
     ];
 
-    const ProfileBasedLinks = styled.div`
-    display: flex;
-    gap: 25px;
-`
+
 
     const navigate = useNavigate();
     const id = location.pathname.split('/');
@@ -60,7 +61,8 @@ export default function NewTopBar({ pageName }) {
                 {location.pathname === "/calendar" && 'Calendar'}
                 {location.pathname === "/create-task/calendar" && 'Calendar'}
                 {location.pathname === "/notifications" && 'Notification'}
-                
+                {location.pathname === "/chat" && 'Chats'}
+
             </div>
             <div className="search-box-container">
                 <div className="search-box">
@@ -72,7 +74,7 @@ export default function NewTopBar({ pageName }) {
                     {
                         logos.map(({ path, logo }, index) => (
                             <Link className='top-bar-logo'
-                            to={path}
+                                to={path}
                             >
                                 <img src={logo} alt="" />
                             </Link>

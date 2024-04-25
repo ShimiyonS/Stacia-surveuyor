@@ -210,8 +210,7 @@ const TaskData = [
 
 ];
 
-export default function Board() {
-    const Board = styled.div`
+const Board1 = styled.div`
     width: 95%;
     min-height: calc(100vh - 140px);
     margin: 0 auto;
@@ -224,7 +223,7 @@ export default function Board() {
     padding: 5px;
   `
 
-    const TaskCard = styled.div`
+const TaskCard = styled.div`
     /* background-color: pink; */
     margin-bottom: 14px;
     border-radius: 8px;
@@ -235,7 +234,7 @@ export default function Board() {
     align-items: center;
  `
 
-    const TaskSection = styled.div`
+const TaskSection = styled.div`
     height: 100%;
     max-height: 80vh;
     /* height: 100%; */
@@ -252,7 +251,7 @@ export default function Board() {
     }
  `
 
-    const SectionLine = styled.div`
+const SectionLine = styled.div`
         width: 95%;
         margin: 0 auto;
         height: 1px;
@@ -260,7 +259,7 @@ export default function Board() {
         margin-top: 15px;
     `
 
-    const TaskImgBehind = styled.div`
+const TaskImgBehind = styled.div`
         width: 48px;
         height: 48px;
         background-color: #fff;
@@ -270,27 +269,30 @@ export default function Board() {
         align-items: center;
     `
 
-    const TaskDesc = styled.p`
+const TaskDesc = styled.p`
         
     `
 
-    const ThreeDots = styled.div`
+const ThreeDots = styled.div`
         display: flex;
         flex-direction: column;
         gap: 2px;
     `
 
-    const ThreeDot = styled.div`
+const ThreeDot = styled.div`
         width: 4px;
         height: 4px;
         background-color: grey;
         border-radius: 3px;
     `
 
+export default function Board() {
+
+
     const [cardColor, setCardColor] = useState('');
 
     return (
-        <Board className='scroll-tasks'>
+        <Board1 className='scroll-tasks'>
             {
                 TaskData.map((data, index) => (
                     <TaskSection key={index} className='scroll-tasks'
@@ -333,6 +335,6 @@ export default function Board() {
                     </TaskSection>
                 ))
             }
-        </Board>
+        </Board1>
     )
 }

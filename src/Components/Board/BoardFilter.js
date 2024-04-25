@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { IoCalendarOutline } from "react-icons/io5";
 import { IoPersonOutline } from "react-icons/io5";
 import { SiGoogleforms } from "react-icons/si";
@@ -9,148 +9,15 @@ import { MdDone } from "react-icons/md";
 import SurveyorSelectTemplate from "../TaskList/SurveyorSelectTemplate";
 import SurveyorTemplate from "../TaskList/SurveyorTemplate";
 import { surveyorData } from "../../data/SurveyorData";
-
-// const data = [
-//   {
-//     label: "ariyalur",
-//     labelId: 1,
-//     value: "a",
-//     regionImg:
-//       "https://upload.wikimedia.org/wikipedia/commons/3/32/Chennai_Central.jpg",
-//     children: [
-//       {
-//         label: "Ponbaskar",
-//         value: "ponbaskar",
-//         sid: 11,
-//         imgSrc:
-//           "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
-//       },
-//       {
-//         label: "Ramasamy",
-//         value: "ramasamy",
-//         sid: 12,
-//         imgSrc:
-//           "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
-//       },
-//     ],
-//   },
-//   {
-//     label: "chennai",
-//     labelId: 2,
-//     value: "c",
-//     regionImg:
-//       "https://upload.wikimedia.org/wikipedia/commons/3/32/Chennai_Central.jpg",
-//     children: [
-//       {
-//         label: "Ponbaskar",
-//         value: "ponbaskar",
-//         sid: 21,
-//         imgSrc:
-//           "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
-//       },
-//       {
-//         label: "Ramasamy",
-//         value: "ramasamy",
-//         sid: 22,
-//         imgSrc:
-//           "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
-//       },
-//     ],
-//   },
-//   {
-//     label: "madurai",
-//     regionImg:
-//       "https://assets-news.housing.com/news/wp-content/uploads/2022/07/28160317/Madurai-feature-compressed.jpg",
-//     labelId: 3,
-//     value: "m",
-//     children: [
-//       {
-//         label: "baskar",
-//         value: "baskar",
-//         sid: 31,
-//         imgSrc:
-//           "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
-//       },
-//     ],
-//   },
-//   {
-//     label: "chengalpet",
-//     regionImg:
-//       "https://www.shutterstock.com/image-photo/mahabalipuram-temple-famous-tamil-nadu-600nw-2154084347.jpg",
-//     labelId: 4,
-//     value: "c",
-//     children: [
-//       {
-//         label: "Ratheesh",
-//         value: "ratheesh",
-//         sid: 41,
-//         imgSrc:
-//           "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
-//       },
-//       {
-//         label: "Rithvik",
-//         value: "rithvik",
-//         sid: 42,
-//         imgSrc:
-//           "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
-//       },
-//       {
-//         label: "Seeman",
-//         value: "seeman",
-//         sid: 43,
-//         imgSrc:
-//           "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
-//       },
-//       {
-//         label: "Raja",
-//         value: "raja",
-//         sid: 44,
-//         imgSrc:
-//           "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
-//       },
-//     ],
-//   },
-//   {
-//     label: "virudhunagar",
-//     regionImg:
-//       "https://1.bp.blogspot.com/-tm0VkMox8FU/XTg89NB1xMI/AAAAAAAAKCc/FSOocD6phP0wC9EWb9urV2W5F3zYK3oDQCLcBGAs/s1600/Virudhunagar_Top_Angle-useful%2Bdirectories.jpg",
-//     labelId: 5,
-//     value: "v",
-//     children: [
-//       {
-//         label: "Raja",
-//         value: "raja",
-//         sid: 51,
-//         imgSrc:
-//           "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
-//       },
-//       {
-//         label: "Ratheesh",
-//         value: "ratheesh",
-//         sid: 52,
-//         imgSrc:
-//           "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
-//       },
-//       {
-//         label: "Rithvik",
-//         value: "rithvik",
-//         sid: 53,
-//         imgSrc:
-//           "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
-//       },
-//       {
-//         label: "Raja",
-//         value: "raja",
-//         sid: 54,
-//         imgSrc:
-//           "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/220px-Walter_White_S5B.png",
-//       },
-//     ],
-//   },
-// ];
+import { PageContext } from "../../Context/PageContext";
+import SurveyorFilter from "../TaskList/SurveyorFilter";
+import axios from "axios";
 
 const CreateboardTemplate = ({ type, icon }) => {
   const [openCreateboardExpand, setOpenCreateboardExpand] = useState(false);
+  const { showDateRange, showStatus } = useContext(PageContext);
+
+  console.log("showDateRange", showDateRange);
 
   return (
     <div
@@ -190,22 +57,9 @@ const CreateboardTemplate = ({ type, icon }) => {
       </div>
       {openCreateboardExpand && (
         <div className="create-board-filter-expand">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam eget
-          purus feugiat, eleifend turpis non, commodo metus. Ut facilisis
-          facilisis odio, sed luctus lectus faucibus et. Praesent accumsan dui
-          non quam sodales interdum vitae ut tortor. Integer ut ante ex. Mauris
-          a eleifend odio, a feugiat leo. Morbi vitae augue erat. Donec et dolor
-          id felis rutrum molestie. Duis ipsum justo, maximus quis molestie
-          vitae, dignissim a leo. Sed velit diam, iaculis at tincidunt ut,
-          pulvinar non odio. Curabitur fermentum posuere lacus sit amet laoreet.
-          Sed mauris lectus, aliquet non efficitur ac, sodales in neque. Morbi
-          eleifend, erat id finibus euismod, massa mauris molestie dolor, ut
-          gravida sapien sapien eu purus. Nullam eu luctus sem, sed hendrerit
-          arcu. Proin ullamcorper massa vel velit venenatis tincidunt. Fusce et
-          lacus odio. Nulla nec interdum ex, sed dapibus ex. Proin congue non
-          lectus vel fermentum. Cras interdum fringilla massa vitae eleifend.
-          Proin rhoncus ex sed ex facilisis hendrerit. Donec consectetur dapibus
-          neque.
+          {showDateRange.map((data) => {
+            <div>{data.displayName}</div>;
+          })}
         </div>
       )}
     </div>
@@ -287,8 +141,28 @@ export default function BoardFilter() {
   const [openSelectSurveyor, setOpenSelectSurveyor] = useState(false);
   const [selectedAllUsers, setSelectedAllUsers] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
-
+  const [type, setType] = useState("");
+  const [selectedID, setSelectedID] = useState("");
   const [activeSelectedSurveyors, setActiveSelectedSurveyors] = useState(false);
+
+  const {
+    filterByStatus,
+    setFilterByStatus,
+    boardSurveyorId,
+    setBoardSurveyorId,
+    boardViewStatus,
+    setBoardViewStatus,
+    boardDateFilter,
+    setBoardDateFilter,
+    boardRangeFilter,
+    setBoardRangeFilter,
+    boardFilterActive,
+    setBoardFilterActive,
+    selectedSurveyors,
+    setSelectedSurveyors,
+    setShowDateRange,
+    setShowStatus,
+  } = useContext(PageContext);
 
   const handleCreateboard = () => {
     setPreset(false);
@@ -310,6 +184,8 @@ export default function BoardFilter() {
   // a-z arr
   const azArr = [];
   const [selectedLetter, setSelectedLetter] = useState("");
+
+  const [createBoardFilter, setCreateBoardFilter] = useState([]);
 
   // const handleFormModal = () => {
   //   setOpenFormFrameModal(!openFormFrameModal);
@@ -359,18 +235,45 @@ export default function BoardFilter() {
   const handleAllSelect = () => {};
 
   const dateRange = [
-    "Unsigned",
-    "Over due",
-    "Due in the next day",
-    "Due next week",
-    "Due next month",
+    {
+      status: "Unsigned",
+      type: "notAssigned",
+    },
+    {
+      status: "Over due",
+      type: "overdue",
+    },
+    {
+      status: "Due in the next day",
+      type: "day",
+    },
+    {
+      status: "Due next week",
+      type: "week",
+    },
+    {
+      status: "Due next month",
+      type: "month",
+    },
   ];
 
   const activity = [
-    "Active from last week",
-    "Active from last two week",
-    "Active from last four week",
-    "Without Active from last four week",
+    {
+      status: "Active from last week",
+      type: "lastweek",
+    },
+    {
+      status: "Active from last two week",
+      type: "last2week",
+    },
+    {
+      status: "Active from last four week",
+      type: "last4week",
+    },
+    {
+      status: "Without Active from last four week",
+      type: "inactive",
+    },
   ];
 
   const status = [
@@ -378,16 +281,19 @@ export default function BoardFilter() {
       status: "Initiated",
       color: "rgba(207, 104, 30, 1)",
       bg: "rgba(255, 235, 168, 1)",
+      type: "initiated",
     },
     {
       status: "Completed",
       color: "rgba(0, 179, 72, 1)",
       bg: "rgba(58, 255, 137, 0.15)",
+      type: "completed",
     },
     {
       status: "Pending",
       color: "rgba(221, 54, 31, 1)",
       bg: "rgba(255, 159, 159, 0.3)",
+      type: "pending",
     },
   ];
 
@@ -444,6 +350,66 @@ export default function BoardFilter() {
   // console.log("selected users", selectedUsers);
   console.log("selected all users", selectedAllUsers);
 
+  const handleBoardViewStatus = (boardStatus) => {
+    if (boardViewStatus.includes(boardStatus)) {
+      setBoardViewStatus(
+        boardViewStatus.filter((filter) => filter !== boardStatus)
+      );
+    } else {
+      setBoardViewStatus([...boardViewStatus, boardStatus]);
+    }
+  };
+
+  const handleBoardViewDateFilter = (dateFilter) => {
+    if (boardDateFilter.includes(dateFilter)) {
+      setBoardDateFilter(
+        boardDateFilter.filter((filter) => filter !== dateFilter)
+      );
+      setBoardFilterActive(false);
+    } else {
+      setBoardDateFilter([...boardDateFilter, dateFilter]);
+      setBoardFilterActive(true);
+    }
+  };
+
+  const handleBoardViewRangeFilter = (rangeFilter) => {
+    if (boardRangeFilter.includes(rangeFilter)) {
+      setBoardRangeFilter(
+        boardRangeFilter.filter((filter) => filter !== rangeFilter)
+      );
+    } else {
+      setBoardRangeFilter([...boardRangeFilter, rangeFilter]);
+    }
+  };
+
+  console.log("++++++++++++++=======================");
+  console.log(selectedSurveyors);
+  console.log("++++++++++++++=======================");
+
+  const getCreateBoardFilter = async () => {
+    try {
+      const res = await axios.get(
+        `http://192.168.0.115:8001/board/task-board-filter/660aa4d54a8e525d204aaa77`
+      );
+      console.log(res.data.data);
+      Object.keys(res.data.data).map((data) => {
+        if (data === "status") {
+          setShowStatus(res.data.data[data]);
+        }
+        if (data === "timeframe") {
+          setShowDateRange(res.data.data[data]);
+        }
+      });
+      // setCreateBoardFilter(res.data.data);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  useEffect(() => {
+    getCreateBoardFilter();
+  }, []);
+
   return (
     <div>
       <div
@@ -492,156 +458,163 @@ export default function BoardFilter() {
           {/* preset */}
 
           <div className="preset-filter">
-            <div
+            {/* <div
               className="preset-filter-select-surveyor"
               onClick={() => setOpenSelectSurveyor(!openSelectSurveyor)}
             >
               Select Surveyor
-            </div>
-            {openSelectSurveyor && (
-              <div
-                style={{
-                  marginTop: "0.5rem",
-                }}
-                className="select-surveyor-pop-below"
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <div className="pop-over-surveyor-txt">Surveyor</div>
-                  <input
-                    placeholder="Search"
-                    className="pop-over-surveyor-search"
-                  />
-                </div>
-                <div className="surveyor-data-container">
-                  {sortArr.map((data) => (
-                    <div
-                      style={{
-                        marginTop: "1rem",
-                      }}
-                    >
-                      <div className="surveyor-region-txt">
-                        <span
-                          style={{
-                            marginRight: "0.6rem",
-                          }}
-                          onClick={() => {
-                            handleToggle(data.labelId);
-                          }}
-                        >
-                          <input type="checkbox" />
-                        </span>
-                        {data.label}
-                      </div>
-                      <div
-                        style={{
-                          width: "100%",
-                          height: "1px",
-                          backgroundColor: "rgba(211, 220, 229, 1)",
-                          marginBottom: "1rem",
-                        }}
-                      ></div>
-                      {data.children.map((child) => (
-                        <SurveyorTemplate
-                          name={child.label}
-                          img={child.imgSrc}
-                          id={child.sid}
-                          handleWithoutAllselect={handleWithoutAllselect}
-                          selectedUsers={selectedUsers}
-                        />
-                        // <SurveyorSelectTemplate
-                        //   surveyor_img={child.label}
-                        //   surveyor_name={child.label}
-                        //   surveyor_id={child.id}
-                        //   selectedUsers={selectedUsers}
-                        //   handleWithoutAllselect={handleWithoutAllselect}
-                        // />
-                      ))}
-                    </div>
-                  ))}
-                </div>
-                <div
-                  style={{
-                    width: "100%",
-                    height: "1px",
-                    backgroundColor: "rgba(211, 220, 229, 1)",
-                  }}
-                ></div>
-                <div className="surveyor-sort-container">
-                  <div
-                    style={{
-                      display: "flex",
-                      height: "40%",
-                      columnGap: "0.3rem",
-                      // backgroundColor: "red",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    {azArr.map((letter) => (
-                      <div
-                        className="sorted-letters"
-                        onClick={() => handleSort(letter)}
-                        style={{
-                          backgroundColor:
-                            letter === selectedLetter
-                              ? "rgba(27, 81, 187, 1)"
-                              : "#fff",
-                          color:
-                            letter === selectedLetter
-                              ? "#fff"
-                              : "rgba(132, 147, 178, 1)",
-                          // padding: "2px",
-                          borderRadius: "0.2rem",
-                          fontFamily: "EuclidRegular",
-                        }}
-                      >
-                        {letter}
-                      </div>
-                    ))}
-                  </div>
-                  <div className="img-sort">
-                    {surveyorData.map(({ label, regionImg, value }) => (
-                      <div
-                        className="popover-img-box"
-                        onClick={() => handleSort(value)}
-                      >
-                        <div
-                          style={{
-                            width: "7rem",
-                            height: "3rem",
-                          }}
-                        >
-                          <img
-                            src={regionImg}
-                            style={{
-                              width: "100%",
-                              height: "100%",
-                              objectFit: "cover",
-                              borderRadius: "0.3rem",
-                            }}
-                          />
-                        </div>
-                        <div
-                          style={{
-                            color: "rgba(132, 147, 178, 1)",
-                            fontSize: "0.8rem",
-                            fontFamily: "EuclidRegular",
-                          }}
-                        >
-                          {label}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
+            </div> */}
+            {/* {openSelectSurveyor && (
+              // <div
+              //   style={{
+              //     marginTop: "0.5rem",
+              //   }}
+              //   className="select-surveyor-pop-below"
+              // >
+              //   <div
+              //     style={{
+              //       display: "flex",
+              //       justifyContent: "space-between",
+              //       alignItems: "center",
+              //     }}
+              //   >
+              //     <div className="pop-over-surveyor-txt">Surveyor</div>
+              //     <input
+              //       placeholder="Search"
+              //       className="pop-over-surveyor-search"
+              //     />
+              //   </div>
+              //   <div className="surveyor-data-container">
+              //     {sortArr.map((data) => (
+              //       <div
+              //         style={{
+              //           marginTop: "1rem",
+              //         }}
+              //       >
+              //         <div className="surveyor-region-txt">
+              //           <span
+              //             style={{
+              //               marginRight: "0.6rem",
+              //             }}
+              //             onClick={() => {
+              //               handleToggle(data.labelId);
+              //             }}
+              //           >
+              //             <input type="checkbox" />
+              //           </span>
+              //           {data.label}
+              //         </div>
+              //         <div
+              //           style={{
+              //             width: "100%",
+              //             height: "1px",
+              //             backgroundColor: "rgba(211, 220, 229, 1)",
+              //             marginBottom: "1rem",
+              //           }}
+              //         ></div>
+              //         {data.children.map((child) => (
+              //           <SurveyorTemplate
+              //             name={child.label}
+              //             img={child.imgSrc}
+              //             id={child.sid}
+              //             handleWithoutAllselect={handleWithoutAllselect}
+              //             selectedUsers={selectedUsers}
+              //           />
+              //           // <SurveyorSelectTemplate
+              //           //   surveyor_img={child.label}
+              //           //   surveyor_name={child.label}
+              //           //   surveyor_id={child.id}
+              //           //   selectedUsers={selectedUsers}
+              //           //   handleWithoutAllselect={handleWithoutAllselect}
+              //           // />
+              //         ))}
+              //       </div>
+              //     ))}
+              //   </div>
+              //   <div
+              //     style={{
+              //       width: "100%",
+              //       height: "1px",
+              //       backgroundColor: "rgba(211, 220, 229, 1)",
+              //     }}
+              //   ></div>
+              //   <div className="surveyor-sort-container">
+              //     <div
+              //       style={{
+              //         display: "flex",
+              //         height: "40%",
+              //         columnGap: "0.3rem",
+              //         // backgroundColor: "red",
+              //         alignItems: "center",
+              //         justifyContent: "center",
+              //       }}
+              //     >
+              //       {azArr.map((letter) => (
+              //         <div
+              //           className="sorted-letters"
+              //           onClick={() => handleSort(letter)}
+              //           style={{
+              //             backgroundColor:
+              //               letter === selectedLetter
+              //                 ? "rgba(27, 81, 187, 1)"
+              //                 : "#fff",
+              //             color:
+              //               letter === selectedLetter
+              //                 ? "#fff"
+              //                 : "rgba(132, 147, 178, 1)",
+              //             // padding: "2px",
+              //             borderRadius: "0.2rem",
+              //             fontFamily: "EuclidRegular",
+              //           }}
+              //         >
+              //           {letter}
+              //         </div>
+              //       ))}
+              //     </div>
+              //     <div className="img-sort">
+              //       {surveyorData.map(({ label, regionImg, value }) => (
+              //         <div
+              //           className="popover-img-box"
+              //           onClick={() => handleSort(value)}
+              //         >
+              //           <div
+              //             style={{
+              //               width: "7rem",
+              //               height: "3rem",
+              //             }}
+              //           >
+              //             <img
+              //               src={regionImg}
+              //               style={{
+              //                 width: "100%",
+              //                 height: "100%",
+              //                 objectFit: "cover",
+              //                 borderRadius: "0.3rem",
+              //               }}
+              //             />
+              //           </div>
+              //           <div
+              //             style={{
+              //               color: "rgba(132, 147, 178, 1)",
+              //               fontSize: "0.8rem",
+              //               fontFamily: "EuclidRegular",
+              //             }}
+              //           >
+              //             {label}
+              //           </div>
+              //         </div>
+              //       ))}
+              //     </div>
+              //   </div>
+              // </div> */}
+            <SurveyorFilter
+              setSelectedID={setSelectedID}
+              setSelectedUsers={setSelectedUsers}
+              setType={setType}
+              setSurveyorId={setBoardSurveyorId}
+              surveyorId={boardSurveyorId}
+            />
+            {/* )} */}
           </div>
 
           {/* date range */}
@@ -657,8 +630,16 @@ export default function BoardFilter() {
                   columnGap: "0.6rem",
                 }}
               >
-                <div className="preset-date-check-box"></div>
-                <div className="preset-date-txt">{data}</div>
+                <div
+                  className="preset-date-check-box"
+                  style={{
+                    backgroundColor: boardDateFilter.includes(data.type)
+                      ? "blue"
+                      : "transparent",
+                  }}
+                  onClick={() => handleBoardViewDateFilter(data.type)}
+                ></div>
+                <div className="preset-date-txt">{data.status}</div>
               </div>
             </div>
           ))}
@@ -675,8 +656,16 @@ export default function BoardFilter() {
                   columnGap: "0.6rem",
                 }}
               >
-                <div className="preset-date-check-box"></div>
-                <div className="preset-date-txt">{data}</div>
+                <div
+                  className="preset-date-check-box"
+                  style={{
+                    backgroundColor: boardDateFilter.includes(data.type)
+                      ? "blue"
+                      : "transparent",
+                  }}
+                  onClick={() => handleBoardViewDateFilter(data.type)}
+                ></div>
+                <div className="preset-date-txt">{data.status}</div>
               </div>
             </div>
           ))}
@@ -690,7 +679,7 @@ export default function BoardFilter() {
               justifyContent: "space-between",
             }}
           >
-            {status.map(({ status, bg, color }) => (
+            {status.map(({ status, bg, color, type }, index) => (
               <div className="preset-date-range">
                 <div
                   style={{
@@ -699,7 +688,18 @@ export default function BoardFilter() {
                     columnGap: "0.6rem",
                   }}
                 >
-                  <div className="preset-date-check-box"></div>
+                  <div
+                    className="preset-date-check-box"
+                    onClick={() => {
+                      setFilterByStatus(type);
+                      handleBoardViewStatus(type);
+                    }}
+                    style={{
+                      backgroundColor: boardViewStatus.includes(type)
+                        ? "blue"
+                        : "transparent",
+                    }}
+                  ></div>
                   <div
                     style={{
                       color: color,

@@ -79,13 +79,18 @@
 
 .event-colors{
     position: absolute;
-    background-color: pink;
+    background-color: rgba(255, 255, 255, 1);
     width: 4rem;
+    padding: 1.5rem 0.5rem;
+    border-radius: 0.3rem;
     z-index: 222;
     margin-top: 3rem;
     display: flex;
     flex-direction: column;
     align-items: center;
+    -webkit-box-shadow: 4px 0 32px 0 rgba(61, 70, 112, 0.14);
+    -moz-box-shadow: 4px 0 32px 0 rgba(61, 70, 112, 0.14);
+    box-shadow: 4px 0 32px 0 rgba(61, 70, 112, 0.14);
 }
 
 .event-title-box {
@@ -283,4 +288,10 @@
     border-radius: 0.3rem;
     margin-top: 2rem;
     justify-content: flex-end;
+}
+
+/* member box */
+
+.member-box::-webkit-scrollbar{
+    display: none;
 }

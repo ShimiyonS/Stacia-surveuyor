@@ -1,5 +1,7 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { SiGoogleforms } from "react-icons/si";
+import UserSelectTemplate from "../TaskList/UserSelectTemplate";
 
 const data = [
   {
@@ -135,10 +137,13 @@ const TagTemplate = ({ formName, tags }) => {
   );
 };
 
-export default function SelectBySurveyor() {
+export default function SelectBySurveyor({ setSelectedID, setSelectedUsers, setType }) {
   const [openFormFrameModal, setOpenFormFrameModal] = useState(false);
   const [sortArr, setSortArr] = useState([]);
   const [selectSurveyor, setSelectSurveyor] = useState();
+
+  const [surveyors, setSurveyors] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   // a-z arr
   const azArr = [];
@@ -160,14 +165,45 @@ export default function SelectBySurveyor() {
     azArr.push(String.fromCharCode(i));
   }
 
-  const handleSelectUser = (selectedSurveyorData) => {
-    setSelectSurveyor(selectedSurveyorData);
-    console.log(selectedSurveyorData);
+  const handleSelectUser = async (selectedSurveyorData) => {
+    console.log("---------",selectedSurveyorData._id);
+    setSelectedID(selectedSurveyorData._id);
+    setType("surveyor");
+    // try {
+    //   const res = await axios.get(
+    //     `http://192.168.0.115:8001/task/task-board/660aa4d54a8e525d204aaa77?query=surveyor&id=${selectedSurveyorData._id}`
+    //   );
+    //   setSelectedUsers(res.data.data);
+    //   setSelectSurveyor(selectedSurveyorData);
+    //   setSelectedID(selectedSurveyorData._id);
+    // } catch (err) {
+    //   console.log(err.message);
+    // }
+  };
+
+  // useEffect(() => {
+  //   handleSort("a");
+  // }, []);
+
+  const selectBySurveyor = async (selectedLetter) => {
+    try {
+      const users = await axios.get(
+        `http://192.168.0.115:8000/user/surveyors?query=${selectedLetter}`
+      );
+      setSurveyors(users.data.data);
+      setLoading(true);
+      setSelectedLetter(selectedLetter);
+    } catch (err) {
+      console.log(err.message);
+    }
   };
 
   useEffect(() => {
-    handleSort("a");
+    selectBySurveyor("a");
+    console.log(surveyors);
   }, []);
+
+  console.log("renders....");
 
   return (
     <div className="create-board-based-form">
@@ -187,76 +223,77 @@ export default function SelectBySurveyor() {
             <input placeholder="Search" className="pop-over-surveyor-search" />
           </div>
           <div className="surveyor-data-container">
-            {sortArr.map((data) => (
-              <div
-                style={{
-                  marginTop: "1rem",
-                }}
-              >
-                <div className="surveyor-region-txt">
-                  <span
-                    style={{
-                      marginRight: "0.6rem",
-                    }}
-                  >
-                    <input type="checkbox" />
-                  </span>
-                  {data.label}
-                </div>
+            {loading &&
+              surveyors.map((data) => (
                 <div
                   style={{
-                    width: "100%",
-                    height: "1px",
-                    backgroundColor: "rgba(211, 220, 229, 1)",
-                    marginBottom: "1rem",
+                    marginTop: "1rem",
                   }}
-                ></div>
-                {data.children.map((child) => (
+                >
+                  <div className="surveyor-region-txt">
+                    <span
+                      style={{
+                        marginRight: "0.6rem",
+                      }}
+                    >
+                      <input type="checkbox" />
+                    </span>
+                    {data.district}
+                  </div>
                   <div
                     style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      padding: "0.4rem",
-                      cursor: "pointer",
-                      fontFamily: "EuclidMedium",
-                      color: "rgba(132, 147, 178, 1)",
+                      width: "100%",
+                      height: "1px",
+                      backgroundColor: "rgba(211, 220, 229, 1)",
+                      marginBottom: "1rem",
                     }}
-                    onClick={() => {
-                      setOpenFormFrameModal(false);
-                      handleSelectUser(child);
-                    }} // handleSelectSurveyors
-                  >
+                  ></div>
+                  {data.users.map((child) => (
                     <div
                       style={{
                         display: "flex",
+                        justifyContent: "space-between",
                         alignItems: "center",
-                        columnGap: "0.6rem",
+                        padding: "0.4rem",
+                        cursor: "pointer",
+                        fontFamily: "EuclidMedium",
+                        color: "rgba(132, 147, 178, 1)",
                       }}
+                      onClick={() => {
+                        setOpenFormFrameModal(false);
+                        handleSelectUser(child);
+                      }} // handleSelectSurveyors
                     >
                       <div
                         style={{
-                          width: "2rem",
-                          height: "2rem",
+                          display: "flex",
+                          alignItems: "center",
+                          columnGap: "0.6rem",
                         }}
                       >
-                        <img
-                          src={child.imgSrc}
+                        <div
                           style={{
-                            width: "100%",
-                            height: "100%",
-                            borderRadius: "50%",
-                            objectFit: "cover",
+                            width: "2rem",
+                            height: "2rem",
                           }}
-                        />
+                        >
+                          <img
+                            src={child.dpFullUrl}
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              borderRadius: "50%",
+                              objectFit: "cover",
+                            }}
+                          />
+                        </div>
+                        <div>{child.fullName}</div>
                       </div>
-                      <div>{child.label}</div>
+                      <div>Assigned task({child.taskCount})</div>
                     </div>
-                    <div>Assigned task(10)</div>
-                  </div>
-                ))}
-              </div>
-            ))}
+                  ))}
+                </div>
+              ))}
           </div>
           <div
             style={{
@@ -279,7 +316,7 @@ export default function SelectBySurveyor() {
               {azArr.map((letter) => (
                 <div
                   className="sorted-letters"
-                  onClick={() => handleSort(letter)}
+                  onClick={() => selectBySurveyor(letter)}
                   style={{
                     backgroundColor:
                       letter === selectedLetter
@@ -302,7 +339,7 @@ export default function SelectBySurveyor() {
               {data.map(({ label, regionImg, value }) => (
                 <div
                   className="popover-img-box"
-                  onClick={() => handleSort(value)}
+                  onClick={() => selectBySurveyor(value)}
                 >
                   <div
                     style={{
@@ -357,7 +394,7 @@ export default function SelectBySurveyor() {
             >
               <div className="selected-surveyor-img-box">
                 <img
-                  src={selectSurveyor.imgSrc}
+                  src={selectSurveyor.dpFullUrl}
                   style={{
                     width: "100%",
                     height: "100%",
@@ -367,10 +404,12 @@ export default function SelectBySurveyor() {
                 />
               </div>
               <div className="selected-surveyor-name">
-                {selectSurveyor.label}
+                {selectSurveyor.fullName}
               </div>
             </div>
-            <div className="selected-surveyor-tasks">Assigned task(10)</div>
+            <div className="selected-surveyor-tasks">
+              Assigned task({selectSurveyor.taskCount})
+            </div>
           </div>
         </div>
       )}

@@ -21,6 +21,8 @@ import SpecificTask from "./Components/TaskList/SpecificTask";
 import CreateTask from "./Components/TaskList/CreateTask";
 import TaskNextPage from "./Components/TaskList/TaskNextPage";
 import Notifications from "./Components/Notification/Notifications";
+import Chat from "./Pages/Chat";
+import EditTask from "./Components/TaskList/EditTask";
 
 function App() {
   const [isAuthenticated, setAuthenticated] = useState(true);
@@ -29,7 +31,7 @@ function App() {
   const handleFileChange = (file) => {
     setSelectedFile(file);
   };
-  
+
   return (
     <PageContextProvider>
       <div className="App">
@@ -46,9 +48,11 @@ function App() {
             <Route
               path="/"
               element={
-                isAuthenticated ? <OverviewPage 
-                  pageName={pageName}
-                /> : <Navigate to="/signin" />
+                isAuthenticated ? (
+                  <OverviewPage pageName={pageName} />
+                ) : (
+                  <Navigate to="/signin" />
+                )
               }
             />
             <Route
@@ -61,9 +65,21 @@ function App() {
               path="/create-task"
               element={
                 isAuthenticated ? (
-                  <CreateTask onFileChange={handleFileChange} />
+                  <CreateTask onFileChange={handleFileChange} 
+                  />
                 ) : (
                   <Navigate to="/create-task" />
+                )
+              }
+            />
+            <Route
+              path="/surveyor-tasks/edit-task/:id"
+              element={
+                isAuthenticated ? (
+                  <EditTask onFileChange={handleFileChange} 
+                  />
+                ) : (
+                  <Navigate to="/surveyor-tasks/edit-task/:id" />
                 )
               }
             />
@@ -95,11 +111,15 @@ function App() {
                 isAuthenticated ? <CalendarPage /> : <Navigate to="/signin" />
               }
             />
-            <Route 
+            <Route
               path="/notifications"
               element={
                 isAuthenticated ? <Notifications /> : <Navigate to="/signin" />
               }
+            />
+            <Route
+              path="/chat"
+              element={isAuthenticated ? <Chat /> : <Navigate to="/chat" />}
             />
             <Route path="/signin" element={<SignInpage />} />
           </Routes>

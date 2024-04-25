@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import { MdDone } from "react-icons/md";
+import { PageContext } from "../../Context/PageContext";
 
 export default function SurveyorTemplate({
   img,
@@ -7,11 +8,15 @@ export default function SurveyorTemplate({
   id,
   handleWithoutAllselect,
   selectedUsers,
+  assignedTasks,
+  // editSingleSurveyor,
+  // editSurveyor
   // activeUser,
-}) {
+}) { 
   // const [selectedUsers, setSelectedUsers] = useState([]);
 
-  console.log("new selected users.......", selectedUsers);
+  console.log("///////new selected users.......", selectedUsers);
+  const { selectedSurveyors } = useContext(PageContext);
 
   return (
     <div
@@ -23,13 +28,15 @@ export default function SurveyorTemplate({
         cursor: "pointer",
         fontFamily: "EuclidMedium",
         color: "rgba(132, 147, 178, 1)",
-        backgroundColor: selectedUsers.includes(id)
+        backgroundColor: selectedSurveyors.includes(id)
           ? "rgba(27, 81, 187, 0.1)"
           : "transparent",
+          // backgroundColor: editSurveyor == id ? "rgba(27, 81, 187, 0.1)" : "transparent",
         borderRadius: "0.2rem",
       }}
       onClick={() => {
-        handleWithoutAllselect(id);
+        handleWithoutAllselect(id, name, img);
+        // editSingleSurveyor(id);
         // setOpenFormFrameModal(false);
         // handleSelectUser(child);
       }} // handleSelectSurveyors
@@ -41,11 +48,9 @@ export default function SurveyorTemplate({
           columnGap: "0.6rem",
         }}
       >
-        {selectedUsers.includes(id) ? (
+        {selectedSurveyors.includes(id) && (
           <MdDone color="rgba(132, 147, 178, 1)" />
-        ) : (
-          <MdDone color="#fff" />
-        )}
+        ) }
 
         <div
           style={{
@@ -65,7 +70,7 @@ export default function SurveyorTemplate({
         </div>
         <div>{name}</div>
       </div>
-      <div>Assigned task(10)</div>
+      <div>Assigned task({assignedTasks})</div>
     </div>
   );
 }

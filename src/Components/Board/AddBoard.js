@@ -6,10 +6,16 @@ import SelectbyForms from "./SelectbyForms";
 import SelectByStatus from "./SelectByStatus";
 import SelectBySurveyor from "./SelectBySurveyor";
 import SelectByTags from "./SelectByTags";
+import axios from "axios";
 
-export default function AddBoard({ handleAddBoard }) {
+export default function AddBoard({ handleAddBoard, createBoard }) {
   const [modal, setModal] = useState(false);
   const [isPopBelowVisible, setPopBelowVisible] = useState(false);
+
+  const [selectedID, setSelectedID] = useState("");
+  const [type, setType] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
+  const [selectedUsers, setSelectedUsers] = useState(null);
 
   // ways to display tasks inside new board state
   const [selectedFilter, setSelectedFilter] = useState("");
@@ -57,6 +63,10 @@ export default function AddBoard({ handleAddBoard }) {
 
   console.log(selectedFilter);
 
+  console.log("_________________________+++++++++", selectedID);
+  console.log("++++++++++++++", selectedUsers);
+
+
   return (
     <>
       <div className="add-board" onClick={openModal}>
@@ -84,6 +94,7 @@ export default function AddBoard({ handleAddBoard }) {
             <div className="create-board-by-txt" onClick={handlePopBelowToggle}>
               Create board by
             </div>
+            {/* {selectedID} */}
             {isPopBelowVisible && (
               <div className="select-pop-below">
                 <div
@@ -119,11 +130,23 @@ export default function AddBoard({ handleAddBoard }) {
               </div>
             )}
           </div>
+          {selectedID}
           {selectedFilter === "timeframe" && <SelectByTimeFrame />}
-          {selectedFilter === "forms" && <SelectbyForms />}
-          {selectedFilter === "status" && <SelectByStatus />}
-          {selectedFilter === "surveyor" && <SelectBySurveyor />}
-          {selectedFilter === "tags" && <SelectByTags />}
+          {selectedFilter === "forms" && <SelectbyForms 
+          setSelectedID={setSelectedID} setType={setType}
+          />}
+          {selectedFilter === "status" && <SelectByStatus 
+          setSelectedID={setSelectedID} setType={setType}
+          />}
+          {selectedFilter === "surveyor" && (
+            <SelectBySurveyor setSelectedID={setSelectedID} 
+            setSelectedUsers={setSelectedUsers}
+            setType={setType}
+            />
+          )}
+          {selectedFilter === "tags" && <SelectByTags 
+           setSelectedID={setSelectedID} setType={setType}
+          />}
         </div>
 
         {/* cancel create btns */}
@@ -136,27 +159,42 @@ export default function AddBoard({ handleAddBoard }) {
             className="create-board-btns2"
             onClick={() => {
               setModal(false);
-              handleAddBoard({
-                id: 9,
-                dueDate: title,
-                tasks: [
-                  {
-                    tid: 903,
-                    tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-                    tdude: "26/11/2023",
-                  },
-                  {
-                    tid: 903,
-                    tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-                    tdude: "26/11/2023",
-                  },
-                  {
-                    tid: 903,
-                    tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-                    tdude: "26/11/2023",
-                  },
-                ],
-              });
+              selectedFilter === "tags" ? 
+              createBoard({
+                title: title,
+                type: type,
+                tags: selectedID,
+                managerId: '660aa4d54a8e525d204aaa77',
+              })
+              : (
+                createBoard({
+                  title: title,
+                  type: type,
+                  reqId: selectedID,
+                  managerId: '660aa4d54a8e525d204aaa77',
+                })
+              )
+              // handleAddBoard({
+              //   id: 9,
+              //   dueDate: title,
+              //   tasks: [
+              //     {
+              //       tid: 903,
+              //       tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
+              //       tdude: "26/11/2023",
+              //     },
+              //     {
+              //       tid: 903,
+              //       tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
+              //       tdude: "26/11/2023",
+              //     },
+              //     {
+              //       tid: 903,
+              //       tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
+              //       tdude: "26/11/2023",
+              //     },
+              //   ],
+              // });
             }}
           >
             Create

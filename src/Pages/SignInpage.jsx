@@ -1,16 +1,19 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import "../Styles/SignInPage.css"
 import SignInImg from "../Assets/SignUpImg.png"
 import VerifyImg from "../Assets/VerifyImg.png"
+import OtpVerify from "../Assets/OtpVerify.png"
 import MobileVerify from "../Assets/MobileVerify.svg"
 import Logo from "../Assets/IsmartLogo.svg"
 import axios from 'axios'
 import OTPInput from 'react-otp-input'
+import OtpInput from '../Components/Auth/OtpInput'
 
 export default function SignInpage() {
   const [verify, setVerify] = useState(false);
   const [mobileVerify, setMobileVerify] = useState(false);
   const [signInVerify, setSignInVerify] = useState(true);
+  const [otpVerify, setOtpVerify] = useState(false);
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
   const [mobile, setMobile] = useState('');
@@ -22,16 +25,16 @@ export default function SignInpage() {
   }
 
 
-  const handleEmailVerify = async () => {
-    await axios.post('http://192.168.29.138:8000/manager/verify-email', {
-      emailId: email
-    }).then((res) => {
-      // alert("email is verified!!!)");
-      setSignInVerify(false);
-      setVerify(1);
-    })
-      .catch((err) => alert("email id is not verified!!!"))
-  }
+  // const handleEmailVerify = async () => {
+  //   await axios.post('http://192.168.29.138:8000/manager/verify-email', {
+  //     emailId: email
+  //   }).then((res) => {
+  //     // alert("email is verified!!!)");
+  //     setSignInVerify(false);
+  //     setVerify(1);
+  //   })
+  //     .catch((err) => alert("email id is not verified!!!"))
+  // }
 
   const handleSignIn = async () => {
     await axios.post('http://192.168.29.138:8000/manager/sign-in', {
@@ -47,12 +50,46 @@ export default function SignInpage() {
     setMobileVerify(true);
   }
 
-  const handleGetOtp = async () => {
-    await axios.post('http://192.168.29.138:8000/manager/otp-signin', {
-      mobileNo: mobile
-    }).then((res) => alert(res.data.otp))
-      .catch((err) => alert("number thappu"))
+  const handleEmailVerifyScreen = () => {
+    setSignInVerify(true);
+    setEmail(true);
+    setOtpVerify(false);
+    setMobileVerify(false);
   }
+
+  const handleOtpVerifyScreen = async () => {
+    try {
+      const res = await axios.post(`http://192.168.0.115:8002/auth/otp-login`, {
+        mobileNo: mobile
+      }
+      );
+      console.log(res.data)
+      if (res.data.success) {
+        console.log(res.data.OTP);
+        setVerify(false);
+        setSignInVerify(false);
+        setMobileVerify(false);
+        setOtpVerify(true);
+      } else {
+        console.log("error");
+        console.log(res.data)
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+
+  const handleOtp = async () => {
+    try {
+      const res = await axios.post(`http://192.168.0.115:8002/auth/verify-otp`, {
+
+      })
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
 
   return (
     <div className="sign-in-page">
@@ -66,6 +103,10 @@ export default function SignInpage() {
         {
           signInVerify && <img src={SignInImg} alt="" srcset="" />
         }
+        {
+          otpVerify && <img src={OtpVerify} alt='' />
+        }
+
         <div className="sign-in-overlay">
           <div style={{ display: 'flex', flexDirection: 'column', rowGap: '10px' }}>
             <div className="good-network-box">
@@ -93,21 +134,36 @@ export default function SignInpage() {
           {
             signInVerify && <div className="sign-up-text">Sign in your account</div>
           }
+
           {
             verify && <div className="sign-up-text">Sign in your account</div>
           }
+
           {
             mobileVerify && <div className="sign-up-text">Sign in using Mobile Number</div>
           }
-          <div className="welcome-text">Welcome back Select method to sign up :</div>
+
           {
-            mobileVerify ? '' : <div>
+            otpVerify && <div className="sign-up-text">Enter OTP code</div>
+          }
+
+          {
+            otpVerify ? <div className="welcome-text">Enter the 6 - digit OTP code we send to +91 9654852686</div> : <div className="welcome-text">Welcome back Select method to sign up :</div>
+          }
+
+          {
+            otpVerify && <OtpInput length={6} />
+          }
+
+          {
+            signInVerify && <div>
               <div className="email">Email</div>
               <div className="email-input">
                 <input type="email" placeholder='Enter your email' onChange={handleInputChange} />
               </div>
             </div>
           }
+
           {
             verify && <div>
               <div className="email">Password</div>
@@ -116,6 +172,7 @@ export default function SignInpage() {
               </div>
             </div>
           }
+
           {
             mobileVerify && <div>
               <div className="email">Mobile number</div>
@@ -124,28 +181,35 @@ export default function SignInpage() {
               </div>
             </div>
           }
-          {/* <OTPInput
-            inputStyle={
-              {
-                height: '30px',
-                width: '30px',
-                marginRight: '20px'
-              }
-            }
-            value={otp}
-            onChange={setOtp}
-            numInputs={6}
-            renderInput={(props) => <input {...props} />}
-          /> */}
+
+          {/* {
+            mobileVerify && (<div className="next-btn" onClick={handleOtpVerifyScreen}>
+              Send otp
+            </div>)
+          } */}
+
+          {/* {
+            verify ? (
+              <div className="next-btn" onClick={handleSignIn}>
+                Sign in
+              </div>) : <div className="next-btn" onClick={handleSignIn}>
+              Sign in
+            </div>
+          } */}
+
+          
           {
-            mobileVerify ? <div className="next-btn" onClick={handleGetOtp}>
-              Get otp
+            mobileVerify ? <div className="next-btn" onClick={handleOtpVerifyScreen}>
+              Send otp
             </div> : verify ? <div className="next-btn" onClick={handleSignIn}>
               Sign in
-            </div> : <div className="next-btn" onClick={handleEmailVerify}>
+            </div> : <div className="next-btn"
+              onClick={handleOtp}
+            >
               Verify
             </div>
           }
+
           {
             verify && <>
               <div className="forgot">
@@ -155,9 +219,28 @@ export default function SignInpage() {
 
             </>
           }
-          <div className="sign-with-mobile" onClick={handleMobileVerify}>
-            Sign in with Mobile Number
-          </div>
+          {
+            mobileVerify && (
+              <div className="sign-with-mobile" onClick={handleEmailVerifyScreen}>
+                Back to sign up with email
+              </div>
+            )
+          }
+          {
+            signInVerify && (
+              (
+                <div className="sign-with-mobile" onClick={handleMobileVerify}>
+                  Sign in with Mobile Number
+                </div>
+              )
+            )
+          }
+          {
+            otpVerify && (
+              <div className="sign-with-mobile" onClick={handleEmailVerifyScreen}>
+                Back to sign up with email
+              </div>)
+          }
         </div>
       </div>
     </div>

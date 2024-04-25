@@ -1,21 +1,23 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import "../Styles/TaskListView.css"
 import OverallStat from './TaskList/OverallStat'
 import TaskTable from './TaskList/TaskTable'
+import axios from 'axios';
+import { PageContext } from '../Context/PageContext';
 
-export default function ListViewInTask() {
+export default function ListViewInTask({ filterType, surveyorId }) {
   const columns = [
     {
       Header: 'ID.no',
-      accessor: 'id',
+      accessor: '_id',
     },
     {
       Header: 'Task',
-      accessor: 'task',
+      accessor: 'taskName',
     },
     {
       Header: 'Assigned By',
-      accessor: 'assigned_by',
+      accessor: 'surveyorDetails.fullName',
     },
     {
       Header: 'Location',
@@ -23,7 +25,7 @@ export default function ListViewInTask() {
     },
     {
       Header: 'Due Date',
-      accessor: 'due_date',
+      accessor: 'dueDate',
     },
     {
       Header: 'Status',
@@ -41,44 +43,52 @@ export default function ListViewInTask() {
     },
   ];
 
-  const [data, setData] = useState([
-    { id: '10000', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Initiated', },
-    { id: '10001', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Pending', },
-    { id: '10002', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Initiated', },
-    { id: '10003', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Completed', },
-    { id: '10004', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Completed', },
-    { id: '10005', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Initiated', },
-    { id: '10006', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Pending', },
-    { id: '10007', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Initiated', },
-    { id: '10008', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Completed', },
-    { id: '10009', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Pending', },
-    { id: '10010', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Initiated', },
 
-  ])
+  const [taskList, setTaskList] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const { unassigned, taskListStatus, listDateFilter } = useContext(PageContext);
 
-  // const data = [
-  //   { id: '10023451', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Initiated', },
-  //   { id: '10123451', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Completed' },
-  //   { id: '10223451', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Pending'   },
-  //   { id: '10323451', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Completed' },
-  //   // { id: '104', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Pending' },
-  //   // { id: '105', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Initiated' },
-  //   // { id: '105', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Completed' },
-  //   // { id: '105', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Pending' },
-  //   // { id: '105', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Completed' },
-  //   // { id: '105', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Completed' },
-  //   // { id: '105', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Pending' },
-  //   // { id: '105', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Initiated' },
-  //   // { id: '105', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Pending' },
-  //   // { id: '105', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Completed' },
-  //   // { id: '105', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Pending' },
-  //   // { id: '105', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Pending' },
-  //   // { id: '105', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Pending' },
-  //   // { id: '105', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Pending' },
-  //   // { id: '105', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Pending' },
-  //   // { id: '105', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Pending' },
-  //   // { id: '105', task: 'Surveyor task', assigned_by: 'Dilip kumar', location: 'Chennai', due_date: '12 Aug 2022', status: 'Pending' },
-  // ];
+  const getTaskListView = async () => {
+    // console.log("iiiiii",surveyorId[0])
+    try {
+      // if (filterType) {
+      // const res = await axios.get(`http://192.168.0.115:8001/task/managers/660aa4d54a8e525d204aaa77?status=${filterType}&?surveyorIds=${surveyorId}`);
+      const res = await axios.get(`http://192.168.0.115:8001/task/managers/660aa4d54a8e525d204aaa77`, {
+        params: {
+          status: taskListStatus,
+          surveyorIds: surveyorId,
+          dateQuery: listDateFilter
+        }
+      });
+      console.log(res.data.success);
+      if (res.data.success) {
+        console.log(res.data.data);
+        setTaskList(res.data.data);
+        setLoading(false);  
+      }else{
+        setLoading(true);
+      }
+      
+      // } else {
+      //   const res = await axios.get('http://192.168.0.115:8001/task/managers/660aa4d54a8e525d204aaa77');
+      //   console.log(res.data.data);
+      //   setTaskList(res.data.data);
+      //   setLoading(false);
+      // }
+      // setTaskList(res.data.data);
+      // setLoading(false);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  useEffect(() => {
+    getTaskListView();
+    console.log("list view component renders", filterType);
+  }, [taskListStatus, surveyorId, listDateFilter]);
+
+  // console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&", taskListStatus);
+  // console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%", listDateFilter);
 
 
   return (
@@ -89,7 +99,16 @@ export default function ListViewInTask() {
 
       <div className="table-data">
         <div style={{ width: '100%', height: '0.5px', background: '#E1E2E9' }}></div>
-        <TaskTable columns={columns} data={data} setData={setData} />
+        {
+          loading
+            ? (
+              <div>Loading...</div>
+            )
+            :
+            (
+              <TaskTable columns={columns} data={taskList} setData={setTaskList} />
+            )
+        }
       </div>
     </div>
   )

@@ -205,3 +205,29 @@ abbr[title] {
 .css-1u23akw-MuiButtonBase-root-MuiPickersDay-root {
   font-family: EuclidMedium !important;
 }
+
+.user-msg::-webkit-scrollbar {
+  display: none;
+}
+
+
+/* OtpInput.css */
+.otp-container {
+  display: flex;
+  column-gap: 2rem;
+}
+
+.otp-input {
+  width: 2.5rem;
+  height: 40px;
+  font-size: 1.8rem;
+  text-align: center;
+  border: none;
+  border-bottom: 2.5px solid rgba(132, 147, 178, 1);
+}
+
+
+.otp-input:focus {
+  outline: none;
+  border-color: #007bff;
+}

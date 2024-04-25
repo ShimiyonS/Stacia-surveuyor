@@ -22,6 +22,7 @@ import Modal from "react-modal";
 export default function TablerowMoreOptions({
   handleDeleteRow,
   handleBookmark,
+  handleEditTask
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [openModal, setOpenModal] = useState(false);
@@ -120,8 +121,13 @@ export default function TablerowMoreOptions({
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={handleClose}>
-          <BiEdit /> Edit
+        <MenuItem onClick={
+          () => {
+            handleEditTask()
+          }
+        }>
+          <BiEdit 
+          /> Edit
         </MenuItem>
         <MenuItem onClick={handleBookmark}>
           <GoStar />

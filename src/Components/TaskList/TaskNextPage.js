@@ -69,7 +69,7 @@
 
 // export default TaskNextPage;
 
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
 import * as xlsx from "xlsx";
 import { useTable } from "react-table";
@@ -81,10 +81,15 @@ import SurveyorShowProfile from "./SurveyorShowProfile";
 
 import Box from "@mui/material/Box";
 import Menu from "@mui/material/Menu";
-// import { makeStyles } from "'@material-ui/core"; 
+// import { makeStyles } from "'@material-ui/core";
 import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
+import { useNavigate } from "react-router-dom";
+import { PageContext } from "../../Context/PageContext";
+import { Header } from "antd/es/layout/layout";
+import SurveyorFilter from "./SurveyorFilter";
+import axios from "axios";
 
 function CreateTable({ columns, data }) {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
@@ -159,7 +164,6 @@ function CreateTable({ columns, data }) {
   );
 }
 
-
 // const usestyles = makeStyles({
 //   customwidth: {
 //       '& div': {
@@ -171,12 +175,17 @@ function CreateTable({ columns, data }) {
 export default function TaskNextPage({ selectedFile }) {
   const [files, setFiles] = useState("");
   const [data, setData] = useState([]);
-  console.log(selectedFile);
+  const { taskName, desc, region, taskDue, bulkRes, setBulkRes } =
+    useContext(PageContext);
+
+  console.log("0000000000000000000000000000000000");
+  console.log(bulkRes);
+  console.log("0000000000000000000000000000000000");
 
   const columns = [
     {
       Header: "",
-      accessor: "id",
+      accessor: "farmerId",
     },
     {
       Header: "Farmer name",
@@ -184,7 +193,7 @@ export default function TaskNextPage({ selectedFile }) {
     },
     {
       Header: "Mobile number",
-      accessor: "mobileNumber",
+      accessor: "phno",
     },
     {
       Header: "Address",
@@ -192,22 +201,27 @@ export default function TaskNextPage({ selectedFile }) {
     },
     {
       Header: "Region",
-      accessor: "region",
+      accessor: "location",
     },
+    // {
+    //   Header: "Assigned to",
+    //   accessor: "assignedTo",
+    //   id: "assign",
+    //   Cell: ({ cell: { value, row } }) => (
+    //     <ProfileCell
+    //       avatar={row.original.avatar}
+    //       username={value}
+    //       completedTasks={row.original.completedTasks}
+    //       assignedTasks={row.original.assignedTasks}
+    //       phno={row.original.phno}
+    //       sid={row.original.sid}
+    //     />
+    //   ),
+    // },
     {
       Header: "Assigned to",
-      accessor: "assignedTo",
-      id: "assign",
-      Cell: ({ cell: { value, row } }) => (
-        <ProfileCell
-          avatar={row.original.avatar}
-          username={value}
-          completedTasks={row.original.completedTasks}
-          assignedTasks={row.original.assignedTasks}
-          phno={row.original.phno}
-          sid={row.original.sid}
-        />
-      ),
+      accessor: "surveyorId"
+      // Cell: ({ cell: { value, row } }) => <SurveyorFilter />,
     },
     {
       Header: "",
@@ -626,6 +640,20 @@ export default function TaskNextPage({ selectedFile }) {
   ];
 
   const [showErrBanner, setShowErrBanner] = useState(false);
+  const navigate = useNavigate();
+
+  // get dynamic assigned surveyors
+
+  const createBulkTask = async () => {
+    try{
+      const res = await axios.post(`http://192.168.0.115:8001/task/bulk-create/660aa4d54a8e525d204aaa77`, {
+       taskArray: bulkRes
+      });
+      console.log(res.data);
+    }catch(err){
+      console.log(err.message);
+    }
+  }
 
   return (
     <div className="excel-view">
@@ -643,13 +671,16 @@ export default function TaskNextPage({ selectedFile }) {
             overflowY: "scroll",
           }}
         >
-          <CreateTable columns={columns} data={csvData} />
+          <CreateTable columns={columns} data={bulkRes} />
         </div>
         <div className="task-next-page-bottom">
           <div className="advanced-options-right">
-            <div className="advanced-cancel-btn">Back</div>
+            <div className="advanced-cancel-btn" onClick={() => navigate(-1)}>
+              Back
+            </div>
             <div
               className="advanced-next-btn"
+              onClick={() => createBulkTask()}
               // onClick={() => navigate("/create-task/excel-view")}
             >
               Create Task

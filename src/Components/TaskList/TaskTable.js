@@ -152,6 +152,7 @@ export default function TaskTable({ columns, data, setData }) {
   const startItem = pageIndex * pageSize + 1;
   const endItem = Math.min((pageIndex + 1) * pageSize, data.length);
 
+
   // delete row
 
   const handleDeleteRow = (row) => {
@@ -171,6 +172,14 @@ export default function TaskTable({ columns, data, setData }) {
   //   const taskId = row.original.id;
   //   history.push(`/specific-task/${taskId}`);
   // };
+
+  // edit task
+
+  const handleEditTask = (row) => {
+    navigate(`edit-task/${row.original._id}`);
+  };
+
+
 
   return (
     <div>
@@ -217,7 +226,9 @@ export default function TaskTable({ columns, data, setData }) {
                     {...cell.getCellProps()}
                     onClick={
                       cell.column.id != "optionsColumn"
-                        ? () => navigate(`specific-task/${row.original.id}`)
+                        ? () => navigate(`specific-task/${row.original._id}`, {
+                          
+                        })
                         : () => console.log("test")
                     }
                   >
@@ -233,10 +244,11 @@ export default function TaskTable({ columns, data, setData }) {
                         <TablerowMoreOptions
                           handleDeleteRow={() => handleDeleteRow(row)}
                           handleBookmark={() => handleBookmark(row)}
+                          handleEditTask = {() => handleEditTask(row)}
                         />
                       </span>
                     )}
-                    {cell.value === "Completed" ? (
+                    {cell.value === "completed" ? (
                       <span
                         style={{
                           backgroundColor: "#3AFF8926",
@@ -249,7 +261,7 @@ export default function TaskTable({ columns, data, setData }) {
                       >
                         {cell.render("Cell")}
                       </span>
-                    ) : cell.value === "Pending" ? (
+                    ) : cell.value === "pending" ? (
                       <span
                         style={{
                           backgroundColor: "#FF9F9F4D",
@@ -262,7 +274,7 @@ export default function TaskTable({ columns, data, setData }) {
                       >
                         {cell.render("Cell")}
                       </span>
-                    ) : cell.value === "Initiated" ? (
+                    ) : cell.value === "initiated" ? (
                       <span
                         style={{
                           backgroundColor: "#FFEBA8",

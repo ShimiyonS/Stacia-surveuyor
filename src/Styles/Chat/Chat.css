@@ -1,0 +1,77 @@
+/* editor toolbar */
+
+.ql-toolbar.ql-snow {
+    border: none !important;
+}
+
+.ql-container.ql-snow {
+    border: 1px solid transparent !important;
+    border-bottom: 1px solid #ccc !important;
+}
+
+.ql-editor.ql-blank {
+    /* background-color: aquamarine; */
+}
+
+.ql-editor {
+    border: 1px solid #fff;
+}
+
+.ql-editor img {
+    max-width: 100%;
+    height: auto;
+    width: 200px;
+    height: auto;
+}
+
+.user-msg p img {
+    width: 100%;
+    height: 100%;
+}
+
+.ql-snow.ql-toolbar button.ql-active .ql-stroke {
+    stroke: red !important;
+}
+
+/* jodit custom styles */
+
+.jodit_toolbar_button-bold>.jodit_icon svg {
+    background: url('../../Assets/Redo.svg') center/contain no-repeat;
+}
+
+.jodit-status-bar {
+    display: none;
+}
+
+.jodit-container:not(.jodit_inline) {
+    border: none !important;
+}
+
+.jodit-toolbar__box:not(:empty) .jodit-toolbar-editor-collection:after {
+    background-color: #fff !important;
+}
+
+
+/* normal editor */
+
+.normal-msg-box {
+}
+
+.normal-msg-box>input {
+    width: 100%;
+    /* border: 1px solid red; */
+    border: none;
+    padding: 1.5rem;
+    font-family: EuclidMedium;
+    border-bottom: 1px solid rgba(211, 220, 229, 1);
+}
+
+.normal-msg-box>input:focus {
+    outline: none;
+}
+
+
+/* audio */
+
+
+/* emoji */

@@ -443,7 +443,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     font-family: EuclidMedium;
     background-color: #1B51BB;
     border-radius: 0.9rem;
-    cursor: pointer;
+    /* cursor: pointer; */
+    border: none;
 }
 
 /* csv file upload modal */
@@ -708,4 +709,13 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     font-family: EuclidMedium;
     font-size: 1.1rem;
     color: rgba(132, 147, 178, 1);
+}
+
+.create-task-modal{
+    padding: 0.6rem 0.9rem;
+    border: none;
+    border-radius: 0.3rem;
+    font-size: 1.1rem;
+    font-family: EuclidMedium;
+    background-color: transparent;
 }

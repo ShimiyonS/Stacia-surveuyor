@@ -1,46 +1,51 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { SiGoogleforms } from "react-icons/si";
 
-const formData = [
-  {
-    id: 1,
-    formName: "Lorem Ipsum has dbwjy kh...",
-    tags: "Customer Feedback",
-  },
-  {
-    id: 2,
-    formName: "Lorem Ipsum has dwnkjhud...",
-    tags: "Customer Feedback",
-  },
-  {
-    id: 3,
-    formName: "Lorem Ipsum has dqgjh...",
-    tags: "Farmer Feedback",
-  },
-  {
-    id: 3,
-    formName: "Lorem Ipsum has dqgjh...",
-    tags: "Farmer Feedback",
-  },
-  {
-    id: 3,
-    formName: "Lorem Ipsum has dqgjh...",
-    tags: "Farmer Feedback",
-  },
-];
+// const formData = [
+//   {
+//     id: 1,
+//     formName: "Lorem Ipsum has dbwjy kh...",
+//     tags: "Customer Feedback",
+//   },
+//   {
+//     id: 2,
+//     formName: "Lorem Ipsum has dwnkjhud...",
+//     tags: "Customer Feedback",
+//   },
+//   {
+//     id: 3,
+//     formName: "Lorem Ipsum has dqgjh...",
+//     tags: "Farmer Feedback",
+//   },
+//   {
+//     id: 3,
+//     formName: "Lorem Ipsum has dqgjh...",
+//     tags: "Farmer Feedback",
+//   },
+//   {
+//     id: 3,
+//     formName: "Lorem Ipsum has dqgjh...",
+//     tags: "Farmer Feedback",
+//   },
+// ];
 
 const FormTemplate = ({
   formName,
-  tags,
+  formId,
   setSelectedForm,
   setOpenFormFrameModal,
+  setSelectedID,
+  setType
 }) => {
   return (
     <div
       className="board-form-template"
       onClick={() => {
         setOpenFormFrameModal(false);
-        setSelectedForm({ formName: formName, tags: tags });
+        setType("form");
+        setSelectedID(formId);
+        setSelectedForm({ formName: formName });
       }}
     >
       <div
@@ -55,20 +60,34 @@ const FormTemplate = ({
         </div>
         <div className="board-form-txt">{formName}</div>
       </div>
-      <div className="board-form-tag">{tags}</div>
+      {/* <div className="board-form-tag">{tags}</div> */}
     </div>
   );
 };
 
-export default function SelectByForms() {
+export default function SelectByForms({ setSelectedID, setType }) {
   const [openFormFrameModal, setOpenFormFrameModal] = useState(false);
   const [selectedForm, setSelectedForm] = useState();
+  const [formData, setFormData] = useState(null);
 
   const handleFormModal = () => {
     setOpenFormFrameModal(!openFormFrameModal);
   };
 
   console.log("selected form", selectedForm);
+
+  const getAllForms = async () => {
+    try{
+      const res = await axios.get('http://192.168.0.115:8001/form/all-lists');
+      setFormData(res.data.data);
+    }catch(err){
+      console.log(err.message);
+    }
+  };
+
+  useEffect(() => {
+    getAllForms();
+  }, []);
 
   return (
     <div className="create-board-based-form">
@@ -100,12 +119,15 @@ export default function SelectByForms() {
               marginTop: "1rem",
             }}
           >
-            {formData.map(({ formName, tags }) => (
+            {formData.map((data) => (
               <FormTemplate
-                formName={formName}
-                tags={tags}
+                formName={data.name}
+                formId={data.id}
+                // tags={tags}
                 setSelectedForm={setSelectedForm}
                 setOpenFormFrameModal={setOpenFormFrameModal}
+                setType={setType}
+                setSelectedID={setSelectedID}
               />
             ))}
           </div>
@@ -133,7 +155,7 @@ export default function SelectByForms() {
             </div>
             <div className="board-form-txt">{selectedForm.formName}</div>
           </div>
-          <div className="board-form-tag">{selectedForm.tags}</div>
+          {/* <div className="board-form-tag">{selectedForm.tags}</div> */}
         </div>
       )}
     </div>

@@ -10,7 +10,7 @@
 }
 
 .task-card-img-div {
-    width: 4rem;
+    width: 2.8rem;
     height: 2.8rem;
     border-radius: 4rem;
     background-color: #fff;
@@ -20,9 +20,10 @@
 }
 
 .task-card-img-div img {
-    width: 90%;
-    height: 90%;
-    border-radius: 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4rem;
 }
 
 .board-view-task-name {
@@ -343,11 +344,11 @@
 
 .select-surveyor-pop-below {
     position: absolute;
-    top: 100%;
+    top: 5%;
     width: 100%;
-    height: 25rem;
+    height: 30rem;
     /* overflow-y: scroll; */
-    background-color: #fff;
+    background-color: #ffffff;
     padding: 1rem;
     z-index: 2;
     margin-top: 1rem;

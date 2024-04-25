@@ -28,6 +28,8 @@ import { GrAttachment } from "react-icons/gr";
 import { BsTextParagraph } from "react-icons/bs";
 import { AiOutlineRight } from "react-icons/ai";
 import { FaChevronLeft } from "react-icons/fa6";
+import { LuClock3 } from "react-icons/lu";
+import { IoPersonOutline } from "react-icons/io5";
 
 import GuestZero from "../Assets/EventZeroState.png";
 
@@ -93,6 +95,17 @@ const CustomAgendaView = ({ events }) => {
 
 console.log("renders!!!");
 
+const CalendarPageContainer = styled.div`
+width: calc(100% - 4.2rem);
+max-height: calc(100vh - 4rem);
+height: calc(100vh - 4rem);
+margin-left: 4.2rem;
+background-color: rgba(239, 242, 244, 1);
+padding: 1rem;
+display: flex;
+`;
+
+
 const CalendarPage = () => {
   const localizer = momentLocalizer(moment);
   const { pageName } = useContext(PageContext);
@@ -110,6 +123,7 @@ const CalendarPage = () => {
       end: new Date(2024, 2, 7, 12, 0),
       colorEvento: "rgba(216, 26, 96, 0.1)",
       color: "rgba(216, 26, 96, 1)",
+      link: "Lorem ipsum dolor sit amet consectetur. Malesuada urna odio arcu aliquam massa. Sit elementum tempus nulla nibh in donec.",
     },
     {
       title: "summa oru event",
@@ -119,6 +133,7 @@ const CalendarPage = () => {
       end: new Date(2024, 2, 19, 0, 0),
       colorEvento: "rgba(216, 26, 96, 0.1)",
       color: "rgba(216, 26, 96, 1)",
+      link: "Lorem ipsum dolor sit amet consectetur. Malesuada urna odio arcu aliquam massa. Sit elementum tempus nulla nibh in donec.",
     },
     {
       title: "Team Standup",
@@ -128,6 +143,7 @@ const CalendarPage = () => {
       end: new Date(2024, 2, 2, 16, 0),
       colorEvento: "rgba(0, 128, 128, 0.1)",
       color: "rgba(0, 128, 128, 1)",
+      link: "Lorem ipsum dolor sit amet consectetur. Malesuada urna odio arcu aliquam massa. Sit elementum tempus nulla nibh in donec.",
     },
     {
       title: "Project Deadline",
@@ -137,15 +153,7 @@ const CalendarPage = () => {
       end: new Date(2024, 2, 5, 17, 0),
       colorEvento: "rgba(108, 117, 220, 0.1)",
       color: "rgba(108, 117, 220, 1)",
-    },
-    {
-      title: "Project Deadline",
-      description:
-        "Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family.",
-      start: new Date(2024, 2, 5, 17, 30),
-      end: new Date(2024, 2, 5, 19, 0),
-      colorEvento: "rgba(108, 117, 220, 0.1)",
-      color: "rgba(108, 117, 220, 1)",
+      link: "Lorem ipsum dolor sit amet consectetur. Malesuada urna odio arcu aliquam massa. Sit elementum tempus nulla nibh in donec.",
     },
   ]);
 
@@ -157,10 +165,12 @@ const CalendarPage = () => {
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [color, setColor] = useState("");
   const [bg, setBg] = useState("");
-
+  const [eventDesc, setEventDesc] = useState("");
+  const [eventLink, setEventLink] = useState("");
   // new events
 
   const [showModal, setShowModal] = useState(false);
+  const [showEventDetails, setShowEventDetails] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [eventTitle, setEventTitle] = useState("");
   const [eventBg, setEventBg] = useState("");
@@ -240,16 +250,22 @@ const CalendarPage = () => {
 
   // handle surveyor select
 
-  const handleWithoutAllselect = (id) => {
+  const handleWithoutAllselect = (id, name, img) => {
     console.log("id...", id);
     if (selectedUsers.includes(id)) {
       // setActiveSelectedSurveyors(false);
       setSelectedUsers(selectedUsers.filter((i) => i !== id));
+      console.log(name, id, img);
     } else {
       // setActiveSelectedSurveyors(true);
       setSelectedUsers([...selectedUsers, id]);
+      console.log("name:", name, "id:", id, "img:", img);
     }
   };
+
+  console.log("+++++++++++-----------------", selectedUsers);
+
+  console.log("--------------------", selectedUsers);
 
   ///////////////////////////////////////////////////////////////////////
 
@@ -262,9 +278,18 @@ const CalendarPage = () => {
   };
 
   const handleSelectedEvent = (event) => {
-    setShowModal(true);
+    if (event.title === "") {
+      setShowModal(true);
+    } else {
+      setShowEventDetails(true);
+      setEventTitle(event.title);
+      setColor(event.color);
+      setEventDesc(event.description);
+      setEventLink(event.link);
+      console.log(event);
+    }
     setSelectEvent(event);
-    setEventTitle(event.title);
+    // setEventTitle(event.title);
   };
 
   const handleSelectTime = (event) => {};
@@ -293,20 +318,22 @@ const CalendarPage = () => {
           colorEvento: chooseEventColor,
           color: chooseTextColor,
           // allDay: allDayEvent,
+          description: eventDesc,
+          link: eventLink,
           start: new Date(selectedDate),
           end: new Date(endDate),
         };
         console.log("selected date is ", selectedDate);
         setEvents([...events, newEvent]);
-        console.log(
-          "new event details",
-          "title:",
-          eventTitle,
-          "start:",
-          startDate,
-          "end:",
-          startTime
-        );
+        // console.log(
+        //   "new event details",
+        //   "title:",
+        //   eventTitle,
+        //   "start:",
+        //   startDate,
+        //   "end:",
+        //   startTime
+        // );
       }
       setShowModal(false);
       setEventTitle("");
@@ -408,6 +435,28 @@ const CalendarPage = () => {
       display: "flex",
       flexDirection: "column",
       justifyContent: "space-between",
+    },
+    overlay: {
+      background: "rgba(0, 0, 0, 0.25)",
+      zIndex: "999",
+    },
+  };
+
+  const customStyles1 = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      width: "33%",
+      height: "80%",
+      borderRadius: "16px",
+      padding: "1rem 2.5rem",
+      transform: "translate(-50%, -50%)",
+      // display: "flex",
+      // flexDirection: "column",
+      // justifyContent: "space-between",
     },
     overlay: {
       background: "rgba(0, 0, 0, 0.25)",
@@ -532,15 +581,6 @@ const CalendarPage = () => {
     );
   };
 
-  const CalendarPageContainer = styled.div`
-    width: calc(100% - 4.2rem);
-    max-height: calc(100vh - 4rem);
-    height: calc(100vh - 4rem);
-    margin-left: 4.2rem;
-    background-color: rgba(239, 242, 244, 1);
-    padding: 1rem;
-    display: flex;
-  `;
 
   // fetch task due's in calendar page
 
@@ -814,11 +854,9 @@ const CalendarPage = () => {
 
                     {isPopBelowVisible && (
                       <div
-                        style={
-                          {
-                            // marginTop: "0.5rem",
-                          }
-                        }
+                        style={{
+                          marginTop: "2.5rem",
+                        }}
                         className="select-surveyor-pop-below"
                       >
                         <div
@@ -1182,6 +1220,8 @@ const CalendarPage = () => {
                 >
                   <input
                     className="select-event-guests"
+                    value={eventLink}
+                    onChange={(e) => setEventLink(e.target.value)}
                     placeholder={
                       modeChange === "Online"
                         ? "Paste meet link"
@@ -1323,11 +1363,12 @@ const CalendarPage = () => {
               )}
 
               {/* event description */}
-
               <div className="event-attachment">
                 <BsTextParagraph size={24} color="rgba(132, 147, 178, 1)" />
                 <textarea
                   placeholder="Add Description"
+                  onChange={(e) => setEventDesc(e.target.value)}
+                  value={eventDesc}
                   cols="30"
                   rows="5"
                   style={{
@@ -1373,9 +1414,172 @@ const CalendarPage = () => {
                     <div
                       style={{
                         width: "100%",
+                        position: "relative",
+                        cursor: "pointer",
                       }}
                     >
-                      <div className="select-event-guests">Add Guest(s)</div>
+                      <div
+                        className="select-event-guests"
+                        onClick={() => setPopBelowVisible(!isPopBelowVisible)}
+                      >
+                        Add Guest(s)
+                      </div>
+
+                      {/* select surveyors */}
+
+                      {isPopBelowVisible && (
+                        <div
+                          style={
+                            {
+                              // marginTop: "0.5rem",
+                            }
+                          }
+                          className="select-surveyor-pop-below"
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                            }}
+                          >
+                            <div className="pop-over-surveyor-txt">
+                              Surveyor
+                            </div>
+                            <input
+                              placeholder="Search"
+                              className="pop-over-surveyor-search"
+                            />
+                          </div>
+                          <div className="surveyor-data-container">
+                            {sortArr.map((data) => (
+                              <div
+                                style={{
+                                  marginTop: "1rem",
+                                }}
+                              >
+                                <div className="surveyor-region-txt">
+                                  <span
+                                    style={{
+                                      marginRight: "0.6rem",
+                                    }}
+                                    onClick={() => {
+                                      handleToggle(data.labelId);
+                                    }}
+                                  >
+                                    <input type="checkbox" />
+                                  </span>
+                                  {data.label}
+                                </div>
+                                <div
+                                  style={{
+                                    width: "100%",
+                                    height: "1px",
+                                    backgroundColor: "rgba(211, 220, 229, 1)",
+                                    marginBottom: "1rem",
+                                  }}
+                                ></div>
+                                {data.children.map((child) => (
+                                  <SurveyorTemplate
+                                    name={child.label}
+                                    img={child.imgSrc}
+                                    id={child.sid}
+                                    handleWithoutAllselect={
+                                      handleWithoutAllselect
+                                    }
+                                    selectedUsers={selectedUsers}
+                                  />
+                                  // <SurveyorSelectTemplate
+                                  //   surveyor_img={child.label}
+                                  //   surveyor_name={child.label}
+                                  //   surveyor_id={child.id}
+                                  //   selectedUsers={selectedUsers}
+                                  //   handleWithoutAllselect={handleWithoutAllselect}
+                                  // />
+                                ))}
+                              </div>
+                            ))}
+                          </div>
+                          <div
+                            style={{
+                              width: "100%",
+                              height: "1px",
+                              backgroundColor: "rgba(211, 220, 229, 1)",
+                            }}
+                          ></div>
+                          <div className="surveyor-sort-container">
+                            <div
+                              style={{
+                                display: "flex",
+                                height: "40%",
+                                columnGap: "0.3rem",
+                                // backgroundColor: "red",
+                                alignItems: "center",
+                                justifyContent: "center",
+                              }}
+                            >
+                              {azArr.map((letter) => (
+                                <div
+                                  className="sorted-letters"
+                                  onClick={() => handleSort(letter)}
+                                  style={{
+                                    backgroundColor:
+                                      letter === selectedLetter
+                                        ? "rgba(27, 81, 187, 1)"
+                                        : "#fff",
+                                    color:
+                                      letter === selectedLetter
+                                        ? "#fff"
+                                        : "rgba(132, 147, 178, 1)",
+                                    // padding: "2px",
+                                    borderRadius: "0.2rem",
+                                    fontFamily: "EuclidRegular",
+                                  }}
+                                >
+                                  {letter}
+                                </div>
+                              ))}
+                            </div>
+                            <div className="img-sort">
+                              {surveyorData.map(
+                                ({ label, regionImg, value }) => (
+                                  <div
+                                    className="popover-img-box"
+                                    onClick={() => handleSort(value)}
+                                  >
+                                    <div
+                                      style={{
+                                        width: "7rem",
+                                        height: "3rem",
+                                      }}
+                                    >
+                                      <img
+                                        src={regionImg}
+                                        style={{
+                                          width: "100%",
+                                          height: "100%",
+                                          objectFit: "cover",
+                                          borderRadius: "0.3rem",
+                                        }}
+                                      />
+                                    </div>
+                                    <div
+                                      style={{
+                                        color: "rgba(132, 147, 178, 1)",
+                                        fontSize: "0.8rem",
+                                        fontFamily: "EuclidRegular",
+                                      }}
+                                    >
+                                      {label}
+                                    </div>
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
                       {/* guest box */}
                       <div className="guest-box">
                         <img src={GuestZero} />
@@ -1414,6 +1618,329 @@ const CalendarPage = () => {
             ) : (
               ""
             )}
+          </div>
+        </div>
+      </Modal>
+
+      <Modal isOpen={showEventDetails} style={customStyles1}>
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "flex-end",
+            padding: "0.8rem",
+            cursor: "pointer",
+            // backgroundColor: "red",
+          }}
+        >
+          <IoMdClose onClick={() => setShowEventDetails(false)} size={22} />
+        </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            columnGap: "1rem",
+          }}
+        >
+          <div
+            style={{
+              height: "1.2rem",
+              width: "1.2rem",
+              marginLeft: "0.2rem",
+              borderRadius: "0.3rem",
+              backgroundColor: color,
+            }}
+          ></div>
+          <div
+            style={{
+              color: "rgba(27, 36, 54, 1)",
+              fontSize: "1.5rem",
+              fontFamily: "EuclidMedium",
+            }}
+          >
+            {eventTitle}
+          </div>
+        </div>
+
+        {/* timings and surveyor manager details */}
+
+        <div
+          style={{
+            marginTop: "1rem",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              columnGap: "1rem",
+            }}
+          >
+            <LuClock3 size={24} color="rgba(132, 147, 178, 1)" />
+            <div
+              style={{
+                color: "rgba(27, 36, 54, 1)",
+                fontSize: "1rem",
+                fontFamily: "EuclidMedium",
+              }}
+            >
+              Thursday, 21 December 2023 11:30pm-12:30am
+            </div>
+          </div>
+          {/* manager details */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              columnGap: "1rem",
+              marginTop: "1rem",
+            }}
+          >
+            <IoPersonOutline size={24} color="rgba(132, 147, 178, 1)" />
+            <div
+              style={{
+                color: "rgba(27, 36, 54, 1)",
+                fontSize: "1rem",
+                fontFamily: "EuclidMedium",
+              }}
+            >
+              Dilipkumar ( surveyor manager )
+            </div>
+          </div>
+          {/* desc */}
+
+          <div
+            style={{
+              marginTop: "1.5rem",
+            }}
+          >
+            <div
+              style={{
+                color: "rgba(27, 36, 54, 1)",
+                fontSize: "1rem",
+                fontFamily: "EuclidMedium",
+              }}
+            >
+              Description
+            </div>
+            <p
+              style={{
+                color: "rgba(132, 147, 178, 1)",
+                fontSize: "1rem",
+                fontFamily: "EuclidMedium",
+                marginTop: "1rem",
+                lineHeight: "1.5rem",
+              }}
+            >
+              {eventDesc}
+            </p>
+          </div>
+
+          {/* meeting link */}
+
+          <div
+            style={{
+              marginTop: "1.5rem",
+            }}
+          >
+            <div
+              style={{
+                color: "rgba(27, 36, 54, 1)",
+                fontSize: "1rem",
+                fontFamily: "EuclidMedium",
+                marginBottom: "1rem",
+              }}
+            >
+              Meet link
+            </div>
+            <a
+              href=""
+              style={{
+                color: "rgba(0, 115, 204, 1)",
+                fontSize: "1rem",
+                fontFamily: "EuclidMedium",
+                lineHeight: "1.5rem",
+              }}
+            >
+              {eventLink}
+            </a>
+          </div>
+
+          {/* members */}
+
+          <div
+            style={{
+              marginTop: "1.5rem",
+              width: "100%",
+            }}
+          >
+            <div
+              style={{
+                color: "rgba(27, 36, 54, 1)",
+                fontSize: "1rem",
+                fontFamily: "EuclidMedium",
+                marginBottom: "1rem",
+              }}
+            >
+              Members
+            </div>
+            <div
+            className="member-box"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                columnGap: "1rem",  
+                overflowX: "scroll",
+              }}
+            >
+              {/* 1 */}
+              <div>
+                <div
+                  style={{
+                    height: "3rem",
+                    width: "3rem",
+                    borderRadius: "50%",
+                    backgroundColor: color,
+                  }}
+                ></div>
+                <div
+                  style={{
+                    color: "rgba(27, 36, 54, 1)",
+                    fontSize: "1rem",
+                    fontFamily: "EuclidMedium",
+                    marginTop: "1rem",
+                  }}
+                >
+                  Ponbaskar
+                </div>
+              </div>
+              {/* 2 */}
+              <div>
+                <div
+                  style={{
+                    height: "3rem",
+                    width: "3rem",
+                    borderRadius: "50%",
+                    backgroundColor: color,
+                  }}
+                ></div>
+                <div
+                  style={{
+                    color: "rgba(27, 36, 54, 1)",
+                    fontSize: "1rem",
+                    fontFamily: "EuclidMedium",
+                    marginTop: "1rem",
+                  }}
+                >
+                  Ponbaskar
+                </div>
+              </div>
+              {/* 3 */}
+              <div>
+                <div
+                  style={{
+                    height: "3rem",
+                    width: "3rem",
+                    borderRadius: "50%",
+                    backgroundColor: color,
+                  }}
+                ></div>
+                <div
+                  style={{
+                    color: "rgba(27, 36, 54, 1)",
+                    fontSize: "1rem",
+                    fontFamily: "EuclidMedium",
+                    marginTop: "1rem",
+                  }}
+                >
+                  Ponbaskar
+                </div>
+              </div>
+              {/* 4 */}
+              <div>
+                <div
+                  style={{
+                    height: "3rem",
+                    width: "3rem",
+                    borderRadius: "50%",
+                    backgroundColor: color,
+                  }}
+                ></div>
+                <div
+                  style={{
+                    color: "rgba(27, 36, 54, 1)",
+                    fontSize: "1rem",
+                    fontFamily: "EuclidMedium",
+                    marginTop: "1rem",
+                  }}
+                >
+                  Ponbaskar
+                </div>
+              </div>
+              {/* 5 */}
+              <div>
+                <div
+                  style={{
+                    height: "3rem",
+                    width: "3rem",
+                    borderRadius: "50%",
+                    backgroundColor: color,
+                  }}
+                ></div>
+                <div
+                  style={{
+                    color: "rgba(27, 36, 54, 1)",
+                    fontSize: "1rem",
+                    fontFamily: "EuclidMedium",
+                    marginTop: "1rem",
+                  }}
+                >
+                  Ponbaskar
+                </div>
+              </div>
+              {/* 6 */}
+              <div>
+                <div
+                  style={{
+                    height: "3rem",
+                    width: "3rem",
+                    borderRadius: "50%",
+                    backgroundColor: color,
+                  }}
+                ></div>
+                <div
+                  style={{
+                    color: "rgba(27, 36, 54, 1)",
+                    fontSize: "1rem",
+                    fontFamily: "EuclidMedium",
+                    marginTop: "1rem",
+                  }}
+                >
+                  Ponbaskar
+                </div>
+              </div>
+              {/* 7 */}
+              <div>
+                <div
+                  style={{
+                    height: "3rem",
+                    width: "3rem",
+                    borderRadius: "50%",
+                    backgroundColor: color,
+                  }}
+                ></div>
+                <div
+                  style={{
+                    color: "rgba(27, 36, 54, 1)",
+                    fontSize: "1rem",
+                    fontFamily: "EuclidMedium",
+                    marginTop: "1rem",
+                  }}
+                >
+                  Ponbaskar
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </Modal>

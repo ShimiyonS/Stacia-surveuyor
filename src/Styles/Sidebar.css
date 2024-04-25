@@ -23,6 +23,13 @@
     display: flex;
     align-items: center;
     column-gap: 1.5rem;
+    text-decoration: none;
+    color: #8493B2;
+    font-family: EuclidMedium;
+}
+
+a.active{
+    color: rgba(27, 81, 187, 1);
 }
 
 .nav-text{

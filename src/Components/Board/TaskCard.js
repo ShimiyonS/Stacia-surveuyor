@@ -24,17 +24,19 @@ export default function TaskCard({ data, bgColor }) {
           style={{
             display: "flex",
             alignItems: "flex-start",
+            width: '100%',
+            justifyContent: 'space-between',
             columnGap: "0.2rem",
           }}
         >
           <div className="board-view-task-name" style={{ color: bgColor }}>
-            {data.tname}
+            {data.taskName}
           </div>
           <SlOptionsVertical color={bgColor} />
         </div>
         <div className="board-view-task-due">
           <IoCalendarOutline color={bgColor} />
-          <div style={{ color: bgColor }}>{data.tdude}</div>
+          <div style={{ color: bgColor }}>{data.dueDate}</div>
         </div>
       </div>
     </div>

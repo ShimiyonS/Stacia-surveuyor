@@ -13,8 +13,10 @@ import { BiEdit } from "react-icons/bi";
 import { GiSightDisabled } from "react-icons/gi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Modal from "react-modal";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-export default function SpecificTaskMore() {
+export default function SpecificTaskMore({ taskId }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [openModal, setOpenModal] = useState(false);
 
@@ -59,6 +61,18 @@ export default function SpecificTaskMore() {
       zIndex: "999",
     },
   };
+
+  const navigate = useNavigate();
+
+ const handleDeleteTask = async (taskId) => {
+  try{
+    const res = await axios.patch(`http://192.168.0.115:8001/task/remove/${taskId}`);
+    console.log(res.data);
+    navigate('/surveyor-tasks');
+  }catch(err){
+    console.log(err.message);
+  }
+ };
 
   return (
     <React.Fragment>
@@ -140,6 +154,7 @@ export default function SpecificTaskMore() {
       >
         <div className="are-u-sure-text">Are you sure ?</div>
         <div className="archive">you want to archive this task</div>
+        <div>id: {taskId}</div>
         <div
           style={{
             display: "flex",
@@ -152,7 +167,9 @@ export default function SpecificTaskMore() {
           <div className="cancel-btn" onClick={handleModalClose}>
             Cancel
           </div>
-          <div className="confirm-btn">Confirm</div>
+          <div className="confirm-btn"
+          onClick={() => handleDeleteTask(taskId)}
+          >Confirm</div>
         </div>
       </Modal>
     </React.Fragment>

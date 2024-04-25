@@ -1,12 +1,16 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import TaskCard from "./TaskCard";
 import ThreeDots from "../../Assets/threedots.svg";
 import { SlOptionsVertical } from "react-icons/sl";
 import AddBoard from "./AddBoard";
+import axios from "axios";
+import { PageContext } from "../../Context/PageContext";
+import TablerowMoreOptions from "../TaskList/TablerowMoreOptions";
+import BoardMoreOptions from "./BoardMoreOptions";
 
-const Card = ({ id, text, index, moveCard, tasks }) => {
+const Card = ({ id, title, index, moveCard, tasks, boardId, getBoardTask }) => {
   const [, ref] = useDrag({
     type: "CARD",
     item: { id, index },
@@ -30,6 +34,17 @@ const Card = ({ id, text, index, moveCard, tasks }) => {
     "rgba(73, 120, 193, 1)",
     "rgba(205, 111, 14, 1)",
   ];
+
+    // delete board
+
+    const deleteBoard = async () => {
+      try{
+        const res =  await axios.delete(`http://192.168.0.115:8001/board/delete/660aa4d54a8e525d204aaa77/${boardId}`);
+        console.log(res.data);
+      }catch(err){
+        console.log(err.message);
+      }
+    };
 
   return (
     <>
@@ -66,8 +81,9 @@ const Card = ({ id, text, index, moveCard, tasks }) => {
                   justifyContent: "space-between",
                 }}
               >
-                <div className="board-view-task-section-title">{text}</div>
-                <SlOptionsVertical color="#8493B2" />
+                <div className="board-view-task-section-title">{title}</div>
+                {/* <SlOptionsVertical color="#8493B2" /> */}
+                <BoardMoreOptions handleDeleteRow={""} handleBookmark={""} />
               </div>
               <div
                 style={{
@@ -117,8 +133,13 @@ const Card = ({ id, text, index, moveCard, tasks }) => {
                 justifyContent: "space-between",
               }}
             >
-              <div className="board-view-task-section-title">{text}</div>
-              <SlOptionsVertical color="#8493B2" />
+              <div className="board-view-task-section-title">{title}</div>
+              {/* <SlOptionsVertical color="#8493B2" /> */}
+              <BoardMoreOptions 
+              deleteBoard={deleteBoard}
+              handleDeleteRow={""} handleBookmark={""} 
+              getBoardTask={getBoardTask}
+              />
             </div>
             <div
               style={{ borderBottom: "1.5px solid #D5E8FF", marginTop: "1rem" }}
@@ -139,181 +160,21 @@ const Card = ({ id, text, index, moveCard, tasks }) => {
 };
 
 const DragDropContainer = () => {
-  const initialCards = [
-    {
-      id: 1,
-      dueDate: "Recently assigned",
-      tasks: [
-        {
-          tid: 100,
-          tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-          tdude: "26/11/2023",
-        },
-        {
-          tid: 101,
-          tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-          tdude: "26/11/2023",
-        },
-        {
-          tid: 102,
-          tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-          tdude: "26/11/2023",
-        },
-        {
-          tid: 103,
-          tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-          tdude: "26/11/2023",
-        },
-        {
-          tid: 103,
-          tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-          tdude: "26/11/2023",
-        },
-        {
-          tid: 103,
-          tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-          tdude: "26/11/2023",
-        },
-        {
-          tid: 103,
-          tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-          tdude: "26/11/2023",
-        },
-        {
-          tid: 103,
-          tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-          tdude: "26/11/2023",
-        },
-        {
-          tid: 103,
-          tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-          tdude: "26/11/2023",
-        },
-        {
-          tid: 103,
-          tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-          tdude: "26/11/2023",
-        },
-        {
-          tid: 103,
-          tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-          tdude: "26/11/2023",
-        },
-        {
-          tid: 103,
-          tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-          tdude: "26/11/2023",
-        },
-        {
-          tid: 103,
-          tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-          tdude: "26/11/2023",
-        },
-        {
-          tid: 103,
-          tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-          tdude: "26/11/2023",
-        },
-        {
-          tid: 103,
-          tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-          tdude: "26/11/2023",
-        },
-      ],
-    },
-    // {
-    //   id: 2,
-    //   dueDate: "Do next week",
-    //   tasks: [
-    //     {
-    //       tid: 200,
-    //       tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-    //       tdude: "26/11/2023",
-    //     },
-    //     {
-    //       tid: 201,
-    //       tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-    //       tdude: "26/11/2023",
-    //     },
-    //   ],
-    // },
-    // {
-    //   id: 3,
-    //   dueDate: "Due tomorrow",
-    //   tasks: [
-    //     {
-    //       tid: 300,
-    //       tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-    //       tdude: "26/11/2023",
-    //     },
-    //     {
-    //       tid: 301,
-    //       tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-    //       tdude: "26/11/2023",
-    //     },
-    //     {
-    //       tid: 302,
-    //       tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-    //       tdude: "26/11/2023",
-    //     },
-    //   ],
-    // },
-    // {
-    //   id: 4,
-    //   dueDate: "Due today",
-    //   tasks: [
-    //     {
-    //       tid: 400,
-    //       tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-    //       tdude: "26/11/2023",
-    //     },
-    //     {
-    //       tid: 401,
-    //       tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-    //       tdude: "26/11/2023",
-    //     },
-    //     {
-    //       tid: 402,
-    //       tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-    //       tdude: "26/11/2023",
-    //     },
-    //   ],
-    // },
-    // {
-    //   id: 5,
-    //   dueDate: "Due next month",
-    //   tasks: [
-    //     {
-    //       tid: 500,
-    //       tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-    //       tdude: "26/11/2023",
-    //     },
-    //     {
-    //       tid: 501,
-    //       tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-    //       tdude: "26/11/2023",
-    //     },
-    //     {
-    //       tid: 502,
-    //       tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-    //       tdude: "26/11/2023",
-    //     },
-    //   ],
-    // },
-    // {
-    //   id: 6,
-    //   dueDate: "Due",
-    //   tasks: [
-    //     {
-    //       tid: 600,
-    //       tname: "Farmer survey list task Lorem ( adscc fgjugyj )",
-    //       tdude: "26/11/2023",
-    //     },
-    //   ],
-    // },
-  ];
   // const memorizeCards = useMemo(() => initialCards, []);
-  const [cards, setCards] = useState(initialCards);
+  const [cards, setCards] = useState(null);
+  const [taskBoard, setTaskBoard] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const {
+    filterByStatus,
+    boardSurveyorId,
+    boardViewStatus,
+    setBoardViewStatus,
+    boardDateFilter,
+    boardRangeFilter,
+  } = useContext(PageContext);
+
+  // console.log("context data", filterByStatus);
+  // console.log(boardDateFilter);
 
   const moveCard = (fromIndex, toIndex) => {
     const updatedCards = [...cards];
@@ -339,6 +200,31 @@ const DragDropContainer = () => {
     }
   }, []);
 
+  const createBoard = async (boardData) => {
+    // setCards((prevArray) => [...prevArray, boardData]);
+    // console.log("task request for board creation", boardData);
+
+    try {
+      const res = await axios.post(
+        `http://192.168.0.115:8001/board/create-board/${boardData.managerId}`,
+        boardData
+      );
+      // console.log(res.data);
+    } catch (err) {
+      console.log(err.message);
+    }
+
+    // try {
+    //   const res = await axios.get(
+    //     `http://192.168.0.115:8001/task/task-board/660aa4d54a8e525d204aaa77?query=surveyor&id=${selectedID}`
+    //   );
+    //   setTaskBoard(res.data.data);
+    //   console.log("board data:", res.data.data);
+    // } catch (err) {
+    //   console.log(err.message);
+    // }
+  };
+
   // const boardDetails = {
   //   id: 8,
   //   dueDate: "new box",
@@ -350,6 +236,31 @@ const DragDropContainer = () => {
   //   localStorage.setItem("boardData", boardData);
   //   console.log("boardData", boardData);
   // }, []);
+
+  const getBoardTask = async () => {
+    try {
+      const res = await axios.get(
+        `http://192.168.0.115:8001/board/task-board/660aa4d54a8e525d204aaa77`,
+        {
+          params: {
+            status: boardViewStatus,
+            surveyorIds: boardSurveyorId,
+            dateQuery: boardDateFilter,
+            date: boardRangeFilter,
+          },
+        }
+      );
+      // console.log(res.data.data);
+      setCards(res.data.data);
+      setLoading(false);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  useEffect(() => {
+    getBoardTask();
+  }, [boardViewStatus, boardSurveyorId, boardDateFilter, boardRangeFilter]);
 
   return (
     <div
@@ -381,12 +292,16 @@ const DragDropContainer = () => {
             key={index}
             id={card.id}
             text={card.dueDate}
+            title={card.title}
             tasks={card.tasks}
             index={index}
             moveCard={moveCard}
+            boardId={card.boardId}
+            getBoardTask={getBoardTask}
           />
         ))}
-      <AddBoard handleAddBoard={handleAddBoard} />
+      {/* <AddBoard handleAddBoard={handleAddBoard} /> */}
+      <AddBoard createBoard={createBoard} />
     </div>
   );
 };
@@ -400,40 +315,3 @@ const BoardView = () => {
 };
 
 export default BoardView;
-
-// import React, { useState } from "react";
-
-// const BoardView = () => {
-//   const [boxes, setBoxes] = useState([]);
-
-//   const addBox = (side) => {
-//     // Create a new box object
-//     const newBox = {
-//       id: Date.now(),
-//       side: side,
-//     };
-
-//     // Update the state with the new box
-//     setBoxes((prevBoxes) => [...prevBoxes, newBox]);
-//   };
-
-//   return (
-//     <div>
-//       <button onClick={() => addBox("left")}>Add Box to Left</button>
-//       <button onClick={() => addBox("right")}>Add Box to Right</button>
-
-//       <div>
-//         {boxes.map((box) => (
-//           <div
-//             key={box.id}
-//             style={{ float: box.side, border: "1px solid red", height: '499px' }}
-//           >
-//             Box {box.id} on {box.side} side
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default BoardView;

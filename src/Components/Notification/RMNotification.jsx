@@ -3,9 +3,7 @@ import styled from 'styled-components'
 import { IoDocumentText } from "react-icons/io5";
 import { BsFillSendFill } from "react-icons/bs";
 
-
-export default function RMNotification() {
-    const TaskNotification = styled.div`
+const TaskNotification = styled.div`
     /* background-color: aquamarine; */
     margin-bottom: 2rem;
     `
@@ -51,6 +49,9 @@ export default function RMNotification() {
         align-items: center;
         border-radius: 0.5rem;
     `
+
+export default function RMNotification() {
+    
 
     return (
         <TaskNotification>
