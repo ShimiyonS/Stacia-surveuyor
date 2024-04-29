@@ -1,5 +1,5 @@
 import React from 'react'
-import DraggableBox from "../Components/TaskList/DraggableBox "
+import DraggableBox from "./TaskList/DraggableBox "
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
 import Profile from "../Assets/Profile.svg"

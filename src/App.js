@@ -118,10 +118,10 @@ function App() {
                 isAuthenticated ? <Notifications /> : <Navigate to="/signin" />
               }
             />
-            <Route
+            {/* <Route
               path="/chat"
               element={isAuthenticated ? <Chat /> : <Navigate to="/chat" />}
-            />
+            /> */}
 
             {/* chat dynamic desgin checking route */}
             <Route

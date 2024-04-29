@@ -201,7 +201,7 @@ export default function Chat() {
                 </ChatLeft>
 
                 <ChatRight>
-                    <IndividualChat />
+                    {/* <IndividualChat /> */}
                 </ChatRight>
             </ChatInnerLayer>
         </ChatPageContainer>
