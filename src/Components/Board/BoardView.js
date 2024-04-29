@@ -35,6 +35,8 @@ const Card = ({ id, title, index, moveCard, tasks, boardId, getBoardTask }) => {
     "rgba(205, 111, 14, 1)",
   ];
 
+    const [freeze, setFreeze] = useState('');
+
     // delete board
 
     const deleteBoard = async () => {
@@ -45,6 +47,12 @@ const Card = ({ id, title, index, moveCard, tasks, boardId, getBoardTask }) => {
         console.log(err.message);
       }
     };
+
+    // const freezeBoard = () => {
+    //   console.log("board_title", title);
+    // };
+
+    console.log("board title match", freeze);
 
   return (
     <>
@@ -139,6 +147,8 @@ const Card = ({ id, title, index, moveCard, tasks, boardId, getBoardTask }) => {
               deleteBoard={deleteBoard}
               handleDeleteRow={""} handleBookmark={""} 
               getBoardTask={getBoardTask}
+              setFreeze={setFreeze}
+              boardTitle={title}
               />
             </div>
             <div

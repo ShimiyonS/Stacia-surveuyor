@@ -69,7 +69,7 @@
 
 // export default TaskNextPage;
 
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import * as xlsx from "xlsx";
 import { useTable } from "react-table";
@@ -90,6 +90,8 @@ import { PageContext } from "../../Context/PageContext";
 import { Header } from "antd/es/layout/layout";
 import SurveyorFilter from "./SurveyorFilter";
 import axios from "axios";
+import TablerowMoreOptions from "./TablerowMoreOptions";
+
 
 function CreateTable({ columns, data }) {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
@@ -128,34 +130,55 @@ function CreateTable({ columns, data }) {
           prepareRow(row);
           return (
             <tr {...row.getRowProps()}>
-              {row.cells.map((cell, index) => (
-                <td
-                  {...cell.getCellProps()}
-                  style={{
-                    // padding: "1rem",
-                    fontFamily: "EuclidMedium",
-                    backgroundColor:
-                      index === 0
-                        ? "rgba(27, 36, 54, 1)"
-                        : cell.value === ""
-                        ? "rgba(246, 75, 60, 0.08)"
-                        : "inherit",
-                    color: index === 0 ? "#fff" : "inherit",
-                    borderRight: "1px solid rgba(219, 219, 219, 1)",
-                    borderBottom: "1px solid rgba(219, 219, 219, 1)",
-                    textAlign:
-                      index === 6 || index === 0 ? "center" : "inherit",
-                  }}
-                >
-                  {cell.column.id === "optionsColumn" ? (
-                    <SlOptionsVertical color="rgba(132, 147, 178, 1)" />
-                  ) : cell.value === "" ? (
-                    "---"
-                  ) : (
-                    cell.render("Cell")
-                  )}
-                </td>
-              ))}
+              {row.cells.map((cell, index) =>
+                cell.column.id != "surveyorDetails" ? (
+                  <td
+                    {...cell.getCellProps()}
+                    style={{
+                      // padding: "1rem",
+                      fontFamily: "EuclidMedium",
+                      backgroundColor:
+                        index === 0
+                          ? "rgba(27, 36, 54, 1)"
+                          : cell.value === ""
+                          ? "rgba(246, 75, 60, 0.08)"
+                          : "inherit",
+                      color: index === 0 ? "#fff" : "inherit",
+                      borderRight: "1px solid rgba(219, 219, 219, 1)",
+                      borderBottom: "1px solid rgba(219, 219, 219, 1)",
+                      textAlign:
+                        index === 6 || index === 0 ? "center" : "inherit",
+                    }}
+                  >
+                    {cell.column.id === "optionsColumn" ? (
+                      <SlOptionsVertical color="rgba(132, 147, 178, 1)" />
+                    ) : cell.value === "" ? (
+                      "---"
+                    ) : (
+                      cell.render("Cell")
+                    )}
+                  </td>
+                ) : (
+                  <td
+                    {...cell.getCellProps()}
+                    style={{
+                      fontFamily: "EuclidMedium",
+                      backgroundColor:
+                        index === 0
+                          ? "rgba(27, 36, 54, 1)"
+                          : cell.value === ""
+                          ? "rgba(246, 75, 60, 0.08)"
+                          : "inherit",
+                      color: index === 0 ? "#fff" : "inherit",
+                      borderRight: "1px solid rgba(219, 219, 219, 1)",
+                      borderBottom: "1px solid rgba(219, 219, 219, 1)",
+                      width: '25%'
+                    }}
+                  >
+                    {cell.render("Cell")}
+                  </td>
+                )
+              )}
             </tr>
           );
         })}
@@ -175,6 +198,7 @@ function CreateTable({ columns, data }) {
 export default function TaskNextPage({ selectedFile }) {
   const [files, setFiles] = useState("");
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { taskName, desc, region, taskDue, bulkRes, setBulkRes } =
     useContext(PageContext);
 
@@ -203,26 +227,39 @@ export default function TaskNextPage({ selectedFile }) {
       Header: "Region",
       accessor: "location",
     },
-    // {
-    //   Header: "Assigned to",
-    //   accessor: "assignedTo",
-    //   id: "assign",
-    //   Cell: ({ cell: { value, row } }) => (
-    //     <ProfileCell
-    //       avatar={row.original.avatar}
-    //       username={value}
-    //       completedTasks={row.original.completedTasks}
-    //       assignedTasks={row.original.assignedTasks}
-    //       phno={row.original.phno}
-    //       sid={row.original.sid}
-    //     />
-    //   ),
-    // },
     {
       Header: "Assigned to",
-      accessor: "surveyorId"
-      // Cell: ({ cell: { value, row } }) => <SurveyorFilter />,
+      accessor: "surveyorDetails",
+      // id: "assign",
+      // Cell: ({ cell: { value, row } }) => (
+      //   <ProfileCell
+      //     avatar={row.original.SurveyorDetails}
+      //     username={row.original.surveyorId}
+      //     completedTasks={row.original.completedTasks}
+      //     assignedTasks={row.original.assignedTasks}
+      //     phno={row.original.phno}
+      //     sid={row.original.sid}
+      //   />
+      // ),
+      Cell: ({ row }) => {
+        return row.original.surveyorDetails != null ? (
+          <ProfileCell
+            avatar={row.original.surveyorDetails.dp}
+            username={row.original.surveyorDetails.userName}
+            completedTasks={"10"}
+            assignedTasks={"20"}
+            phno={"30"}
+            sid={row.original.surveyorDetails.surveyorId}
+          />
+        ) : (
+          <div>no surveyor assigned</div>
+        );
+      },
     },
+    // {
+    //   Header: "Assigned to",
+    //   accessor: "surveyorId",
+    // },
     {
       Header: "",
       accessor: "options",
@@ -248,13 +285,14 @@ export default function TaskNextPage({ selectedFile }) {
         style={{
           display: "flex",
           alignItems: "center",
+          columnGap: '1rem',
           cursor: "pointer",
         }}
         onClick={toggleInfo}
       >
         <img
           src={avatar}
-          alt="Profile"
+          alt="userimg"
           style={{
             borderRadius: "50%",
             marginRight: "8px",
@@ -264,7 +302,7 @@ export default function TaskNextPage({ selectedFile }) {
           }}
         />
         <span>{username}</span>
-        {showInfo && (
+        {/* {showInfo && (
           <div className="show-profile-info">
             <div className="show-profile-active">Active</div>
             <div className="show-profile-img-box">
@@ -283,7 +321,6 @@ export default function TaskNextPage({ selectedFile }) {
               <div>Surveyor</div>
               <div>ID:{sid}</div>
             </div>
-            {/* task details */}
             <div
               style={{
                 display: "flex",
@@ -308,7 +345,8 @@ export default function TaskNextPage({ selectedFile }) {
             ></div>
             <div className="task-view-profile">View Profile</div>
           </div>
-        )}
+        )} */}
+        <TablerowMoreOptions />
       </div>
     );
   };
@@ -645,15 +683,18 @@ export default function TaskNextPage({ selectedFile }) {
   // get dynamic assigned surveyors
 
   const createBulkTask = async () => {
-    try{
-      const res = await axios.post(`http://192.168.0.115:8001/task/bulk-create/660aa4d54a8e525d204aaa77`, {
-       taskArray: bulkRes
-      });
+    try {
+      const res = await axios.post(
+        `http://192.168.0.115:8001/task/bulk-create/660aa4d54a8e525d204aaa77`,
+        {
+          taskArray: bulkRes,
+        }
+      );
       console.log(res.data);
-    }catch(err){
+    } catch (err) {
       console.log(err.message);
     }
-  }
+  };
 
   return (
     <div className="excel-view">
@@ -671,7 +712,11 @@ export default function TaskNextPage({ selectedFile }) {
             overflowY: "scroll",
           }}
         >
-          <CreateTable columns={columns} data={bulkRes} />
+          {bulkRes == "" ? (
+            ""
+          ) : (
+            <CreateTable columns={columns} data={bulkRes} />
+          )}
         </div>
         <div className="task-next-page-bottom">
           <div className="advanced-options-right">

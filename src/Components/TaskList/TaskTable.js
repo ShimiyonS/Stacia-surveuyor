@@ -98,11 +98,12 @@ import { PageContext } from "../../Context/PageContext";
 import SpecificTaskMore from "./SpecificTaskMore";
 import TablerowMoreOptions from "./TablerowMoreOptions";
 import { MdStar } from "react-icons/md";
+import axios from "axios";
 
 export default function TaskTable({ columns, data, setData }) {
   const navigate = useNavigate();
   const { setPageName } = useContext(PageContext);
-  const [bookmark, setBookmark] = useState("");
+  const [bookmark, setBookmark] = useState();
 
   const {
     getTableProps,
@@ -152,19 +153,11 @@ export default function TaskTable({ columns, data, setData }) {
   const startItem = pageIndex * pageSize + 1;
   const endItem = Math.min((pageIndex + 1) * pageSize, data.length);
 
-
   // delete row
 
   const handleDeleteRow = (row) => {
     const updatedData = data.filter((rowData) => rowData !== row.original);
     setData(updatedData);
-  };
-
-  // bookmark item
-
-  const handleBookmark = (row) => {
-    setBookmark(row.cells[1].value);
-    console.log(row.cells[1].value);
   };
 
   // const handleRowClick = (row) => {
@@ -179,7 +172,37 @@ export default function TaskTable({ columns, data, setData }) {
     navigate(`edit-task/${row.original._id}`);
   };
 
+  // bookmark task
 
+  const handleBookmarkTask = async (row) => {
+    try {
+        const res = await axios.patch(
+          `http://192.168.0.115:8001/task/bookmarked/660aa4d54a8e525d204aaa77/${row.original._id}`,
+          {
+            query:  "true",
+          }
+        );
+        console.log(res.data.message);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  // //  remove bookmark
+
+  const handleRemoveBookmark = async (row) => {
+    try {
+      const res = await axios.patch(
+        `http://192.168.0.115:8001/task/bookmarked/660aa4d54a8e525d204aaa77/${row.original._id}`,
+        {
+          query: "",
+        }
+      );
+      console.log(res.data.message);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
 
   return (
     <div>
@@ -226,9 +249,8 @@ export default function TaskTable({ columns, data, setData }) {
                     {...cell.getCellProps()}
                     onClick={
                       cell.column.id != "optionsColumn"
-                        ? () => navigate(`specific-task/${row.original._id}`, {
-                          
-                        })
+                        ? () =>
+                            navigate(`specific-task/${row.original._id}`, {})
                         : () => console.log("test")
                     }
                   >
@@ -240,11 +262,15 @@ export default function TaskTable({ columns, data, setData }) {
                         }}
                       >
                         {/* <SlOptionsVertical /> */}
-                        {bookmark === row.original.id && <MdStar />}
+                        {/* { row.original.isBookMarked && <MdStar 
+                        />} */}
                         <TablerowMoreOptions
+                          handleBookmarkTask={() => handleBookmarkTask(row)}
+                          handleRemoveBookmark={() => handleRemoveBookmark(row)}
+                          isBookmarked={row.original.isBookMarked}
                           handleDeleteRow={() => handleDeleteRow(row)}
-                          handleBookmark={() => handleBookmark(row)}
-                          handleEditTask = {() => handleEditTask(row)}
+                          // handleBookmark={() => handleBookmark(row)}
+                          handleEditTask={() => handleEditTask(row)}
                         />
                       </span>
                     )}

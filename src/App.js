@@ -23,6 +23,7 @@ import TaskNextPage from "./Components/TaskList/TaskNextPage";
 import Notifications from "./Components/Notification/Notifications";
 import Chat from "./Pages/Chat";
 import EditTask from "./Components/TaskList/EditTask";
+import Chat1 from "./Pages/Chat1";
 
 function App() {
   const [isAuthenticated, setAuthenticated] = useState(true);
@@ -120,6 +121,12 @@ function App() {
             <Route
               path="/chat"
               element={isAuthenticated ? <Chat /> : <Navigate to="/chat" />}
+            />
+
+            {/* chat dynamic desgin checking route */}
+            <Route
+              path="/chat1"
+              element={isAuthenticated ? <Chat1 /> : <Navigate to="/chat1" />}
             />
             <Route path="/signin" element={<SignInpage />} />
           </Routes>

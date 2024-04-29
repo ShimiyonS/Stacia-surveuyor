@@ -4,6 +4,7 @@ import OverallStat from './TaskList/OverallStat'
 import TaskTable from './TaskList/TaskTable'
 import axios from 'axios';
 import { PageContext } from '../Context/PageContext';
+import { MdStar } from "react-icons/md";
 
 export default function ListViewInTask({ filterType, surveyorId }) {
   const columns = [
@@ -30,6 +31,13 @@ export default function ListViewInTask({ filterType, surveyorId }) {
     {
       Header: 'Status',
       accessor: 'status',
+    },
+    {
+      Header: '',
+      accessor: 'isBookmarked',
+      Cell: ({row}) => {
+        return row.original.isBookMarked &&  <MdStar />
+      }
     },
     {
       Header: '',

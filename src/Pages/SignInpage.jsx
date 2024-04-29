@@ -3,7 +3,7 @@ import "../Styles/SignInPage.css"
 import SignInImg from "../Assets/SignUpImg.png"
 import VerifyImg from "../Assets/VerifyImg.png"
 import OtpVerify from "../Assets/OtpVerify.png"
-import MobileVerify from "../Assets/MobileVerify.svg"
+import MobileVerify from "../Assets/MobileVerify.png"
 import Logo from "../Assets/IsmartLogo.svg"
 import axios from 'axios'
 import OTPInput from 'react-otp-input'

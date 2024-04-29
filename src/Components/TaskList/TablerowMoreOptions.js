@@ -21,8 +21,11 @@ import Modal from "react-modal";
 
 export default function TablerowMoreOptions({
   handleDeleteRow,
-  handleBookmark,
-  handleEditTask
+  // handleBookmark,
+  handleEditTask,
+  handleBookmarkTask,
+  handleRemoveBookmark,
+  isBookmarked,
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [openModal, setOpenModal] = useState(false);
@@ -68,6 +71,8 @@ export default function TablerowMoreOptions({
       zIndex: "999",
     },
   };
+
+  console.log('isbookmarked____', isBookmarked);
 
   return (
     <React.Fragment>
@@ -129,10 +134,19 @@ export default function TablerowMoreOptions({
           <BiEdit 
           /> Edit
         </MenuItem>
-        <MenuItem onClick={handleBookmark}>
+       {
+        isBookmarked ?  <MenuItem onClick={() => {
+          handleRemoveBookmark();
+        }}>
+          <GoStar />
+          Remove
+        </MenuItem> :  <MenuItem onClick={() => {
+          handleBookmarkTask();
+        }}>
           <GoStar />
           Bookmark
         </MenuItem>
+       }
         <MenuItem onClick={handleClose}>
           <IoShareOutline color="#8493B2" />
           <span

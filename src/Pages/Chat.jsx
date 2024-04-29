@@ -152,7 +152,6 @@ const ChatTemplate = ({ uname, uimg, msg }) => {
 export default function Chat() {
 
     const [msg, setMsg] = useState("");
-
     return (
         <ChatPageContainer>
             <ChatInnerLayer>

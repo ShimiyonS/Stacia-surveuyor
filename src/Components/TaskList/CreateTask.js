@@ -395,6 +395,7 @@ export default function CreateTask({ onFileChange }) {
   const handleFileSelect = (e) => {
     e.preventDefault();
     setExcelFile(e.target.files[0]);
+    // setExcelFile(e.target.files)
     setCsvFiles1([...csvFiles1, e.target.files[0]]);
     console.log("target file......", e.target.files[0]);
     if (e.target.files) {
@@ -412,6 +413,7 @@ export default function CreateTask({ onFileChange }) {
       reader.readAsArrayBuffer(e.target.files[0]);
     }
   };
+  console.log(excelFile);
 
   const customStyles1 = {
     content: {
@@ -674,7 +676,7 @@ export default function CreateTask({ onFileChange }) {
     formData.append("description", description);
     formData.append("radius", radius);
     formData.append("formId", "660a7fb67d6f596735d72594");
-    formData.append("dueDate", time);
+    formData.append("dueDate", moment(time).format("YYYY-MM-DD"));
     formData.append("startDate", startDate);
     formData.append("endDate", endDate);
     formData.append("limit", limit);

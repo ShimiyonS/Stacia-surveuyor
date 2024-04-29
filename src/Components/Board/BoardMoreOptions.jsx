@@ -26,7 +26,9 @@ import Modal from "react-modal";
 export default function BoardMoreOptions({
     handleDeleteRow,
     handleBookmark,
+    setFreeze,
     deleteBoard,
+    boardTitle,
     getBoardTask
 }) {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -134,7 +136,10 @@ export default function BoardMoreOptions({
                     <FiEdit3 />
                     Rename section
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={() => {
+                    setFreeze(boardTitle);
+                    handleClose();
+                }}>
                     <IoLockClosedOutline color="#8493B2" />
 
                     <span
